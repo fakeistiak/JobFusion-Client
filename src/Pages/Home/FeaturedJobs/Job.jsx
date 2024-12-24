@@ -1,9 +1,11 @@
 import { Button } from "@/components/ui/button";
+import { useState } from "react";
 import { IoLocationSharp } from "react-icons/io5";
 import { MdAttachMoney } from "react-icons/md";
 
 const Job = ({job}) => {
     const {logo,company_name,job_title,remote_or_onsite,job_type,location,salary}=job
+
     return (
         <div>
             <div className="max-w-sm mx-auto bg-gray-100 dark:bg-gray-800 rounded-xl shadow-md overflow-hidden">
