@@ -37,8 +37,8 @@ const Job = ({job}) => {
             <p className="flex justify-center items-center"><MdAttachMoney/> {salary}</p> 
         </div>
         <div className="mt-6">
-          <Button variant="outline" className="w-full">
-            Another Action
+          <Button variant="default" className="w-full">
+            Job Detail
           </Button>
         </div>
       </div>
