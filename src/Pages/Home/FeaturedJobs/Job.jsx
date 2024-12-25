@@ -20,7 +20,7 @@ const Job = ({job}) => {
         <h2 className="lg:text-xl text-lg font-semibold dark:text-white">
           {job_title}
         </h2>
-        <h3 className="text-md font-medium dark mt-1">
+        <h3 className="lg:text-md font-medium dark mt-1">
           {company_name}
         </h3>
         </div>

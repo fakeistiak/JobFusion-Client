@@ -12,7 +12,7 @@ const FeaturedJobs = () => {
   }, []);
   return (
     <div>
-      <div className="pb-20">
+      <div className="pb-20 px-8">
         <div className="text-center py-8">
           <h2 className="lg:text-5xl text-4xl pb-2 font-semibold text-primary">
             Featured Jobs

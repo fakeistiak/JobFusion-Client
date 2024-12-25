@@ -26,7 +26,7 @@ const Statistics = () => {
                     </div>
                 </section>
 
-                <section id="about" className="bg-primary text-white py-16 px-4">
+                <section id="about" className="bg-gray-600 text-white py-16 px-4">
                     <div className="max-w-4xl mx-auto text-center">
                         <h2 className="text-3xl font-bold mb-4">About Our Platform</h2>
                         <p className="text-lg ">

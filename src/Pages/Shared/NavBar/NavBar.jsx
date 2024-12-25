@@ -28,20 +28,20 @@ const NavBar = () => {
       </div>
 
       <ul
-        className={`absolute md:static left-0 w-full md:w-auto bg-sky-600md:bg-transparent flex flex-col md:flex-row items-center md:items-center justify-center md:justify-end space-y-4 md:space-y-0 md:space-x-6 py-6 md:py-0 transition-all duration-300 ease-in-out ${
+        className={`absolute md:static left-0 w-full md:w-auto bg-sky-600 bg-sky-600md:bg-transparent flex flex-col md:flex-row items-center md:items-center justify-center md:justify-end space-y-4 md:space-y-0 md:space-x-6 py-6 md:py-0 transition-all duration-300 ease-in-out ${
           open ? "top-16" : "-top-96"
         }`}
       >
         {routes.map((route) => (
           <li
             key={route.id}
-            className="px-1 rounded-lg text-center w-full hover:bg-sky-600hover:text-white transition duration-300 whitespace-nowrap"
+            className="px-1 rounded-lg text-center w-full  transition duration-300 whitespace-nowrap"
           >
             <NavLink
               to={route.path}
               className={({ isActive }) =>
                 `text-lg font-medium ${
-                  isActive ? "text-white rounded-lg" : "text-gray-300"
+                  isActive ? "text-white rounded-lg" : "text-gray-300 hover:text-white transition"
                 }`
               }
               onClick={handleRouteClick}
