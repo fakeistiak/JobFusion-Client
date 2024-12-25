@@ -41,7 +41,7 @@ const NavBar = () => {
               to={route.path}
               className={({ isActive }) =>
                 `text-lg font-medium ${
-                  isActive ? "bg-sky-600text-white rounded-lg" : "text-gray-300"
+                  isActive ? "text-white rounded-lg" : "text-gray-300"
                 }`
               }
               onClick={handleRouteClick}

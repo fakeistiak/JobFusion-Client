@@ -1,10 +1,10 @@
 import { Button } from "@/components/ui/button";
-import { useState } from "react";
 import { IoLocationSharp } from "react-icons/io5";
 import { MdAttachMoney } from "react-icons/md";
+import { Link } from "react-router-dom";
 
 const Job = ({job}) => {
-    const {logo,company_name,job_title,remote_or_onsite,job_type,location,salary}=job
+    const {id,logo,company_name,job_title,remote_or_onsite,job_type,location,salary}=job
 
     return (
         <div>
@@ -37,9 +37,11 @@ const Job = ({job}) => {
             <p className="flex justify-center items-center"><MdAttachMoney/> {salary}</p> 
         </div>
         <div className="mt-6">
+          <Link to={`/job/${id}`}>
           <Button variant="default" className="w-full">
             Job Detail
           </Button>
+          </Link>
         </div>
       </div>
     </div>
