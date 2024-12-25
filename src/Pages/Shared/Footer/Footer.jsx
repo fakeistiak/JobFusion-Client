@@ -6,7 +6,7 @@ import { Link } from "react-router-dom";
 
 export default function Footer() {
   return (
-    <footer className="bg-primary text-gray-200">
+    <footer className="bg-sky-600 text-gray-200">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
         <div className="grid grid-cols-1 md:grid-cols-4 gap-8">
           <div>
@@ -64,7 +64,7 @@ export default function Footer() {
                 placeholder="Enter your email" 
                 className="bg-black text-white focus:border-white"
               />
-              <Button variant="" type="submit" >
+              <Button variant="destructive" type="submit" >
                 Subscribe
               </Button>
             </form>

@@ -4,7 +4,7 @@ import heroImg from "../../../assets/images/user.png"
 export default function HeroWithImage() {
   return (
     <section className="bg-white dark:bg-gray-900">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12 md:py-24">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pb-12 md:py-24">
         <div className="grid grid-cols-1 md:grid-cols-2 gap-8 items-center">
           <div className="text-center md:text-left">
             <h1 className="text-4xl font-extrabold tracking-tight text-gray-900 dark:text-white sm:text-5xl md:text-6xl">
@@ -28,7 +28,7 @@ export default function HeroWithImage() {
             </div>
           </div>
           <div className="mt-6 md:mt-0 flex justify-center">
-           <img className="lg:w-auto lg:h-auto w-[400px] h-[350px]" src={heroImg} alt="" />
+           <img className="lg:w-[550px] lg:h-[500px] w-[400px] h-[350px]" src={heroImg} alt="" />
           </div>
         </div>
       </div>

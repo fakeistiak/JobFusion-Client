@@ -16,7 +16,7 @@ const NavBar = () => {
   };
 
   return (
-    <nav className="bg-primary p-4 flex justify-between items-center text-white">
+    <nav className="bg-sky-600 p-4 flex justify-between items-center text-white">
       <Link to="/" className="text-3xl font-bold font-serif">
         JobFusion
       </Link>
@@ -28,20 +28,20 @@ const NavBar = () => {
       </div>
 
       <ul
-        className={`absolute md:static left-0 w-full md:w-auto bg-customGray md:bg-transparent flex flex-col md:flex-row items-center md:items-center justify-center md:justify-end space-y-4 md:space-y-0 md:space-x-6 py-6 md:py-0 transition-all duration-300 ease-in-out ${
+        className={`absolute md:static left-0 w-full md:w-auto bg-sky-600md:bg-transparent flex flex-col md:flex-row items-center md:items-center justify-center md:justify-end space-y-4 md:space-y-0 md:space-x-6 py-6 md:py-0 transition-all duration-300 ease-in-out ${
           open ? "top-16" : "-top-96"
         }`}
       >
         {routes.map((route) => (
           <li
             key={route.id}
-            className="px-1 rounded-lg text-center w-full hover:bg-customGray hover:text-white transition duration-300 whitespace-nowrap"
+            className="px-1 rounded-lg text-center w-full hover:bg-sky-600hover:text-white transition duration-300 whitespace-nowrap"
           >
             <NavLink
               to={route.path}
               className={({ isActive }) =>
                 `text-lg font-medium ${
-                  isActive ? "bg-customGray text-white rounded-lg" : "text-gray-300"
+                  isActive ? "bg-sky-600text-white rounded-lg" : "text-gray-300"
                 }`
               }
               onClick={handleRouteClick}
