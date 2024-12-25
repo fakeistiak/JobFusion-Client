@@ -2,7 +2,6 @@ import { useEffect, useState } from "react";
 import { useLoaderData } from "react-router-dom";
 import { getStoredJobApplication } from "@/utility/localstorage";
 import { MapPin, DollarSign } from 'lucide-react';
-import { Button } from "@/components/ui/button";
 
 const AppliedJobs = () => {
   const jobs = useLoaderData();
