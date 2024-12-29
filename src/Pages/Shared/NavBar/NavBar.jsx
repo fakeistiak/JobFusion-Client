@@ -9,6 +9,7 @@ const NavBar = () => {
     { id: 2, path: "/statistics", name: "Statistics" },
     { id: 3, path: "/applied", name: "Applied Jobs" },
     { id: 4, path: "/blog", name: "Blog" },
+    { id: 5, path: "/login", name: "Login" }
   ];
 
   const handleRouteClick = () => {

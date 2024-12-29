@@ -11,6 +11,8 @@ import Statistics from './Pages/Statistics/Statistics';
 import AppliedJobs from './Pages/AppliedJobs/AppliedJobs';
 import Blog from './Pages/Blog/Blog';
 import JobDetails from './Pages/Home/FeaturedJobs/JobDetails';
+import Login from './Pages/Login/Login';
+import Register from './Pages/Register/Register';
 
 const router = createBrowserRouter([
   {
@@ -38,6 +40,14 @@ const router = createBrowserRouter([
         path:"/job/:id",
         element:<JobDetails/>,
         loader:()=>fetch('/jobs.json')
+      },
+      {
+        path:"/login",
+        element:<Login/>
+      },
+      {
+        path:"/register",
+        element:<Register/>
       }
     ]
   },
