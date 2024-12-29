@@ -14,7 +14,7 @@ const FeaturedJobs = () => {
     <div>
       <div className="pb-20 px-8">
         <div className="text-center py-8">
-          <h2 className="lg:text-5xl text-4xl pb-2 font-semibold text-primary">
+          <h2 className="lg:text-5xl text-4xl pb-2 font-semibold text-sky-600">
             Featured Jobs
           </h2>
           <p className="text-gray-600">

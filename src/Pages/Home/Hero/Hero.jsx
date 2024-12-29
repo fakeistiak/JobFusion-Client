@@ -9,7 +9,7 @@ export default function HeroWithImage() {
           <div className="text-center md:text-left">
             <h1 className="text-4xl font-extrabold tracking-tight text-gray-900 dark:text-white sm:text-5xl md:text-6xl">
               <span className="block">Welcome to</span>
-              <span className="block text-primary">Our Amazing Platform</span>
+              <span className="block text-sky-600">Our Amazing Platform</span>
             </h1>
             <p className="mt-3 text-base text-gray-500 dark:text-gray-300 sm:mt-5 sm:text-lg sm:max-w-xl sm:mx-auto md:mt-5 md:text-xl md:mx-0">
               Discover how our platform can revolutionize your workflow, boost productivity, and take your business to the next level.

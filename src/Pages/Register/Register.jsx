@@ -1,6 +1,7 @@
 import { Button } from "@/components/ui/button";
 import { FcGoogle } from "react-icons/fc";
 import {
+    createUserWithEmailAndPassword,
   getAuth,
   GithubAuthProvider,
   GoogleAuthProvider,
@@ -14,15 +15,27 @@ import { FaGithub } from "react-icons/fa";
 const Register = () => {
 
     const [user, setUser] = useState(null);
+    const [registerError,setRegisterError]=useState('');
     const auth = getAuth(app);
     const googleProvider = new GoogleAuthProvider();
     const githubProvider = new GithubAuthProvider();
   
     const handleRegister=e=>{
       e.preventDefault();
+      const name=e.target.name.value;
+      const number=e.target.number.value;
       const email=e.target.email.value;
       const password=e.target.password.value;
-      console.log(email,password)
+      console.log(email,password,name,number)
+      setRegisterError('');
+      createUserWithEmailAndPassword(auth,email,password)
+      .then(result=>{
+        console.log(result.user)
+      })
+      .catch(error=>{
+        console.error(error)
+        setRegisterError(error.message)
+      })
     }
     //Login With Github
     const handleGoogleSignin = () => {
@@ -65,6 +78,38 @@ const Register = () => {
                     </h2>
                       <form onSubmit={handleRegister}>
                         <div className="space-y-4">
+                          <div>
+                            <label
+                              htmlFor="name"
+                              className="block text-sm font-medium text-gray-700 mb-1"
+                            >
+                              Name
+                            </label>
+                            <input
+                              id="name"
+                              type="name"
+                              name="name"
+                              required
+                              className="w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                              placeholder="Enter your name"
+                            />
+                          </div>
+                          <div>
+                            <label
+                              htmlFor="number"
+                              className="block text-sm font-medium text-gray-700 mb-1"
+                            >
+                              Number
+                            </label>
+                            <input
+                              id="number"
+                              type="number"
+                              name="number"
+                              required
+                              className="w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                              placeholder="Enter your number"
+                            />
+                          </div>
                           <div>
                             <label
                               htmlFor="email"
@@ -125,7 +170,7 @@ const Register = () => {
                             className="w-full gap-2 flex items-center justify-center bg-white hover:bg-gray-50 text-gray-700 font-bold py-2 px-4 rounded border border-gray-300 focus:outline-none focus:shadow-outline transition duration-150 ease-in-out"
                           >
                             <FcGoogle className="lg:text-2xl text-xl" />
-                            Sign in with Google
+                            Sign up with Google
                           </button>
                           <button
                             type="button"
@@ -133,11 +178,14 @@ const Register = () => {
                             className="w-full gap-2 flex items-center justify-center bg-white hover:bg-gray-50 text-gray-700 font-bold py-2 px-4 rounded border border-gray-300 focus:outline-none focus:shadow-outline transition duration-150 ease-in-out"
                           >
                             <FaGithub className="lg:text-2xl text-xl" />
-                            Sign in with Github
+                            Sign up with Github
                           </button>
                         </div>
                         <p className="py-4 text-lg text-center">Already Have an account? <a className="text-sky-600" href="/login">SignIn</a> </p>
                         </form>
+                        {
+                            registerError && <p className="text-red-600 text-center">{registerError}</p>
+                        }
                     </div>
                   </div>
         </div>
