@@ -36,7 +36,7 @@ const Register = () => {
         console.log(result.user);
         sendEmailVerification(result.user)
         .then(()=>{
-            console.log('Please check your email and verify your account')
+            console.log('Please check your email & verify your account')
         })
       })
       .catch((error) => {
