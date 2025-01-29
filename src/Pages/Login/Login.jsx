@@ -3,10 +3,8 @@ import { FcGoogle } from "react-icons/fc";
 import {
   getAuth,
   GithubAuthProvider,
-  GoogleAuthProvider,
   sendPasswordResetEmail,
   signInWithPopup,
-  signOut,
 } from "firebase/auth";
 import app from "@/firebase/firebase.init";
 import { useContext, useRef, useState } from "react";
@@ -14,7 +12,7 @@ import { FaEye, FaEyeSlash, FaGithub } from "react-icons/fa";
 import { MdEmail } from "react-icons/md";
 import { RiLockPasswordFill } from "react-icons/ri";
 import { AuthContext } from "@/Provider/AuthProvider";
-import { useNavigate } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 
 const Login = () => {
   const [user, setUser] = useState(null);
@@ -22,11 +20,13 @@ const Login = () => {
   const [errorMessage, setErrorMessage] = useState("");
   const auth = getAuth(app);
   const emailRef = useRef();
-  const googleProvider = new GoogleAuthProvider();
   const githubProvider = new GithubAuthProvider();
-  const {signInUser}=useContext(AuthContext);
+  const {signInUser,signInWithGoogle}=useContext(AuthContext);
   const navigate=useNavigate()
+  const location =useLocation()
 
+
+  //Login With Email Password
   const handleLogin = (e) => {
     e.preventDefault();
     const email = e.target.email.value;
@@ -36,33 +36,34 @@ const Login = () => {
     signInUser(email, password)
       .then((result) => {
         setUser(result.user);
+        navigate(location?.state ? location.state :'/')
         e.target.reset();
-        navigate('/')
       })
       .catch((error) => {
         setErrorMessage(error.message);
       });
   };
 
-
+//Login with Google
   const handleGoogleSignin = () => {
-    signInWithPopup(auth, googleProvider)
+    signInWithGoogle()
       .then((result) => {
         const loggedInUser = result.user;
         setUser(loggedInUser);
-        navigate('/')
+        navigate(location?.state ? location.state :'/')
       })
       .catch((error) => {
         setErrorMessage(error.message);
       });
   };
 
+  //Login with Github
   const handleGithubSignin = () => {
     signInWithPopup(auth, githubProvider)
       .then((result) => {
         const loggedUser = result.user;
         setUser(loggedUser);
-        navigate('/')
+        navigate(location?.state ? location.state :'/')
       })
       .catch((error) => {
         setErrorMessage(error.message);

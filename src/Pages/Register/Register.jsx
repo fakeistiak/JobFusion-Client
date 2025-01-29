@@ -8,13 +8,12 @@ import {
   GoogleAuthProvider,
   sendEmailVerification,
   signInWithPopup,
-  signOut,
 } from "firebase/auth";
 import app from "@/firebase/firebase.init";
 import { useContext, useState } from "react";
 import { FaGithub, FaEye, FaPhoneAlt, FaEyeSlash } from "react-icons/fa";
 import { AuthContext } from "@/Provider/AuthProvider";
-import { useNavigate } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 
 const Register = () => {
   const [user, setUser] = useState(null);
@@ -23,8 +22,11 @@ const Register = () => {
   const auth = getAuth(app);
   const googleProvider = new GoogleAuthProvider();
   const githubProvider = new GithubAuthProvider();
-  const {createUser}=useContext(AuthContext);
+  const {createUser,signInWithGoogle}=useContext(AuthContext);
   const navigate=useNavigate()
+  const location=useLocation()
+
+
   const handleRegister = (e) => {
     e.preventDefault();
     const name = e.target.name.value;
@@ -39,7 +41,7 @@ const Register = () => {
         console.log("User registered:", result.user);
         sendEmailVerification(result.user)
         e.target.reset();
-        navigate('/')
+        navigate(location?.state ? location.state :'/')
       .then(() => {
           console.log("Verification email sent.");
         });
@@ -51,16 +53,13 @@ const Register = () => {
   };
   
 
-
-
-
-  //Login With Github
+  //Login With Google
   const handleGoogleSignin = () => {
-    signInWithPopup(auth, googleProvider)
+    signInWithGoogle(auth, googleProvider)
       .then((result) => {
         const loggedInUser = result.user;
         setUser(loggedInUser);
-        navigate('/')
+        navigate(location?.state ? location.state :'/')
       })
       .catch((error) => {
         console.log("error", error.message);
@@ -73,7 +72,7 @@ const Register = () => {
       const loggedUser = result.user;
       console.log(loggedUser);
       setUser(loggedUser);
-      navigate('/')
+      navigate(location?.state ? location.state :'/')
     });
   };
 
