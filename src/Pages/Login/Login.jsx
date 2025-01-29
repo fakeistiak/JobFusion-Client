@@ -14,6 +14,7 @@ import { FaEye, FaEyeSlash, FaGithub } from "react-icons/fa";
 import { MdEmail } from "react-icons/md";
 import { RiLockPasswordFill } from "react-icons/ri";
 import { AuthContext } from "@/Provider/AuthProvider";
+import { useNavigate } from "react-router-dom";
 
 const Login = () => {
   const [user, setUser] = useState(null);
@@ -24,6 +25,7 @@ const Login = () => {
   const googleProvider = new GoogleAuthProvider();
   const githubProvider = new GithubAuthProvider();
   const {signInUser}=useContext(AuthContext);
+  const navigate=useNavigate()
 
   const handleLogin = (e) => {
     e.preventDefault();
@@ -34,6 +36,8 @@ const Login = () => {
     signInUser(email, password)
       .then((result) => {
         setUser(result.user);
+        e.target.reset();
+        navigate('/')
       })
       .catch((error) => {
         setErrorMessage(error.message);
@@ -46,6 +50,7 @@ const Login = () => {
       .then((result) => {
         const loggedInUser = result.user;
         setUser(loggedInUser);
+        navigate('/')
       })
       .catch((error) => {
         setErrorMessage(error.message);
@@ -57,6 +62,7 @@ const Login = () => {
       .then((result) => {
         const loggedUser = result.user;
         setUser(loggedUser);
+        navigate('/')
       })
       .catch((error) => {
         setErrorMessage(error.message);

@@ -14,6 +14,7 @@ import app from "@/firebase/firebase.init";
 import { useContext, useState } from "react";
 import { FaGithub, FaEye, FaPhoneAlt, FaEyeSlash } from "react-icons/fa";
 import { AuthContext } from "@/Provider/AuthProvider";
+import { useNavigate } from "react-router-dom";
 
 const Register = () => {
   const [user, setUser] = useState(null);
@@ -23,7 +24,7 @@ const Register = () => {
   const googleProvider = new GoogleAuthProvider();
   const githubProvider = new GithubAuthProvider();
   const {createUser}=useContext(AuthContext);
-
+  const navigate=useNavigate()
   const handleRegister = (e) => {
     e.preventDefault();
     const name = e.target.name.value;
@@ -37,6 +38,8 @@ const Register = () => {
       .then((result) => {
         console.log("User registered:", result.user);
         sendEmailVerification(result.user)
+        e.target.reset();
+        navigate('/')
       .then(() => {
           console.log("Verification email sent.");
         });
@@ -57,6 +60,7 @@ const Register = () => {
       .then((result) => {
         const loggedInUser = result.user;
         setUser(loggedInUser);
+        navigate('/')
       })
       .catch((error) => {
         console.log("error", error.message);
@@ -69,6 +73,7 @@ const Register = () => {
       const loggedUser = result.user;
       console.log(loggedUser);
       setUser(loggedUser);
+      navigate('/')
     });
   };
 

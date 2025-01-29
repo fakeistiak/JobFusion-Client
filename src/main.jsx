@@ -14,6 +14,7 @@ import JobDetails from './Pages/Home/FeaturedJobs/JobDetails';
 import Login from './Pages/Login/Login';
 import Register from './Pages/Register/Register';
 import AuthProvider from './Provider/AuthProvider';
+import PrivateRoute from './routes/PrivateRoute/PrivateRoute';
 
 const router = createBrowserRouter([
   {
@@ -30,7 +31,7 @@ const router = createBrowserRouter([
       },
       {
         path:"/applied",
-        element:<AppliedJobs/>,
+        element:<PrivateRoute><AppliedJobs/></PrivateRoute>,
         loader:()=>fetch('../jobs.json')
       },
       {
