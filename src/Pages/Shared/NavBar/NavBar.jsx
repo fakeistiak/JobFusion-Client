@@ -1,16 +1,28 @@
-import { useState } from "react";
+import { Button } from "@/components/ui/button";
+import { AuthContext } from "@/Provider/AuthProvider";
+import { useContext, useState } from "react";
 import { AiOutlineClose, AiOutlineMenu } from "react-icons/ai";
 import { Link, NavLink } from "react-router-dom";
 
 const NavBar = () => {
   const [open, setOpen] = useState(false);
+  const {user,SignOutUser}=useContext(AuthContext);
+  console.log(user)
   const routes = [
     { id: 1, path: "/", name: "Home" },
     { id: 2, path: "/statistics", name: "Statistics" },
-    { id: 3, path: "/applied", name: "Applied Jobs" },
     { id: 4, path: "/blog", name: "Blog" },
-    { id: 5, path: "/login", name: "Login" }
   ];
+  
+  const handleSignOut = () => {
+    SignOutUser()
+      .then(() => {
+        console.log('Successfully sign out')
+      })
+      .catch((error) => {
+        console.log(error.message);
+      });
+  };
 
   const handleRouteClick = () => {
     setOpen(false);
@@ -51,6 +63,17 @@ const NavBar = () => {
             </NavLink>
           </li>
         ))}
+        <div className="flex-col items-center">
+          {
+            user?
+            <>
+            <img className="rounded-full object-cover w-10 h-10" src={user.photoURL} alt="" />
+            <p className="text-sm">{user.displayName}</p>
+            <Button onClick={handleSignOut} variant="destructive">Sign Out</Button>
+            </>
+            :<Link to="/login">Login</Link>
+          }
+        </div>
       </ul>
     </nav>
   );

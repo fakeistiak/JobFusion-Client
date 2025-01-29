@@ -5,15 +5,15 @@ import {
   GithubAuthProvider,
   GoogleAuthProvider,
   sendPasswordResetEmail,
-  signInWithEmailAndPassword,
   signInWithPopup,
   signOut,
 } from "firebase/auth";
 import app from "@/firebase/firebase.init";
-import { useRef, useState } from "react";
+import { useContext, useRef, useState } from "react";
 import { FaEye, FaEyeSlash, FaGithub } from "react-icons/fa";
 import { MdEmail } from "react-icons/md";
 import { RiLockPasswordFill } from "react-icons/ri";
+import { AuthContext } from "@/Provider/AuthProvider";
 
 const Login = () => {
   const [user, setUser] = useState(null);
@@ -23,6 +23,23 @@ const Login = () => {
   const emailRef = useRef();
   const googleProvider = new GoogleAuthProvider();
   const githubProvider = new GithubAuthProvider();
+  const {signInUser}=useContext(AuthContext);
+
+  const handleLogin = (e) => {
+    e.preventDefault();
+    const email = e.target.email.value;
+    const password = e.target.password.value;
+
+    setErrorMessage("");
+    signInUser(email, password)
+      .then((result) => {
+        setUser(result.user);
+      })
+      .catch((error) => {
+        setErrorMessage(error.message);
+      });
+  };
+
 
   const handleGoogleSignin = () => {
     signInWithPopup(auth, googleProvider)
@@ -40,31 +57,6 @@ const Login = () => {
       .then((result) => {
         const loggedUser = result.user;
         setUser(loggedUser);
-      })
-      .catch((error) => {
-        setErrorMessage(error.message);
-      });
-  };
-
-  const handleSignOut = () => {
-    signOut(auth)
-      .then(() => {
-        setUser(null);
-      })
-      .catch((error) => {
-        setErrorMessage(error.message);
-      });
-  };
-
-  const handleLogin = (e) => {
-    e.preventDefault();
-    const email = e.target.email.value;
-    const password = e.target.password.value;
-
-    setErrorMessage("");
-    signInWithEmailAndPassword(auth, email, password)
-      .then((result) => {
-        setUser(result.user);
       })
       .catch((error) => {
         setErrorMessage(error.message);
@@ -146,17 +138,9 @@ const Login = () => {
               </div>
             </div>
             <div className="mt-6 space-y-4">
-              {user ? (
-                <div className="flex justify-center">
-                  <Button onClick={handleSignOut} variant="custom2">
-                    Sign Out
-                  </Button>
-                </div>
-              ) : (
-                <Button type="submit" variant="custom2">
+            <Button type="submit" variant="custom2">
                   Sign In
                 </Button>
-              )}
               <div className="relative">
                 <div className="absolute inset-0 flex items-center">
                   <div className="w-full border-t border-gray-300"></div>

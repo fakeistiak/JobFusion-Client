@@ -15,7 +15,7 @@ const Footer=()=> {
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-8 pb-6">
         <div className="grid grid-cols-1 md:grid-cols-4 gap-8">
           <div>
-            <h2 className="text-white text-lg font-semibold mb-4">JobFusion</h2>
+            <Link to="/" className="text-white text-lg font-semibold mb-4">JobFusion</Link>
             <p className="mb-4">
               We are dedicated to providing the best service to our customers.
             </p>

@@ -3,7 +3,6 @@ import { FcGoogle } from "react-icons/fc";
 import { MdDriveFileRenameOutline, MdEmail } from "react-icons/md";
 import { RiLockPasswordFill } from "react-icons/ri";
 import {
-  createUserWithEmailAndPassword,
   getAuth,
   GithubAuthProvider,
   GoogleAuthProvider,
@@ -12,8 +11,9 @@ import {
   signOut,
 } from "firebase/auth";
 import app from "@/firebase/firebase.init";
-import { useState } from "react";
+import { useContext, useState } from "react";
 import { FaGithub, FaEye, FaPhoneAlt, FaEyeSlash } from "react-icons/fa";
+import { AuthContext } from "@/Provider/AuthProvider";
 
 const Register = () => {
   const [user, setUser] = useState(null);
@@ -22,6 +22,7 @@ const Register = () => {
   const auth = getAuth(app);
   const googleProvider = new GoogleAuthProvider();
   const githubProvider = new GithubAuthProvider();
+  const {createUser}=useContext(AuthContext);
 
   const handleRegister = (e) => {
     e.preventDefault();
@@ -31,19 +32,25 @@ const Register = () => {
     const password = e.target.password.value;
     console.log(email, password, name, number);
     setRegisterError("");
-    createUserWithEmailAndPassword(auth, email, password)
+  
+    createUser(email, password)
       .then((result) => {
-        console.log(result.user);
+        console.log("User registered:", result.user);
         sendEmailVerification(result.user)
-        .then(()=>{
-            console.log('Please check your email and verify your account')
-        })
+      .then(() => {
+          console.log("Verification email sent.");
+        });
       })
       .catch((error) => {
-        console.error(error);
+        console.error("Registration error:", error.message);
         setRegisterError(error.message);
       });
   };
+  
+
+
+
+
   //Login With Github
   const handleGoogleSignin = () => {
     signInWithPopup(auth, googleProvider)
@@ -65,16 +72,7 @@ const Register = () => {
     });
   };
 
-  //SignOut
-  const handleSignOut = () => {
-    signOut(auth)
-      .then(() => {
-        setUser(null);
-      })
-      .catch((error) => {
-        console.log("error", error.message);
-      });
-  };
+
   return (
     <div>
       <div className="min-h-screen flex items-center justify-center bg-gray-100">
@@ -142,18 +140,9 @@ const Register = () => {
               </div>
             </div>
             <div className="mt-6 space-y-4">
-              {user ? (
-                <div className="flex justify-center">
-                  <Button onClick={handleSignOut} variant="custom2">
-                    Signout
-                  </Button>
-                </div>
-              ) : (
-                <Button type="submit" variant="custom2">
+            <Button type="submit" variant="custom2">
                   Sign Up
                 </Button>
-              )}
-
               <div className="relative">
                 <div className="absolute inset-0 flex items-center">
                   <div className="w-full border-t border-gray-300"></div>
