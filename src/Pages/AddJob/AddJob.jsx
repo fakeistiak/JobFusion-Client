@@ -12,7 +12,6 @@ const AddJob = () => {
     const location = formData.location.value;
     const job_type = formData.job_type.value;
     const salary = formData.salary.value;
-    const job_description = formData.job_description.value;
     const job_responsibility = formData.job_responsibility.value;
     const educational_requirements = formData.educational_requirements.value;
     const experiences = formData.experiences.value;
@@ -27,7 +26,6 @@ const AddJob = () => {
       location,
       job_type,
       salary,
-      job_description,
       job_responsibility,
       educational_requirements,
       experiences,
@@ -56,15 +54,15 @@ const AddJob = () => {
   return (
     <>
       <div className="py-20 bg-gray-100">
-        <div className="w-full max-w-5xl mx-auto bg-white shadow-md rounded-lg p-6">
+        <div className="w-full max-w-6xl mx-auto bg-white shadow-md rounded-lg p-6">
           <div className="mb-4 text-center">
-            <h2 className="text-3xl font-bold">Job Posting</h2>
-            <p className="text-gray-600">Fill in the details for your job posting</p>
+            <h2 className="text-3xl font-bold pb-2">Add a new Job</h2>
+            <p className="text-gray-700 text-lg font-poppins">Fill in the details for your job posting</p>
           </div>
           <form onSubmit={handleSubmit}>
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
               <div>
-                <label htmlFor="logo" className="block text-sm font-medium text-gray-700">
+                <label htmlFor="logo" className="block text-md font-medium text-gray-900">
                   Company Logo URL
                 </label>
                 <input
@@ -72,144 +70,121 @@ const AddJob = () => {
                   name="logo"
                   type="url"
                   required
-                  placeholder="Enter logo URL"
-                  className="mt-1 p-2 w-full border rounded-md"
+                  className="mt-1 p-2 border-black w-full border-2 rounded-md"
                 />
               </div>
               <div>
-                <label htmlFor="job_title" className="block text-sm font-medium text-gray-700">
+                <label htmlFor="job_title" className="block text-md font-medium text-gray-900">
                   Job Title
                 </label>
                 <input
                   id="job_title"
                   name="job_title"
                   required
-                  placeholder="Enter job title"
-                  className="mt-1 p-2 w-full border rounded-md"
+                  className="mt-1 p-2 border-black w-full border-2 rounded-md"
                 />
               </div>
               <div>
-                <label htmlFor="company_name" className="block text-sm font-medium text-gray-700">
+                <label htmlFor="company_name" className="block text-md font-medium text-gray-900">
                   Company Name
                 </label>
                 <input
                   id="company_name"
                   name="company_name"
                   required
-                  placeholder="Enter company name"
-                  className="mt-1 p-2 w-full border rounded-md"
+                  className="mt-1 p-2 border-black w-full border-2 rounded-md"
                 />
               </div>
               <div>
-                <label htmlFor="remote_or_onsite" className="block text-sm font-medium text-gray-700">
+                <label htmlFor="remote_or_onsite" className="block text-md font-medium text-gray-900">
                   Remote or Onsite
                 </label>
                 <input
                   id="remote_or_onsite"
                   name="remote_or_onsite"
                   required
-                  placeholder="Enter remote or onsite"
-                  className="mt-1 p-2 w-full border rounded-md"
+                  className="mt-1 p-2 border-black w-full border-2 rounded-md"
                 />
               </div>
               <div>
-                <label htmlFor="location" className="block text-sm font-medium text-gray-700">
+                <label htmlFor="location" className="block text-md font-medium text-gray-900">
                   Location
                 </label>
                 <input
                   id="location"
                   name="location"
                   required
-                  placeholder="Enter job location"
-                  className="mt-1 p-2 w-full border rounded-md"
+                  className="mt-1 p-2 border-black w-full border-2 rounded-md"
                 />
               </div>
               <div>
-                <label htmlFor="job_type" className="block text-sm font-medium text-gray-700">
+                <label htmlFor="job_type" className="block text-md font-medium text-gray-900">
                   Job Type
                 </label>
                 <input
                   id="job_type"
                   name="job_type"
                   required
-                  placeholder="Enter job type"
-                  className="mt-1 p-2 w-full border rounded-md"
+                  className="mt-1 p-2 border-black w-full border-2 rounded-md"
                 />
               </div>
               <div>
-                <label htmlFor="salary" className="block text-sm font-medium text-gray-700">
+                <label htmlFor="salary" className="block text-md font-medium text-gray-900">
                   Salary
                 </label>
                 <input
                   id="salary"
                   name="salary"
                   required
-                  placeholder="Enter salary"
-                  className="mt-1 p-2 w-full border rounded-md"
+                  className="mt-1 p-2 border-black w-full border-2 rounded-md"
                 />
               </div>
               <div>
-                <label htmlFor="job_description" className="block text-sm font-medium text-gray-700">
-                  Job Description
-                </label>
-                <textarea
-                  id="job_description"
-                  name="job_description"
-                  required
-                  placeholder="Enter job description"
-                  className="mt-1 p-2 w-full border rounded-md"
-                />
-              </div>
-              <div>
-                <label htmlFor="job_responsibility" className="block text-sm font-medium text-gray-700">
+                <label htmlFor="job_responsibility" className="block text-md font-medium text-gray-900">
                   Job Responsibility
                 </label>
-                <textarea
+                <input
                   id="job_responsibility"
                   name="job_responsibility"
                   required
-                  placeholder="Enter job responsibilities"
-                  className="mt-1 p-2 w-full border rounded-md"
+                  className="mt-1 p-2 border-black w-full border-2 rounded-md"
                 />
               </div>
               <div>
-                <label htmlFor="educational_requirements" className="block text-sm font-medium text-gray-700">
+                <label htmlFor="educational_requirements" className="block text-md font-medium text-gray-900">
                   Educational Requirements
                 </label>
                 <input
                   id="educational_requirements"
                   name="educational_requirements"
                   required
-                  placeholder="Enter educational requirements"
-                  className="mt-1 p-2 w-full border rounded-md"
+                  className="mt-1 p-2 border-black w-full border-2 rounded-md"
                 />
               </div>
               <div>
-                <label htmlFor="experiences" className="block text-sm font-medium text-gray-700">
+                <label htmlFor="experiences" className="block text-md font-medium text-gray-900">
                   Experiences
                 </label>
                 <input
                   id="experiences"
                   name="experiences"
                   required
-                  placeholder="Enter experiences"
-                  className="mt-1 p-2 w-full border rounded-md"
+                  className="mt-1 p-2 border-black w-full border-2 rounded-md"
                 />
               </div>
               <div>
-                <label htmlFor="phone" className="block text-sm font-medium text-gray-700">
+                <label htmlFor="phone" className="block text-md font-medium text-gray-900">
                   Phone
                 </label>
                 <input
                   id="phone"
                   name="phone"
                   required
-                  placeholder="Enter phone number"
-                  className="mt-1 p-2 w-full border rounded-md"
+                  className="mt-1 p-2 border-black w-full border-2 rounded-md"
                 />
               </div>
               <div>
-                <label htmlFor="email" className="block text-sm font-medium text-gray-700">
+                <label htmlFor="email" className="block text-md font-medium text-gray-900">
                   Email
                 </label>
                 <input
@@ -217,8 +192,7 @@ const AddJob = () => {
                   name="email"
                   type="email"
                   required
-                  placeholder="Enter email"
-                  className="mt-1 p-2 w-full border rounded-md"
+                  className="mt-1 p-2 border-black w-full border-2 rounded-md"
                 />
               </div>
             </div>

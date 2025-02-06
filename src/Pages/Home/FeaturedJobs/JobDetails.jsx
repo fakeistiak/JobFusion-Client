@@ -1,5 +1,5 @@
 import { ToastContainer, toast } from "react-toastify";
-import { useLoaderData, useParams } from "react-router-dom";
+import { useLoaderData } from "react-router-dom";
 import {
   MapPin,
   Briefcase,
@@ -8,42 +8,12 @@ import {
   Book,
   Phone,
   Mail,
-  Home,
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
-import { saveJobApplication } from "@/utility/localstorage";
-import { useState, useEffect } from "react";
 
 const JobDetails = () => {
-  const jobs = useLoaderData();
-  const { id } = useParams(); // id from URL
-  console.log("Received ID from URL:", id);
-  console.log("Jobs Data:", jobs);
-
-  // Find job using _id (MongoDB ObjectId)
-  const job = jobs?.find((job) => job._id === id);
-  console.log("Found Job:", job);
-
-  const [hasApplied, setHasApplied] = useState(false);
-
-  useEffect(() => {
-    if (!job) {
-      console.warn("Job not found or still loading...");
-    }
-  }, [job]);
-
-  if (!job) {
-    return (
-      <div className="text-center py-10">
-        <p className="text-red-500 text-xl font-bold">⚠ Job Not Found</p>
-        <p>Please check the job ID or try again later.</p>
-      </div>
-    );
-  }
-
+  const job = useLoaderData();
   const handleApplyJob = () => {
-    saveJobApplication(id); // Use _id
-    setHasApplied(true);
     toast.success("Applied Successfully");
   };
 
@@ -51,7 +21,7 @@ const JobDetails = () => {
     <div className="container mx-auto px-4 py-8 bg-gray-50 min-h-screen">
       <div className="max-w-7xl mx-auto bg-primary text-white shadow-lg rounded-lg overflow-hidden">
         <div className="p-8">
-          <div className="bg-gray-600 p-4 rounded-lg">
+          <div className="bg-white text-black p-4 rounded-lg">
             <div className="flex items-center justify-between mb-6">
               <img
                 src={job.logo}
@@ -59,15 +29,15 @@ const JobDetails = () => {
                 className="w-24 h-24 object-contain"
               />
               <div className="text-right">
-                <span className="inline-block bg-blue-100 text-blue-800 text-sm font-semibold mr-2 px-2.5 py-0.5 rounded">
+                <span className="inline-block border-2 border-blue-800 bg-blue-100 text-blue-800 text-sm font-semibold mr-2 px-2.5 py-0.5 rounded">
                   {job.remote_or_onsite}
                 </span>
-                <span className="inline-block bg-green-100 text-green-800 text-sm font-semibold px-2.5 py-0.5 rounded">
+                <span className="inline-block border-2 border-green-800 bg-green-100 text-green-800 text-sm font-semibold px-2.5 py-0.5 rounded">
                   {job.job_type}
                 </span>
               </div>
             </div>
-            <h1 className="text-3xl font-bold mb-2">{job.job_title}</h1>
+            <h1 className="text-3xl font-bold mb-2 ">{job.job_title}</h1>
             <h2 className="text-xl mb-6">{job.company_name}</h2>
           </div>
 
@@ -129,17 +99,9 @@ const JobDetails = () => {
                 <Mail className="w-5 h-5 mr-2" />
                 {job.contact_information?.email || "N/A"}
               </p>
-              <p className="flex items-center text-white">
-                <Home className="w-5 h-5 mr-2" />
-                {job.contact_information?.address || "N/A"}
-              </p>
               <div className="pt-6 flex justify-center">
-                <Button
-                  onClick={handleApplyJob}
-                  variant="custom2"
-                  disabled={hasApplied}
-                >
-                  {hasApplied ? "Already Applied" : "Apply Now"}
+                <Button onClick={handleApplyJob} variant="custom2">
+                  Apply Now
                 </Button>
               </div>
             </div>

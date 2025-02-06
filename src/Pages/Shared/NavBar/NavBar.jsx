@@ -96,7 +96,7 @@ const NavBar = () => {
 
   return (
     <nav className="bg-sky-600 p-4 flex justify-between items-center text-white">
-      <Link to="/" className="text-3xl font-bold font-serif">
+      <Link to="/" className="text-3xl font-bold font-poppins">
         JobFusion
       </Link>
       <div className="md:hidden text-2xl cursor-pointer" onClick={() => setOpen(!open)}>
@@ -113,8 +113,8 @@ const NavBar = () => {
             <NavLink
               to={route.path}
               className={({ isActive }) =>
-                `text-lg font-medium ${
-                  isActive ? "text-white rounded-lg" : "text-gray-300 hover:text-white transition"
+                `text-lg font-medium${
+                  isActive ? "text-white rounded-lg font-poppins" : "text-gray-300 hover:text-white transition"
                 }`
               }
               onClick={handleRouteClick}
@@ -127,7 +127,7 @@ const NavBar = () => {
           {user ? (
             <CustomDropdown trigger={dropdownTrigger} menu={dropdownMenu} />
           ) : (
-            <Link to="/login" className="text-lg font-medium text-gray-300 hover:text-white transition">
+            <Link to="/login" className="text-lg font-poppins font-medium text-gray-300 hover:text-white transition">
               Login
             </Link>
           )}

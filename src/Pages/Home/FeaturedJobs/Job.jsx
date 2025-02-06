@@ -4,7 +4,7 @@ import { MdAttachMoney } from "react-icons/md";
 import { Link } from "react-router-dom";
 
 const Job = ({job}) => {
-    const {id,remote_or_onsite,logo,job_type,company_name,job_title,location,salary}=job
+    const {_id,remote_or_onsite,logo,job_type,company_name,job_title,location,salary}=job
 
     return (
         <div>
@@ -12,7 +12,7 @@ const Job = ({job}) => {
       <div className="flex p-4 justify-center w-full">
         <img
           src={logo}
-          className="lg:h-20 lg:w-20 w-12 h-12"
+          className="lg:h-20 lg:w-20 w-12 h-12 object-cover"
         />
       </div>
       <div className="p-6">
@@ -20,7 +20,7 @@ const Job = ({job}) => {
         <h2 className="lg:text-xl text-lg font-semibold dark:text-white">
           {job_title}
         </h2>
-        <h3 className="lg:text-md font-medium dark mt-1">
+        <h3 className="lg:text-md  font-medium dark mt-1">
           {company_name}
         </h3>
         </div>
@@ -37,7 +37,7 @@ const Job = ({job}) => {
             <p className="flex justify-center items-center"><MdAttachMoney/> {salary}</p> 
         </div>
         <div className="mt-6">
-          <Link to={`/job/${id}`}>
+          <Link to={`/job/${_id}`}>
           <Button variant="default" className="w-full">
             Job Detail
           </Button>
