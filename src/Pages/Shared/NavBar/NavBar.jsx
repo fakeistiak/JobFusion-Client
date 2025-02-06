@@ -11,10 +11,15 @@ const NavBar = () => {
   const routes = [
     { id: 1, path: "/", name: "Home" },
     { id: 2, path: "/statistics", name: "Statistics" },
-    ...(user ? [{ id: 3, path: "/applied", name: "Applied Jobs" }] : []),
-    { id: 4, path: "/blog", name: "Blog" },
-  ]
-
+    ...(user
+      ? [
+          { id: 3, path: "/applied", name: "Applied Jobs" },
+          { id: 4, path: "/addjob", name: "Add Job" } 
+        ]
+      : []),
+    // { id: 5, path: "/blog", name: "Blog" },
+  ];
+  
   const handleSignOut = () => {
     SignOutUser()
       .then(() => {

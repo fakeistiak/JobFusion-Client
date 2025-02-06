@@ -4,7 +4,7 @@ import { MdAttachMoney } from "react-icons/md";
 import { Link } from "react-router-dom";
 
 const Job = ({job}) => {
-    const {id,logo,company_name,job_title,remote_or_onsite,job_type,location,salary}=job
+    const {id,remote_or_onsite,logo,job_type,company_name,job_title,location,salary}=job
 
     return (
         <div>

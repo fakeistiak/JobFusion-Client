@@ -12,19 +12,39 @@ import {
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { saveJobApplication } from "@/utility/localstorage";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 
 const JobDetails = () => {
   const jobs = useLoaderData();
-  const { id } = useParams();
-  const idInt = parseInt(id);
-  const job = jobs.find((job) => job.id === idInt);
+  const { id } = useParams(); // id from URL
+  console.log("Received ID from URL:", id);
+  console.log("Jobs Data:", jobs);
+
+  // Find job using _id (MongoDB ObjectId)
+  const job = jobs?.find((job) => job._id === id);
+  console.log("Found Job:", job);
+
   const [hasApplied, setHasApplied] = useState(false);
 
+  useEffect(() => {
+    if (!job) {
+      console.warn("Job not found or still loading...");
+    }
+  }, [job]);
+
+  if (!job) {
+    return (
+      <div className="text-center py-10">
+        <p className="text-red-500 text-xl font-bold">⚠ Job Not Found</p>
+        <p>Please check the job ID or try again later.</p>
+      </div>
+    );
+  }
+
   const handleApplyJob = () => {
-    saveJobApplication(idInt);
+    saveJobApplication(id); // Use _id
     setHasApplied(true);
-    toast("Applied Successfully");
+    toast.success("Applied Successfully");
   };
 
   return (
@@ -32,7 +52,7 @@ const JobDetails = () => {
       <div className="max-w-7xl mx-auto bg-primary text-white shadow-lg rounded-lg overflow-hidden">
         <div className="p-8">
           <div className="bg-gray-600 p-4 rounded-lg">
-            <div className="flex items-center  justify-between mb-6">
+            <div className="flex items-center justify-between mb-6">
               <img
                 src={job.logo}
                 alt={`${job.company_name} logo`}
@@ -103,15 +123,15 @@ const JobDetails = () => {
             <div className="p-4 rounded-lg">
               <p className="flex items-center text-white mb-2">
                 <Phone className="w-5 h-5 mr-2" />
-                {job.contact_information.phone}
+                {job.contact_information?.phone || "N/A"}
               </p>
               <p className="flex items-center text-white mb-2">
                 <Mail className="w-5 h-5 mr-2" />
-                {job.contact_information.email}
+                {job.contact_information?.email || "N/A"}
               </p>
               <p className="flex items-center text-white">
                 <Home className="w-5 h-5 mr-2" />
-                {job.contact_information.address}
+                {job.contact_information?.address || "N/A"}
               </p>
               <div className="pt-6 flex justify-center">
                 <Button
@@ -119,7 +139,7 @@ const JobDetails = () => {
                   variant="custom2"
                   disabled={hasApplied}
                 >
-                  {hasApplied ? "Already Applied":  "Apply Now"}
+                  {hasApplied ? "Already Applied" : "Apply Now"}
                 </Button>
               </div>
             </div>
