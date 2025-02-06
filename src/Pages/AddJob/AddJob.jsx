@@ -54,7 +54,7 @@ const AddJob = () => {
   return (
     <>
       <div className="py-20 bg-gray-100">
-        <div className="w-full max-w-6xl mx-auto bg-white shadow-md rounded-lg p-6">
+        <div className="w-full max-w-6xl mx-auto bg-cyan-50 shadow-md rounded-lg p-6">
           <div className="mb-4 text-center">
             <h2 className="text-3xl font-bold pb-2">Add a new Job</h2>
             <p className="text-gray-700 text-lg font-poppins">Fill in the details for your job posting</p>
