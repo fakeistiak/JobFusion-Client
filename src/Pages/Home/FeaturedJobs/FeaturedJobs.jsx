@@ -5,11 +5,23 @@ import { Button } from "@/components/ui/button";
 const FeaturedJobs = () => {
   const [dataLength, setDataLength] = useState(4);
   const [jobs, setJobs] = useState([]);
+  const [isAllJobsVisible, setIsAllJobsVisible] = useState(false);
+
   useEffect(() => {
     fetch("http://localhost:5000/jobs")
       .then((res) => res.json())
       .then((data) => setJobs(data));
   }, []);
+
+  const handleToggleJobs = () => {
+    if (isAllJobsVisible) {
+      setDataLength(4);
+    } else {
+      setDataLength(jobs.length);
+    }
+    setIsAllJobsVisible(!isAllJobsVisible);
+  };
+
   return (
     <div>
       <div className="pb-20 px-8">
@@ -22,14 +34,14 @@ const FeaturedJobs = () => {
           </p>
         </div>
         <div className="grid grid-cols-2 max-w-6xl mx-auto gap-12">
-          {jobs.slice(0,dataLength).map(job => (
-            <Job key={job.id} job={job}></Job>
+          {jobs.slice(0, dataLength).map((job) => (
+            <Job key={job.id} job={job} />
           ))}
         </div>
-        <div className={dataLength===jobs.length && 'hidden'}>
-           <div className="flex justify-center pt-12">
-           <Button onClick={()=>setDataLength(jobs.length)} variant="default">Show All</Button>
-           </div>
+        <div className="flex justify-center pt-12">
+          <Button onClick={handleToggleJobs} variant="default">
+            {isAllJobsVisible ? "Hide All" : "Show All"}
+          </Button>
         </div>
       </div>
     </div>
