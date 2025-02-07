@@ -1,11 +1,11 @@
 import { useEffect, useState } from "react";
 import Job from "./Job";
 import { Button } from "@/components/ui/button";
+import { Link } from "react-router-dom";
 
 const FeaturedJobs = () => {
-  const [dataLength, setDataLength] = useState(6);
+  const [dataLength] = useState(6);
   const [jobs, setJobs] = useState([]);
-  const [isAllJobsVisible, setIsAllJobsVisible] = useState(false);
 
   useEffect(() => {
     fetch("http://localhost:5000/jobs")
@@ -13,14 +13,6 @@ const FeaturedJobs = () => {
       .then((data) => setJobs(data));
   }, []);
 
-  const handleToggleJobs = () => {
-    if (isAllJobsVisible) {
-      setDataLength(6);
-    } else {
-      setDataLength(jobs.length);
-    }
-    setIsAllJobsVisible(!isAllJobsVisible);
-  };
 
   return (
     <div>
@@ -38,11 +30,15 @@ const FeaturedJobs = () => {
             <Job key={job._id} job={job} />
           ))}
         </div>
-        <div className="flex justify-center pt-12">
-          <Button onClick={handleToggleJobs} variant="default">
-            {isAllJobsVisible ? "Hide All" : "Show All"}
-          </Button>
-        </div>
+        {!jobs.length || dataLength >= jobs.length ? null : (
+          <div className="flex justify-center pt-12">
+            <Link to="/alljobs">
+            <Button variant="default">
+              Show All
+            </Button>
+            </Link>
+          </div>
+        )}
       </div>
     </div>
   );
