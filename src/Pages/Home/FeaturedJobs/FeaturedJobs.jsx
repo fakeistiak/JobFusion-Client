@@ -34,7 +34,7 @@ const FeaturedJobs = () => {
           <div className="flex justify-center pt-12">
             <Link to="/alljobs">
             <Button variant="default">
-              Show All
+              Show All Jobs
             </Button>
             </Link>
           </div>

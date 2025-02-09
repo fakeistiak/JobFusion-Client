@@ -1,12 +1,12 @@
-import { AuthContext } from "@/Provider/AuthProvider"
-import { useContext, useState, useRef, useEffect } from "react"
-import { AiOutlineClose, AiOutlineMenu } from "react-icons/ai"
-import { Link, NavLink } from "react-router-dom"
-
+import { Button } from "@/components/ui/button";
+import { AuthContext } from "@/Provider/AuthProvider";
+import { useContext, useState, useRef, useEffect } from "react";
+import { AiOutlineClose, AiOutlineMenu } from "react-icons/ai";
+import { Link, NavLink } from "react-router-dom";
 
 const NavBar = () => {
-  const [open, setOpen] = useState(false)
-  const { user, SignOutUser } = useContext(AuthContext)
+  const [open, setOpen] = useState(false);
+  const { user, SignOutUser } = useContext(AuthContext);
 
   const routes = [
     { id: 1, path: "/", name: "Home" },
@@ -14,92 +14,101 @@ const NavBar = () => {
     ...(user
       ? [
           { id: 3, path: "/applied", name: "Applied Jobs" },
-          { id: 4, path: "/addjob", name: "Add Job" } 
+          { id: 4, path: "/addjob", name: "Add Job" },
         ]
       : []),
     // { id: 5, path: "/blog", name: "Blog" },
   ];
-  
+
   const handleSignOut = () => {
     SignOutUser()
       .then(() => {
-        console.log("Successfully sign out")
+        console.log("Successfully sign out");
       })
       .catch((error) => {
-        console.log(error.message)
-      })
-  }
+        console.log(error.message);
+      });
+  };
 
   const handleRouteClick = () => {
-    setOpen(false)
-  }
+    setOpen(false);
+  };
 
   const dropdownTrigger = (
     <div className="w-12 h-12">
       <img
         className="rounded-full object-cover w-full h-full cursor-pointer"
-        src={user?.photoURL || "https://ui-avatars.com/api/?name=User&background=random"}
-        onError={(e) => (e.target.src = "https://ui-avatars.com/api/?name=User&background=random")}
+        src={
+          user?.photoURL ||
+          "https://ui-avatars.com/api/?name=User&background=random"
+        }
+        onError={(e) =>
+          (e.target.src =
+            "https://ui-avatars.com/api/?name=User&background=random")
+        }
         alt={user?.displayName || "User"}
       />
     </div>
   );
 
   const dropdownMenu = (
-    <div className="py-1">
-      <div className="px-4 py-2">
-      <p className="text-sm font-medium text-gray-900">
-  {user?.displayName ? user.displayName : user?.email}
-</p>
-        <p className="text-sm text-gray-500"><span className="text-gray-600 font-bold">Last Login:</span> {user?.metadata.lastSignInTime || "No email available"}</p>
+    <div className="py-2 px-2">
+        <Link to="/profile">
+          <button className="block w-full text-left font-semibold px-4 py-2 text-sm text-red-600 hover:bg-gray-100">
+            My Profile
+          </button>
+        </Link>
 
-      </div>
-      <div className="border-t border-gray-100"></div>
-      <button
-        onClick={handleSignOut}
-        className="block w-full text-left font-semibold px-4 py-2 text-sm text-red-600 hover:bg-gray-100"
-      >
-        Sign Out
-      </button>
+        <button
+          onClick={handleSignOut}
+          className="block w-full text-left font-semibold px-4 py-2 text-sm text-red-600 hover:bg-gray-100"
+        >
+          Sign Out
+        </button>
     </div>
-  )
-
+  );
 
   const CustomDropdown = ({ trigger, menu }) => {
-    const [open, setOpen] = useState(false)
-    const menuRef = useRef(null)
-  
+    const [open, setOpen] = useState(false);
+    const menuRef = useRef(null);
+
     useEffect(() => {
       const handleOutsideClick = (event) => {
         if (menuRef.current && !menuRef.current.contains(event.target)) {
-          setOpen(false)
+          setOpen(false);
         }
-      }
-  
-      document.addEventListener("mousedown", handleOutsideClick)
+      };
+
+      document.addEventListener("mousedown", handleOutsideClick);
       return () => {
-        document.removeEventListener("mousedown", handleOutsideClick)
-      }
-    }, [])
-  
+        document.removeEventListener("mousedown", handleOutsideClick);
+      };
+    }, []);
+
     return (
       <div className="relative">
         <div onClick={() => setOpen(!open)}>{trigger}</div>
         {open && (
-          <div ref={menuRef} className="absolute right-0 mt-2 w-56 bg-white rounded-md shadow-lg z-10">
+          <div
+            ref={menuRef}
+            className="absolute right-0 mt-2 w-56 bg-white rounded-md shadow-lg z-10"
+          >
             {menu}
           </div>
         )}
       </div>
-    )
-  }
+    );
+  };
 
   return (
     <nav className="bg-sky-600 p-4 flex justify-between items-center text-white">
       <Link to="/" className="text-3xl font-bold font-poppins">
         JobFusion
       </Link>
-      <div className="md:hidden text-2xl cursor-pointer" onClick={() => setOpen(!open)}>
+      <div
+        className="md:hidden text-2xl cursor-pointer"
+        onClick={() => setOpen(!open)}
+      >
         {open ? <AiOutlineClose /> : <AiOutlineMenu />}
       </div>
 
@@ -109,12 +118,17 @@ const NavBar = () => {
         }`}
       >
         {routes.map((route) => (
-          <li key={route.id} className="px-1 rounded-lg text-center w-full transition duration-300 whitespace-nowrap">
+          <li
+            key={route.id}
+            className="px-1 rounded-lg text-center w-full transition duration-300 whitespace-nowrap"
+          >
             <NavLink
               to={route.path}
               className={({ isActive }) =>
                 `text-lg font-medium${
-                  isActive ? "text-white rounded-lg font-poppins" : "text-gray-300 hover:text-white transition"
+                  isActive
+                    ? "text-white rounded-lg font-poppins"
+                    : "text-gray-300 hover:text-white transition"
                 }`
               }
               onClick={handleRouteClick}
@@ -127,15 +141,17 @@ const NavBar = () => {
           {user ? (
             <CustomDropdown trigger={dropdownTrigger} menu={dropdownMenu} />
           ) : (
-            <Link to="/login" className="text-lg font-poppins font-medium text-gray-300 hover:text-white transition">
+            <Link
+              to="/login"
+              className="text-lg font-poppins font-medium text-gray-300 hover:text-white transition"
+            >
               Login
             </Link>
           )}
         </li>
       </ul>
     </nav>
-  )
-}
+  );
+};
 
-export default NavBar
-
+export default NavBar;
