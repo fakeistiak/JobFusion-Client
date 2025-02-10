@@ -1,4 +1,3 @@
-// src/router.jsx
 import Main from "@/Layout/Main";
 import Home from "@/Pages/Home/Home";
 import Statistics from "@/Pages/Statistics/Statistics";
@@ -64,7 +63,7 @@ const router = createBrowserRouter([
       },
       {
         path:"/profile",
-        element:<Profile/>
+        element:<PrivateRoute><Profile/></PrivateRoute>
       }
     ],
   },
