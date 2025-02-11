@@ -1,4 +1,3 @@
-import { Button } from "@/components/ui/button";
 import { AuthContext } from "@/Provider/AuthProvider";
 import { useContext, useState, useRef, useEffect } from "react";
 import { AiOutlineClose, AiOutlineMenu } from "react-icons/ai";
@@ -101,8 +100,8 @@ const NavBar = () => {
   };
 
   return (
-    <nav className="bg-sky-600 p-4 flex justify-between items-center text-white">
-      <Link to="/" className="text-3xl font-bold font-poppins">
+    <nav className="bg-sky-600 p-4 flex justify-between items-center">
+      <Link to="/" className="text-3xl text-white font-bold font-poppins">
         JobFusion
       </Link>
       <div
@@ -125,10 +124,10 @@ const NavBar = () => {
             <NavLink
               to={route.path}
               className={({ isActive }) =>
-                `text-lg font-medium${
+                `text-lg text-gray-200 font-medium${
                   isActive
                     ? "text-white rounded-lg font-poppins"
-                    : "text-gray-300 hover:text-white transition"
+                    : "text-gray-300 hover:text-white transition "
                 }`
               }
               onClick={handleRouteClick}
