@@ -1,3 +1,5 @@
+import ContactUs from "../Home/ContactUs/ContactUs";
+
 const Statistics = () => {
     return (
         <div className="bg-gray-100 min-h-screen py-10 px-5">
@@ -36,37 +38,7 @@ const Statistics = () => {
                         </p>
                     </div>
                 </section>
-
-                <section id="contact" className="bg-gray-100 py-16">
-                    <div className="max-w-4xl mx-auto text-center">
-                        <h2 className="text-3xl font-bold mb-4">Contact Us</h2>
-                        <p className="text-lg  mb-8">
-                            Have questions or need support? Reach out to our team.
-                        </p>
-                        <form className="space-y-4">
-                            <input 
-                                type="text" 
-                                placeholder="Your Name" 
-                                className="w-full px-4 py-2 border border-gray-300 rounded-lg"
-                            />
-                            <input 
-                                type="email" 
-                                placeholder="Your Email" 
-                                className="w-full px-4 py-2 border border-gray-300 rounded-lg"
-                            />
-                            <textarea 
-                                placeholder="Your Message" 
-                                className="w-full px-4 py-2 border border-gray-300 rounded-lg h-32"
-                            ></textarea>
-                            <button 
-                                type="submit" 
-                                className="bg-blue-600 text-white px-6 py-2 rounded-lg hover:bg-blue-700"
-                            >
-                                Submit
-                            </button>
-                        </form>
-                    </div>
-                </section>
+                <ContactUs/>
             </main>
         </div>
     );
