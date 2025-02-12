@@ -13,7 +13,7 @@ export default function HeroWithImage() {
               alt="Hero" 
             />
           </div>
-          <div className="text-center md:text-left order-2 md:order-1">
+          <div className="text-center md:text-left flex-col justify-center order-2 md:order-1">
             <h1 className="text-4xl font-poppins tracking-tight text-gray-900 dark:text-white sm:text-5xl md:text-6xl">
               <span className="block">Welcome to</span>
               <span className="block text-sky-600">Our Amazing Platform</span>
