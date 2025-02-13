@@ -1,3 +1,4 @@
+import ThemeToggle from "@/components/ThemeToggle";
 import { AuthContext } from "@/Provider/AuthProvider";
 import { useContext, useState, useRef, useEffect } from "react";
 import { AiOutlineClose, AiOutlineMenu } from "react-icons/ai";
@@ -57,7 +58,7 @@ const NavBar = () => {
   };
 
   return (
-    <nav className="bg-sky-600 p-4 flex justify-between items-center text-white">
+    <nav className="bg-sky-600 p-4 flex justify-between items-center text-white relative z-50">
       <Link to="/" className="text-3xl font-bold font-poppins">JobFusion</Link>
       <div
         className="md:hidden text-2xl cursor-pointer"
@@ -86,7 +87,9 @@ const NavBar = () => {
             </NavLink>
           </li>
         ))}
+        <ThemeToggle />
         <li>
+          
           {user ? (
             <CustomDropdown
               trigger={
@@ -106,6 +109,7 @@ const NavBar = () => {
                       My Profile
                     </button>
                   </Link>
+                  
                   <button
                     onClick={() => {
                       handleSignOut();
