@@ -3,7 +3,7 @@ import heroImg from "../../../assets/images/hero.jpg";
 
 export default function HeroWithImage() {
   return (
-    <section className="dark:bg-gray-900 py-16 md:py-24 lg:py-32">
+    <section className="dark:bg-gray-900 py-12 lg:py-20">
       <div className="max-w-7xl mx-auto px-6 sm:px-8 lg:px-12">
         <div className="grid grid-cols-1 md:grid-cols-2 gap-12 items-center">
           <div className="order-1 md:order-2 flex justify-center">

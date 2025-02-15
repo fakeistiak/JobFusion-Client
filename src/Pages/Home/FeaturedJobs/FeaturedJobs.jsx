@@ -16,7 +16,7 @@ const FeaturedJobs = () => {
 
   return (
     <div>
-      <div className="pb-20 px-8">
+      <div className="pb-20 lg:py-20 py-4 px-8">
         <div className="text-center py-8">
           <h2 className="lg:text-5xl font-poppins text-4xl pb-2 font-semibold text-sky-600">
             Featured Jobs

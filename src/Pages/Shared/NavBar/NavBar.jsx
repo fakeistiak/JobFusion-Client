@@ -7,6 +7,7 @@ import { Link, NavLink } from "react-router-dom";
 const NavBar = () => {
   const [open, setOpen] = useState(false);
   const { user, SignOutUser } = useContext(AuthContext);
+  const [imgError, setImgError] = useState(false);
 
   const routes = [
     { id: 1, path: "/", name: "Home" },
@@ -59,7 +60,9 @@ const NavBar = () => {
 
   return (
     <nav className="fixed top-0 left-0 w-full bg-sky-600 p-4 flex justify-between items-center text-white z-50">
-      <Link to="/" className="text-3xl font-bold font-poppins">JobFusion</Link>
+      <Link to="/" className="text-3xl font-bold font-poppins">
+        JobFusion
+      </Link>
       <div
         className="md:hidden text-2xl cursor-pointer"
         onClick={() => setOpen(!open)}
@@ -87,35 +90,44 @@ const NavBar = () => {
             </NavLink>
           </li>
         ))}
-        <ThemeToggle />
+        <button onClick={() => setOpen(!open)}>
+          <ThemeToggle />
+        </button>
         <li>
-          
           {user ? (
             <CustomDropdown
               trigger={
-                <img
-                  className="w-12 h-12 rounded-full object-cover cursor-pointer"
-                  src={
-                    user?.photoURL ||
-                    "https://ui-avatars.com/api/?name=User&background=random"
-                  }
-                  alt={user?.displayName || "User"}
-                />
+                <div className="flex items-center space-x-2 cursor-pointer">
+                  <img
+                    className="w-12 h-12 rounded-full object-cover"
+                    src={
+                      imgError || !user?.photoURL
+                        ? `https://ui-avatars.com/api/?name=${
+                            user?.displayName || "User"
+                          }&background=random`
+                        : user?.photoURL
+                    }
+                    alt={user?.displayName || "User"}
+                    onError={() => setImgError(true)}
+                  />
+                </div>
               }
               menu={(closeDropdown) => (
                 <div className="py-2 px-2">
+                  <h1 className="text-left px-4 py-2 text-sm text-sky-600 hover:bg-gray-100">
+                    {user?.displayName}
+                  </h1>
                   <Link to="/profile" onClick={closeDropdown}>
-                    <button className="block w-full text-left px-4 py-2 text-sm text-red-600 hover:bg-gray-100">
+                    <button className="block w-full text-left px-4 py-2 text-sm text-sky-600 hover:bg-gray-100">
                       My Profile
                     </button>
                   </Link>
-                  
                   <button
                     onClick={() => {
                       handleSignOut();
                       closeDropdown();
                     }}
-                    className="block w-full text-left px-4 py-2 text-sm text-red-600 hover:bg-gray-100"
+                    className="block w-full text-left px-4 py-2 text-sm text-sky-600 hover:bg-gray-100"
                   >
                     Sign Out
                   </button>
@@ -123,7 +135,10 @@ const NavBar = () => {
               )}
             />
           ) : (
-            <Link to="/login" className="text-lg text-gray-300 hover:text-white">
+            <Link
+              to="/login"
+              className="text-lg text-gray-300 hover:text-white"
+            >
               Login
             </Link>
           )}
