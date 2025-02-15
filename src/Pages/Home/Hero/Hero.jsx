@@ -25,7 +25,7 @@ export default function HeroWithImage() {
               <Button className="px-8 py-3 text-lg font-medium">
                 Get started
               </Button>
-              <Button variant="outline" className="px-8 py-3 text-lg font-medium">
+              <Button variant="outline" className="px-8 dark:text-black py-3 text-lg font-medium">
                 Learn more
               </Button>
             </div>

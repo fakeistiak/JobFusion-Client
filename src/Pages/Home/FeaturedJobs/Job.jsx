@@ -33,8 +33,8 @@ const Job = ({job}) => {
           </Button>
         </div>
         <div className="lg:flex gap-4 text-sm text-gray-500 pt-4 justify-center">
-            <p className="flex justify-center items-center"><IoLocationSharp />{location}</p> 
-            <p className="flex justify-center items-center"><MdAttachMoney/> {salary}</p> 
+            <p className="flex justify-center items-center dark:text-white"><MdAttachMoney/> {salary}</p> 
+            <p className="flex justify-center items-center dark:text-white"><IoLocationSharp />{location}</p> 
         </div>
         <div className="mt-6">
           <Link to={`/job/${_id}`}>

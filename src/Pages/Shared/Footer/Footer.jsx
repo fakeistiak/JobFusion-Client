@@ -62,7 +62,7 @@ const Footer=()=> {
             <p className="mb-4">
               Stay updated with our latest news and offers.
             </p>
-            <form className="flex flex-col space-y-2">
+            <form className="flex flex-col space-y-2 dark:text-white">
               <Input
                 type="email"
                 placeholder="Enter your email"

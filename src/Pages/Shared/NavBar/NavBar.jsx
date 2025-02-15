@@ -58,7 +58,7 @@ const NavBar = () => {
   };
 
   return (
-    <nav className="bg-sky-600 p-4 flex justify-between items-center text-white relative z-50">
+    <nav className="fixed top-0 left-0 w-full bg-sky-600 p-4 flex justify-between items-center text-white z-50">
       <Link to="/" className="text-3xl font-bold font-poppins">JobFusion</Link>
       <div
         className="md:hidden text-2xl cursor-pointer"

@@ -21,7 +21,7 @@ const FeaturedJobs = () => {
           <h2 className="lg:text-5xl font-poppins text-4xl pb-2 font-semibold text-sky-600">
             Featured Jobs
           </h2>
-          <p className="text-gray-600 font-poppins">
+          <p className="text-gray-600 dark:text-white font-poppins">
             Explore Top Career Opportunities and Featured Job Openings.
           </p>
         </div>
