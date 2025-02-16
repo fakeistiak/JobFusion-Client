@@ -1,5 +1,6 @@
 import { Button } from "@/components/ui/button";
 import heroImg from "../../../assets/images/hero.jpg";
+import { Link } from "react-router-dom";
 
 export default function HeroWithImage() {
   return (
@@ -8,7 +9,7 @@ export default function HeroWithImage() {
         <div className="grid grid-cols-1 md:grid-cols-2 gap-12 items-center">
           <div className="order-1 md:order-2 flex justify-center">
             <img 
-              className="w-full max-w-md md:max-w-lg object-cover rounded-xl border-2 border-black"
+              className="w-full max-w-md md:max-w-lg object-cover rounded-xl border-2 border-black dark:border-white"
               src={heroImg} 
               alt="Hero" 
             />
@@ -22,9 +23,11 @@ export default function HeroWithImage() {
               Discover how our platform can revolutionize your workflow, boost productivity, and take your business to the next level.
             </p>
             <div className="mt-6 flex flex-col sm:flex-row sm:justify-center md:justify-start gap-4">
-              <Button className="px-8 py-3 text-lg font-medium">
-                Get started
+             <Link to="/alljobs">
+             <Button className="px-8 py-3 w-full text-lg font-medium">
+                Available Jobs
               </Button>
+             </Link>
               <Button variant="outline" className="px-8 dark:text-black py-3 text-lg font-medium">
                 Learn more
               </Button>

@@ -91,10 +91,10 @@ const Login = () => {
   };
 
   return (
-    <div className="">
-      <div className="min-h-screen flex items-center justify-center bg-white text-black dark:bg-gray-900 dark:text-white lg:pt-20 pt-8">
-  <div className="w-full max-w-md bg-white text-black dark:bg-gray-800 dark:text-white rounded-lg shadow-md p-8">
-    <h2 className="lg:text-4xl md:text-4xl text-3xl font-bold text-center mb-6 text-sky-600 dark:text-sky-400">
+    <div>
+      <div className="min-h-screen flex items-center justify-center bg-white text-black dark:bg-gray-900 dark:text-white">
+  <div className="w-full max-w-md bg-gray-50 text-black dark:bg-gray-800 dark:text-white rounded-lg shadow-md p-8">
+    <h2 className="lg:text-4xl md:text-4xl text-3xl font-bold text-center mb-6 text-sky-600 dark:text-white">
       Login Now
     </h2>
     {errorMessage && (

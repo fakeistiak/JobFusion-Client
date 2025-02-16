@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import Job from "./Job";
-import { Button } from "@/components/ui/button";
-import { Link } from "react-router-dom";
+// import { Button } from "@/components/ui/button";
+// import { Link } from "react-router-dom";
 
 const FeaturedJobs = () => {
   const [dataLength] = useState(6);
@@ -18,7 +18,7 @@ const FeaturedJobs = () => {
     <div>
       <div className="pb-20 lg:py-20 py-4 px-8">
         <div className="text-center py-8">
-          <h2 className="lg:text-5xl font-poppins text-4xl pb-2 font-semibold text-sky-600">
+          <h2 className="lg:text-5xl font-poppins text-4xl pb-2 font-semibold text-sky-600 dark:text-white">
             Featured Jobs
           </h2>
           <p className="text-gray-600 dark:text-white font-poppins">
@@ -30,7 +30,7 @@ const FeaturedJobs = () => {
             <Job key={job._id} job={job} />
           ))}
         </div>
-        {!jobs.length || dataLength >= jobs.length ? null : (
+        {/* {!jobs.length || dataLength >= jobs.length ? null : (
           <div className="flex justify-center pt-12">
             <Link to="/alljobs">
             <Button variant="default">
@@ -38,7 +38,7 @@ const FeaturedJobs = () => {
             </Button>
             </Link>
           </div>
-        )}
+        )} */}
       </div>
     </div>
   );

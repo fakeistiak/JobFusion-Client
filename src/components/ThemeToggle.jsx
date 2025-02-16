@@ -1,6 +1,6 @@
 import { useTheme } from "next-themes";
 import { useEffect, useState } from "react";
-import { MdDarkMode, MdLightMode } from "react-icons/md";
+import { MdDarkMode, MdLightMode, MdOutlineDarkMode, MdOutlineLightMode } from "react-icons/md";
 
 export default function ThemeToggle() {
   const { theme, setTheme } = useTheme();
@@ -15,9 +15,9 @@ export default function ThemeToggle() {
   return (
     <button
       onClick={() => setTheme(theme === "dark" ? "light" : "dark")}
-      className="flex items-center gap-2 text-white"
+      className="flex items-center gap-2 text-black"
     >
-      {theme === "dark" ? <MdLightMode size={28} /> : <MdDarkMode   size={28} />}
+      {theme === "dark" ? <MdOutlineLightMode  size={28} /> : <MdOutlineDarkMode    size={28} />}
       {/* {theme === "dark" ? "Light Mode" : "Dark Mode"} */}
     </button>
   );

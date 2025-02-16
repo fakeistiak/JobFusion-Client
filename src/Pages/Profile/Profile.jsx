@@ -8,6 +8,7 @@ const Profile = () => {
   const [profile, setProfile] = useState({});
   const [isEditing, setIsEditing] = useState(false);
   const [loading, setLoading] = useState(true);
+  const [imgError, setImgError] = useState(false);
 
   useEffect(() => {
     if (!user) return;
@@ -51,7 +52,7 @@ const Profile = () => {
 
   return (
     <div className="lg:py-16 py-8 my-8">
-      <div className="w-full max-w-6xl px-6 sm:px-8 lg:px-12 mx-auto border p-6  rounded-lg shadow-md ">
+      <div className="w-full max-w-6xl px-6 sm:px-8 lg:px-12 mx-auto border p-6 rounded-lg shadow-md">
         <h2 className="text-3xl font-bold text-center pb-3">
           {user?.displayName || "User"} Profile
         </h2>
@@ -59,17 +60,20 @@ const Profile = () => {
           <p className="text-center">Loading profile...</p>
         ) : (
           <>
-            {user?.photoURL ? (
-              <div className="mb-4 flex justify-center">
-                <img
-                  src={user.photoURL}
-                  alt="Profile"
-                  className="lg:w-72 lg:h-72 md:h-60 md:w-60 h-40 w-40 rounded-xl border-2 border-gray-300 object-cover"
-                />
-              </div>
-            ) : (
-              <p className="text-center">No Profile Picture Available</p>
-            )}
+            <div className="mb-4 flex justify-center">
+              <img
+                className="lg:w-72 lg:h-72 md:h-60 md:w-60 h-40 w-40 rounded-xl border-2 border-gray-300 object-cover"
+                src={
+                  imgError || !user?.photoURL
+                    ? `https://ui-avatars.com/api/?name=${
+                        user?.displayName || "User"
+                      }&background=random`
+                    : user?.photoURL
+                }
+                alt={user?.displayName || "User"}
+                onError={() => setImgError(true)}
+              />
+            </div>
             <div className="mb-4 text-center flex justify-end">
               {profile && (
                 <button
