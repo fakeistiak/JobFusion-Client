@@ -53,7 +53,7 @@ const Profile = () => {
   return (
     <div className="lg:py-16 py-8 my-8">
       <div className="w-full max-w-6xl px-6 sm:px-8 lg:px-12 mx-auto border p-6 rounded-lg shadow-md">
-        <h2 className="text-3xl font-bold text-center pb-3">
+        <h2 className="text-3xl font-bold text-center pb-3 text-sky-600 dark:text-sky-400">
           {user?.displayName || "User"} Profile
         </h2>
         {loading ? (

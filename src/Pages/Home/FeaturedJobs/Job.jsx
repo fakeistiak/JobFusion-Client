@@ -8,7 +8,7 @@ const Job = ({job}) => {
 
     return (
         <div>
-            <div className="max-w-sm mx-auto bg-gray-100 dark:bg-gray-800 rounded-xl shadow-md overflow-hidden">
+            <div className="max-w-sm mx-auto bg-gray-200 dark:text-black rounded-xl shadow-md overflow-hidden">
       <div className="flex p-4 justify-center w-full">
         <img
           src={logo}
@@ -17,7 +17,7 @@ const Job = ({job}) => {
       </div>
       <div className="p-6">
         <div className="text-center">
-        <h2 className="lg:text-xl text-lg font-semibold dark:text-white">
+        <h2 className="lg:text-xl text-lg font-semibold">
           {job_title}
         </h2>
         <h3 className="lg:text-md  font-medium dark mt-1">
@@ -33,8 +33,8 @@ const Job = ({job}) => {
           </Button>
         </div>
         <div className="lg:flex gap-4 text-sm text-gray-500 pt-4 justify-center">
-            <p className="flex justify-center items-center dark:text-white"><MdAttachMoney/> {salary}</p> 
-            <p className="flex justify-center items-center dark:text-white"><IoLocationSharp />{location}</p> 
+            <p className="flex justify-center items-center"><MdAttachMoney/> {salary}</p> 
+            <p className="flex justify-center items-center"><IoLocationSharp />{location}</p> 
         </div>
         <div className="mt-6">
           <Link to={`/job/${_id}`}>
