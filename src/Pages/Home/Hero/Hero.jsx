@@ -13,7 +13,11 @@ const Hero = () => {
           </div>
 
           <h1 className="max-w-4xl text-4xl font-bold tracking-tight sm:text-6xl md:text-7xl font-poppins">
-            Welcome to Our<span className="text-sky-600 dark:text-sky-400"> Amazing Platform</span>
+            Welcome to Our
+            <span className="text-sky-600 dark:text-sky-400">
+              {" "}
+              Amazing Platform
+            </span>
           </h1>
 
           <p className="max-w-2xl text-lg text-gray-600 dark:text-gray-300">
@@ -22,16 +26,13 @@ const Hero = () => {
           </p>
 
           <div className="flex flex-col gap-4 sm:flex-row sm:gap-6">
-            <Button
-              asChild
-              className="rounded-full bg-sky-600 px-6 py-3 text-base font-semibold text-white hover:bg-sky-700 dark:bg-sky-500 dark:hover:bg-sky-600"
-            >
+            <Button className="rounded-full bg-sky-600 px-6 py-3 text-base font-semibold text-white hover:bg-sky-700 dark:bg-sky-500 dark:hover:bg-sky-600">
               <Link to="/alljobs">Explore jobs</Link>
             </Button>
             <Button
               variant="outline"
               asChild
-              className="rounded-full border border-black/10 px-6 py-3 text-base font-semibold text-black hover:bg-black/5 dark:border-white/10"
+              className="rounded-full border border-black/10 px-6 py-3 text-base font-semibold text-black hover:bg-black/5 dark:hover:bg-white/50 dark:border-white/10 dark:hover:text-white"
             >
               <a href="#">Learn more</a>
             </Button>

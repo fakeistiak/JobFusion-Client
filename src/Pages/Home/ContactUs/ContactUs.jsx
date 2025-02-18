@@ -2,7 +2,7 @@
 const ContactUs = () => {
     return (
         <div>
-            <section id="contact" className="dark:bg-gray-900 lg:py-16 py-12 dark:text-white">
+            <section id="contact" className="dark:bg-black lg:py-16 py-12 dark:text-white">
                     <div className="max-w-7xl px-6 sm:px-8 lg:px-12 mx-auto text-center">
                         <h2 className="text-3xl font-bold mb-4 font-poppins">Contact Us</h2>
                         <p className="text-lg  mb-8 font-poppins">

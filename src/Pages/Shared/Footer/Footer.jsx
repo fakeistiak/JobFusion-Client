@@ -11,7 +11,7 @@ import { Link } from "react-router-dom";
 
 const Footer=()=> {
   return (
-    <footer className="bg-black text-gray-200">
+    <footer className="dark:bg-black dark:text-gray-200 bg-white text-black">
       <div className="max-w-7xl px-6 sm:px-8 lg:px-12 mx-auto pt-8 pb-6">
         <div className="grid grid-cols-1 md:grid-cols-4 gap-8">
           <div>
@@ -66,7 +66,7 @@ const Footer=()=> {
               <Input
                 type="email"
                 placeholder="Enter your email"
-                className="bg-black text-white focus:border-white"
+                className=" text-white focus:border-white"
               />
               <Button variant="destructive" type="submit">
                 Subscribe
