@@ -110,7 +110,7 @@ const Login = () => {
             name="email"
             ref={emailRef}
             required
-            className="w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 bg-white text-black dark:bg-gray-700 dark:text-white"
+            className="w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-teal-500 focus:border-teal-500 bg-white text-black dark:bg-gray-700 dark:text-white"
             placeholder="Enter your email"
           />
         </div>
@@ -122,7 +122,7 @@ const Login = () => {
               type={showPassword ? "text" : "password"}
               name="password"
               required
-              className="w-full px-3 py-2 pr-10 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 bg-white text-black dark:bg-gray-700 dark:text-white"
+              className="w-full px-3 py-2 pr-10 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-teal-500 focus:border-teal-500 bg-white text-black dark:bg-gray-700 dark:text-white"
               placeholder="Enter your password"
             />
             <span onClick={() => setShowPassword(!showPassword)}>
