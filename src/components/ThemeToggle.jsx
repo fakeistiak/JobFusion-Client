@@ -15,7 +15,7 @@ export default function ThemeToggle() {
   return (
     <button
       onClick={() => setTheme(theme === "dark" ? "light" : "dark")}
-      className="flex items-center gap-2 text-black"
+      className="flex items-center gap-2"
     >
       {theme === "dark" ? <MdOutlineLightMode  size={28} /> : <MdOutlineDarkMode    size={28} />}
       {/* {theme === "dark" ? "Light Mode" : "Dark Mode"} */}

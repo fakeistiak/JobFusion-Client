@@ -1,8 +1,7 @@
-import ContactUs from "../Home/ContactUs/ContactUs";
 
 const Statistics = () => {
     return (
-        <div className="bg-gray-100 min-h-screen py-10 px-5">
+        <div className="bg-gray-100 dark:bg-black text-black dark:text-white min-h-screen py-10 px-5">
             <main className="max-w-6xl mx-auto">
                 <section id="statistics" className="text-center py-16">
                     <h1 className="text-4xl font-extrabold mb-6">
@@ -13,22 +12,22 @@ const Statistics = () => {
                         including application completion rates, average time spent, and more.
                     </p>
                     <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
-                        <div className="bg-sky-600 text-white shadow-md rounded-lg p-6">
+                        <div className="shadow-md shadow-gray-300 rounded-lg p-6">
                             <h2 className="text-2xl font-semibold mb-3">1,250+</h2>
                             <p className="">Applications Submitted</p>
                         </div>
-                        <div className="bg-sky-600 text-white shadow-md rounded-lg p-6">
+                        <div className="shadow-md shadow-gray-300  rounded-lg p-6">
                             <h2 className="text-2xl font-semibold mb-3">85%</h2>
                             <p className="">Completion Rate</p>
                         </div>
-                        <div className="bg-sky-600 text-white shadow-md rounded-lg p-6">
+                        <div className="shadow-md shadow-gray-300  rounded-lg p-6">
                             <h2 className="text-2xl font-semibold mb-3">12 mins</h2>
                             <p className="">Average Time Spent</p>
                         </div>
                     </div>
                 </section>
 
-                <section id="about" className="bg-gray-600 text-white py-16 px-4">
+                <section id="about" className="py-16 px-4">
                     <div className="max-w-4xl mx-auto text-center">
                         <h2 className="text-3xl font-bold mb-4">About Our Platform</h2>
                         <p className="text-lg ">
@@ -38,7 +37,6 @@ const Statistics = () => {
                         </p>
                     </div>
                 </section>
-                <ContactUs/>
             </main>
         </div>
     );

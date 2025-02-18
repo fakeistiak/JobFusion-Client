@@ -25,7 +25,7 @@ const ContactUs = () => {
                             ></textarea>
                             <button 
                                 type="submit" 
-                                className="bg-sky-600 font-poppins text-white px-6 py-2 rounded-lg hover:bg-sky-700"
+                                className="bg-teal-600 font-poppins text-white px-6 py-2 rounded-lg hover:bg-teal-700"
                             >
                                 Submit
                             </button>

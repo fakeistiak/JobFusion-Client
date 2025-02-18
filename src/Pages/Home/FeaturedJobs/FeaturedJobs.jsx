@@ -36,7 +36,7 @@ const FeaturedJobs = () => {
       <div className="max-w-6xl mx-auto">
         <div className="flex justify-between items-center mb-12">
           <div>
-            <h2 className="text-4xl lg:text-5xl font-semibold font-poppins text-sky-600 dark:text-sky-400">Featured Jobs</h2>
+            <h2 className="text-4xl lg:text-5xl font-semibold font-poppins text-teal-600 dark:text-teal-400">Featured Jobs</h2>
             <p className="text-gray-500 dark:text-gray-300 mt-2 font-poppins">
               Explore Top Career Opportunities and Featured Job Openings
             </p>
@@ -46,7 +46,7 @@ const FeaturedJobs = () => {
               variant="outline"
               size="icon"
               onClick={scrollPrev}
-              className="h-10 w-10 rounded-full bg-black/10 hover:bg-white/20 dark:bg-white/10 dark:hover:bg-white/20 border-0"
+              className="h-10 w-10 rounded-full bg-black/10 hover:bg-black/20 dark:bg-white/10 dark:hover:bg-white/15 border-0"
             >
               <ChevronLeft className="h-4 w-4" />
             </Button>
@@ -54,7 +54,7 @@ const FeaturedJobs = () => {
               variant="outline"
               size="icon"
               onClick={scrollNext}
-              className="h-10 w-10 rounded-full bg-black/10 hover:bg-white/20 dark:bg-white/10 dark:hover:bg-white/20 border-0"
+              className="h-10 w-10 rounded-full bg-black/10 hover:bg-black/20 dark:bg-white/10 dark:hover:bg-white/15 border-0"
             >
               <ChevronRight className="h-4 w-4" />
             </Button>

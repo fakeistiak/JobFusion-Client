@@ -94,7 +94,7 @@ const Login = () => {
     <div>
       <div className="min-h-screen flex items-center justify-center bg-white text-black dark:bg-gray-900 dark:text-white">
   <div className="w-full max-w-md bg-gray-50 text-black dark:bg-gray-800 dark:text-white rounded-lg shadow-md p-8">
-    <h2 className="lg:text-4xl md:text-4xl text-3xl font-bold text-center mb-6 text-sky-600 dark:text-white">
+    <h2 className="lg:text-4xl md:text-4xl text-3xl font-bold text-center mb-6 text-teal-600 dark:text-white">
       Login Now
     </h2>
     {errorMessage && (
@@ -103,7 +103,7 @@ const Login = () => {
     <form onSubmit={handleLogin}>
       <div className="space-y-4">
         <div className="flex justify-center items-center gap-2">
-          <MdEmail className="text-2xl text-sky-600 dark:text-sky-400" />
+          <MdEmail className="text-2xl text-teal-600 dark:text-teal-400" />
           <input
             id="email"
             type="email"
@@ -115,7 +115,7 @@ const Login = () => {
           />
         </div>
         <div className="flex items-center gap-2">
-          <RiLockPasswordFill className="text-2xl text-sky-600 dark:text-sky-400" />
+          <RiLockPasswordFill className="text-2xl text-teal-600 dark:text-teal-400" />
           <div className="relative w-full">
             <input
               id="password"
@@ -138,7 +138,7 @@ const Login = () => {
           <button
             type="button"
             onClick={handleForgetPassword}
-            className="pl-8 text-sky-600 dark:text-sky-400 underline hover:text-sky-800 dark:hover:text-sky-300"
+            className="pl-8 text-teal-600 dark:text-teal-400 underline hover:text-teal-800 dark:hover:text-teal-300"
           >
             Forgot Password?
           </button>
@@ -177,7 +177,7 @@ const Login = () => {
       </div>
       <p className="py-4 text-lg text-center">
         New to JobFusion?{" "}
-        <a className="text-sky-600 dark:text-sky-400" href="/register">
+        <a className="text-teal-600 dark:text-teal-400" href="/register">
           Sign Up
         </a>
       </p>

@@ -53,7 +53,7 @@ const AddJob = () => {
 
   return (
     <>
-      <div className="bg-gray-100 dark:bg-gray-900 dark:text-white text-gray-700">
+      <div className="bg-gray-100 py-20 dark:bg-gray-900 dark:text-white text-gray-700">
         <div className="w-full max-w-6xl mx-auto shadow-md rounded-lg p-6">
           <div className="mb-4 text-center">
             <h2 className="text-3xl font-bold pb-2">Add a new Job</h2>
@@ -197,7 +197,7 @@ const AddJob = () => {
               </div>
             </div>
             <div className="mt-4">
-              <button type="submit" className="w-full bg-sky-600 text-white p-2 rounded-md hover:bg-sky-700">
+              <button type="submit" className="w-full bg-teal-600 text-white p-2 rounded-md hover:bg-teal-700">
                 Submit Job
               </button>
             </div>

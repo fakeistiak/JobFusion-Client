@@ -14,7 +14,7 @@ const Hero = () => {
 
           <h1 className="max-w-4xl text-4xl font-bold tracking-tight sm:text-6xl md:text-7xl font-poppins">
             Welcome to Our
-            <span className="text-sky-600 dark:text-sky-400">
+            <span className="text-teal-600 dark:text-teal-400">
               {" "}
               Amazing Platform
             </span>
@@ -25,8 +25,8 @@ const Hero = () => {
             productivity, and take your business to the next level.
           </p>
 
-          <div className="flex flex-col gap-4 sm:flex-row sm:gap-6">
-            <Button className="rounded-full bg-sky-600 px-6 py-3 text-base font-semibold text-white hover:bg-sky-700 dark:bg-sky-500 dark:hover:bg-sky-600">
+          <div className="flex gap-4 sm:gap-6">
+            <Button className="rounded-full bg-teal-600 px-6 py-3 text-base font-semibold text-white hover:bg-teal-700 dark:bg-teal-500 dark:hover:bg-teal-600">
               <Link to="/alljobs">Explore jobs</Link>
             </Button>
             <Button

@@ -51,9 +51,9 @@ const Profile = () => {
   };
 
   return (
-    <div className="lg:py-16 py-8 my-8">
+    <div className="lg:py-16 py-8 my-8 ">
       <div className="w-full max-w-6xl px-6 sm:px-8 lg:px-12 mx-auto border p-6 rounded-lg shadow-md">
-        <h2 className="text-3xl font-bold text-center pb-3 text-sky-600 dark:text-sky-400">
+        <h2 className="text-3xl font-bold text-center pb-3 text-teal-600 dark:text-teal-400">
           {user?.displayName || "User"} Profile
         </h2>
         {loading ? (
@@ -79,7 +79,7 @@ const Profile = () => {
                 <button
                   onClick={() => setIsEditing(!isEditing)}
                   className={`p-2 rounded lg:text-lg flex gap-2 items-center 
-              ${isEditing ? "bg-red-600" : "bg-sky-600"} text-white`}
+              ${isEditing ? "bg-red-600" : "bg-teal-600"} text-white`}
                 >
                   {isEditing ? "Cancel" : "Edit"}{" "}
                   {isEditing ? <FaTimes className="text-2xl" /> : <FaEdit />}
@@ -116,7 +116,7 @@ const Profile = () => {
               {isEditing && (
                 <button
                   type="submit"
-                  className="w-full p-3 bg-sky-600 text-white rounded"
+                  className="w-full p-3 bg-teal-600 text-white rounded"
                 >
                   Save Changes
                 </button>

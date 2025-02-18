@@ -71,7 +71,7 @@ const NavBar = () => {
   return (
     <nav
       className={`fixed top-0 left-0 w-full p-4 flex justify-between items-center z-50 transition-all duration-300 ${
-        isScrolled ? "backdrop-blur-lg bg-white/30" : "bg-sky-600"
+        isScrolled ? "backdrop-blur-xl bg-white/30" : "bg-teal-600"
       }`}
     >
       <Link
@@ -82,7 +82,7 @@ const NavBar = () => {
       >
         JobFusion
       </Link>
-  
+
       <div
         className={`md:hidden text-2xl cursor-pointer transition-colors duration-300 ${
           isScrolled ? "text-black hover:text-gray-400" : "text-white"
@@ -91,14 +91,15 @@ const NavBar = () => {
       >
         {open ? <AiOutlineClose /> : <AiOutlineMenu />}
       </div>
-      {open && <div className="fixed inset-0 bg-black/30 backdrop-blur-lg md:hidden z-40"></div>}
+      {open && (
+        <div className="fixed inset-0 bg-black/30 backdrop-blur-lg md:hidden z-40"></div>
+      )}
 
-<ul
-  className={`absolute md:static left-0 w-full md:w-auto flex flex-col md:flex-row items-center justify-center md:justify-end space-y-4 md:space-y-0 md:space-x-6 py-6 md:py-0 transition-all duration-300 ease-in-out bg-sky-600 md:bg-transparent text-white ${
-    open ? "top-16 z-50" : "-top-96"
-  }`}
->
-
+      <ul
+        className={`absolute md:static left-0 w-full md:w-auto flex flex-col md:flex-row items-center justify-center md:justify-end space-y-4 md:space-y-0 md:space-x-6 py-6 md:py-0 transition-all duration-300 ease-in-out bg-teal-600 md:bg-transparent text-white ${
+          open ? "top-16 z-50" : "-top-96"
+        }`}
+      >
         {routes.map((route) => (
           <li key={route.id} className="px-1 rounded-lg text-center">
             <NavLink
@@ -110,7 +111,7 @@ const NavBar = () => {
                       ? "text-black text-xl"
                       : "text-white text-xl"
                     : isScrolled
-                    ? "text-gray-700 hover:text-black"
+                    ? "text-gray-400 hover:text-black"
                     : "text-gray-300 hover:text-white"
                 }`
               }
@@ -120,15 +121,16 @@ const NavBar = () => {
             </NavLink>
           </li>
         ))}
-  
+
         <button
           className={`transition-colors duration-300 ${
-            isScrolled ? "text-black hover:text-gray-400" : "text-white"
+            isScrolled ? "text-black" : "text-white"
           }`}
+          onClick={() => setOpen(false)}
         >
           <ThemeToggle />
         </button>
-  
+
         <li>
           {user ? (
             <CustomDropdown
@@ -154,11 +156,11 @@ const NavBar = () => {
               }
               menu={(closeDropdown) => (
                 <div className="py-2 px-2">
-                  <h1 className="text-left px-4 py-2 text-sm text-sky-600 hover:bg-gray-100">
+                  <h1 className="text-left px-4 py-2 text-sm text-teal-600 hover:bg-gray-100">
                     {user?.displayName}
                   </h1>
                   <Link to="/profile" onClick={closeDropdown}>
-                    <button className="block w-full text-left px-4 py-2 text-sm text-sky-600 hover:bg-gray-100">
+                    <button className="block w-full text-left px-4 py-2 text-sm text-teal-600 hover:bg-gray-100">
                       My Profile
                     </button>
                   </Link>
@@ -167,7 +169,7 @@ const NavBar = () => {
                       handleSignOut();
                       closeDropdown();
                     }}
-                    className="block w-full text-left px-4 py-2 text-sm text-sky-600 hover:bg-gray-100"
+                    className="block w-full text-left px-4 py-2 text-sm text-teal-600 hover:bg-gray-100"
                   >
                     Sign Out
                   </button>
@@ -190,7 +192,6 @@ const NavBar = () => {
       </ul>
     </nav>
   );
-  
 };
 
 export default NavBar;
