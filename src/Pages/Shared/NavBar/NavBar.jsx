@@ -76,6 +76,7 @@ const NavBar = () => {
     >
       <Link
         to="/"
+        onClick={() => window.scrollTo({ top: 0, behavior: "smooth" })}
         className={`text-3xl font-bold font-poppins transition-colors duration-300 ${
           isScrolled ? "text-black hover:text-gray-400" : "text-white"
         }`}
@@ -159,7 +160,7 @@ const NavBar = () => {
                   <h1 className="text-left px-4 py-2 text-sm text-teal-600 hover:bg-gray-100">
                     {user?.displayName}
                   </h1>
-                  <Link to="/profile" onClick={closeDropdown}>
+                  <Link to="/userProfile" onClick={closeDropdown}>
                     <button className="block w-full text-left px-4 py-2 text-sm text-teal-600 hover:bg-gray-100">
                       My Profile
                     </button>

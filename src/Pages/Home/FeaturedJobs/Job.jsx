@@ -17,9 +17,9 @@ const Job = ({ job }) => {
   return (
     <Link
       to={`/job/${_id}`}
-      className="block transform transition-all duration-300 hover:scale-[1.02]"
+      className="block transform transition-all dark:bg-gray-200 duration-300 hover:scale-[1.02]"
     >
-      <div className="w-full max-w-sm bg-white rounded-xl shadow-lg overflow-hidden border border-gray-200 hover:shadow-2xl">
+      <div className="w-full max-w-sm rounded-xl shadow-lg overflow-hidden border border-gray-200 hover:shadow-2xl">
         <div className="p-4 flex justify-center items-center bg-gray-100">
           <img
             className="object-contain w-32 h-32"

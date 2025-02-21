@@ -11,6 +11,7 @@ import Register from "@/Pages/Register/Register";
 import AddJob from "@/Pages/AddJob/AddJob";
 import AllJobs from "./AllJobs/AllJobs";
 import Profile from "@/Pages/Profile/Profile";
+import UserProfile from "@/Pages/Profile/UserProfile";
 
 
 const router = createBrowserRouter([
@@ -63,7 +64,13 @@ const router = createBrowserRouter([
       },
       {
         path:"/profile",
-        element:<PrivateRoute><Profile/></PrivateRoute>
+        element:<PrivateRoute><Profile/></PrivateRoute>,
+        loader:()=>fetch("http://localhost:5000/users")
+      },
+      {
+        path:"/userProfile",
+        element:<PrivateRoute><UserProfile/></PrivateRoute>,
+        loader:()=>fetch("http://localhost:5000/users")
       }
     ],
   },

@@ -15,7 +15,7 @@ const Footer=()=> {
       <div className="max-w-7xl px-6 sm:px-8 lg:px-12 mx-auto pt-8 pb-6">
         <div className="grid grid-cols-1 md:grid-cols-4 gap-8">
           <div>
-            <Link to="/" className="text-white text-lg font-semibold mb-4">JobFusion</Link>
+            <Link to="/" onClick={() => window.scrollTo({ top: 0, behavior: "smooth" })} className="text-white text-lg font-semibold mb-4">JobFusion</Link>
             <p className="mb-4">
               We are dedicated to providing the best service to our customers.
             </p>

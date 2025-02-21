@@ -14,6 +14,7 @@ import { useContext, useState } from "react";
 import { FaGithub, FaEye, FaPhoneAlt, FaEyeSlash } from "react-icons/fa";
 import { AuthContext } from "@/Provider/AuthProvider";
 import { useLocation, useNavigate } from "react-router-dom";
+import { toast } from "react-toastify";
 
 const Register = () => {
   const [user, setUser] = useState(null);
@@ -37,14 +38,23 @@ const Register = () => {
     setRegisterError("");
   
     createUser(email, password)
-      .then((result) => {
+      .then(result => {
         console.log("User registered:", result.user);
-        sendEmailVerification(result.user)
+        // sendEmailVerification(result.user)
+        const newUser={name,number,email}
+        fetch('http://localhost:5000/users',{
+          method:'POST',
+          headers:{
+            'content-type':'application/json'
+          },
+            body:JSON.stringify(newUser)
+        })
         e.target.reset();
         navigate(location?.state ? location.state :'/')
-      .then(() => {
-          console.log("Verification email sent.");
-        });
+      .then(res=>res.json())
+      .then(data=>{
+        console.log('user created to db',data)
+      })
       })
       .catch((error) => {
         console.error("Registration error:", error.message);
@@ -54,17 +64,39 @@ const Register = () => {
   
 
   //Login With Google
-  const handleGoogleSignin = () => {
-    signInWithGoogle(auth, googleProvider)
-      .then((result) => {
-        const loggedInUser = result.user;
-        setUser(loggedInUser);
-        navigate(location?.state ? location.state :'/')
-      })
-      .catch((error) => {
-        console.log("error", error.message);
-      });
+  const handleGoogleSignin = async () => {
+    try {
+      const result = await signInWithPopup(auth, googleProvider);
+      const loggedInUser = result.user;
+      setUser(loggedInUser);
+  
+      const res = await fetch(`http://localhost:5000/users?email=${loggedInUser.email}`);
+      const data = await res.json();
+  
+      if (!data || Object.keys(data).length === 0) {
+        await fetch("http://localhost:5000/users", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({
+            name: loggedInUser.displayName,
+            email: loggedInUser.email,
+            photoURL: loggedInUser.photoURL,
+            number: "",
+          }),
+        });
+      }
+  
+      navigate(location?.state || "/");
+  
+      setTimeout(() => {
+        toast.success("Login successful!", { position: "top-right" });
+      }, 800);
+    } catch (error) {
+      console.error("Google sign-in error", error.message);
+      toast.error("Google sign-in failed!", { position: "top-right" });
+    }
   };
+  
 
   //Login With Github
   const handleGithubSignin = () => {
