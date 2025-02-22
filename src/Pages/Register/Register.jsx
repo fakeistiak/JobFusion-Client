@@ -6,7 +6,6 @@ import {
   getAuth,
   GithubAuthProvider,
   GoogleAuthProvider,
-  sendEmailVerification,
   signInWithPopup,
 } from "firebase/auth";
 import app from "@/firebase/firebase.init";
@@ -23,7 +22,7 @@ const Register = () => {
   const auth = getAuth(app);
   const googleProvider = new GoogleAuthProvider();
   const githubProvider = new GithubAuthProvider();
-  const {createUser,signInWithGoogle}=useContext(AuthContext);
+  const {createUser}=useContext(AuthContext);
   const navigate=useNavigate()
   const location=useLocation()
 

@@ -2,6 +2,7 @@ import { useState, useEffect, useContext } from "react";
 import { AuthContext } from "@/Provider/AuthProvider";
 import { toast, ToastContainer } from "react-toastify";
 import { FaEdit, FaTimes } from "react-icons/fa";
+import { FadeLoader } from "react-spinners";
 
 const UserProfile = () => {
     const { user } = useContext(AuthContext);
@@ -63,12 +64,14 @@ const UserProfile = () => {
                     {user?.displayName || "User"} Profile
                 </h2>
                 {loading ? (
-                    <p className="text-center">Loading profile...</p>
+                   <div className="flex items-center justify-center h-screen">
+                   <FadeLoader color="#4A90E2" size={60} />
+                 </div>
                 ) : (
                     <>
                         <div className="mb-4 flex justify-center">
                             <img
-                                className="lg:w-72 lg:h-72 md:h-60 md:w-60 h-40 w-40 rounded-xl border-2 border-gray-300 object-cover"
+                                className="lg:w-60 lg:h-60 md:h-48 md:w-48 h-40 w-40 rounded-xl border-2 border-gray-300 object-cover"
                                 src={
                                     imgError || !user?.photoURL
                                         ? `https://ui-avatars.com/api/?name=${

@@ -12,7 +12,7 @@ const Hero = () => {
             </span>
           </div>
 
-          <h1 className="max-w-4xl text-4xl font-bold tracking-tight sm:text-6xl md:text-7xl font-poppins">
+          <h1 className="max-w-4xl text-4xl font-bold tracking-tight sm:text-6xl md:text-7xl font-poppins animate-text animate-f bg-gradient-to-r from-gray-400 via-black to-gray-400 bg-clip-text text-transparent">
             Welcome to Our
             <span className="text-teal-600 dark:text-teal-400">
               {" "}

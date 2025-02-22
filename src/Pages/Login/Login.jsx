@@ -15,7 +15,6 @@ import { RiLockPasswordFill } from "react-icons/ri";
 import { AuthContext } from "@/Provider/AuthProvider";
 import { useLocation, useNavigate } from "react-router-dom";
 import { toast, ToastContainer } from "react-toastify";
-import { Timer } from "lucide-react";
 
 const Login = () => {
   const [user, setUser] = useState(null);
@@ -25,7 +24,7 @@ const Login = () => {
   const emailRef = useRef();
   const githubProvider = new GithubAuthProvider();
   const googleProvider = new GoogleAuthProvider();
-  const { signInUser, signInWithGoogle } = useContext(AuthContext);
+  const { signInUser } = useContext(AuthContext);
   const navigate = useNavigate();
   const location = useLocation();
 
@@ -39,7 +38,7 @@ const Login = () => {
     signInUser(email, password)
       .then((result) => {
         setUser(result.user);
-        navigate(location?.state ? location.state : "/");
+        navigate(location?.state || "/");
         setTimeout(() => {
           toast.success("Login successful!", { position: "top-right" });
         }, 800);

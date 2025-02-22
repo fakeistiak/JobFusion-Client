@@ -160,7 +160,7 @@ const NavBar = () => {
                   <h1 className="text-left px-4 py-2 text-sm text-teal-600 hover:bg-gray-100">
                     {user?.displayName}
                   </h1>
-                  <Link to="/userProfile" onClick={closeDropdown}>
+                  <Link to="/userProfile" onClick={() => setOpen(false)}>
                     <button className="block w-full text-left px-4 py-2 text-sm text-teal-600 hover:bg-gray-100">
                       My Profile
                     </button>
@@ -169,6 +169,7 @@ const NavBar = () => {
                     onClick={() => {
                       handleSignOut();
                       closeDropdown();
+                      setOpen(false)
                     }}
                     className="block w-full text-left px-4 py-2 text-sm text-teal-600 hover:bg-gray-100"
                   >
