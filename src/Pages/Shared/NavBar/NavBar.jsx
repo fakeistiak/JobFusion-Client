@@ -1,22 +1,51 @@
-import ThemeToggle from "@/components/ThemeToggle";
+import { useContext, useState, useEffect } from "react";
 import { AuthContext } from "@/Provider/AuthProvider";
-import { useContext, useState, useRef, useEffect } from "react";
-import { AiOutlineClose, AiOutlineMenu } from "react-icons/ai";
+import {
+  AiOutlineClose,
+  AiOutlineMenu,
+  AiOutlineHome,
+  AiOutlineBarChart,
+  AiOutlineFileText,
+  AiOutlinePlus,
+} from "react-icons/ai";
+import { CgProfile } from "react-icons/cg";
+import { PiSignOutBold } from "react-icons/pi";
 import { Link, NavLink } from "react-router-dom";
+import ThemeToggle from "@/components/ThemeToggle";
 
 const NavBar = () => {
-  const [open, setOpen] = useState(false);
+  const [open, setOpen] = useState(false); // Controls sidebar visibility
   const { user, SignOutUser } = useContext(AuthContext);
   const [imgError, setImgError] = useState(false);
   const [isScrolled, setIsScrolled] = useState(false);
 
   const routes = [
-    { id: 1, path: "/", name: "Home" },
-    { id: 2, path: "/statistics", name: "Statistics" },
+    {
+      id: 1,
+      path: "/",
+      name: "Home",
+      icon: <AiOutlineHome className="text-2xl" />,
+    },
+    {
+      id: 2,
+      path: "/statistics",
+      name: "Statistics",
+      icon: <AiOutlineBarChart className="text-2xl" />,
+    },
     ...(user
       ? [
-          { id: 3, path: "/applied", name: "Applied Jobs" },
-          { id: 4, path: "/addjob", name: "Add Job" },
+          {
+            id: 3,
+            path: "/applied",
+            name: "Applied Jobs",
+            icon: <AiOutlineFileText className="text-2xl" />,
+          },
+          {
+            id: 4,
+            path: "/addjob",
+            name: "Add Job",
+            icon: <AiOutlinePlus className="text-2xl" />,
+          },
         ]
       : []),
   ];
@@ -28,170 +57,202 @@ const NavBar = () => {
   };
 
   const handleRouteClick = () => {
-    setOpen(false);
+    setOpen(false); // Close sidebar when a route is clicked
   };
 
-  const CustomDropdown = ({ trigger, menu }) => {
-    const [isOpen, setIsOpen] = useState(false);
-    const menuRef = useRef(null);
+  useEffect(() => {
+    const handleScroll = () => {
+      setIsScrolled(window.scrollY > 50);
+    };
 
-    useEffect(() => {
-      const handleOutsideClick = (event) => {
-        if (menuRef.current && !menuRef.current.contains(event.target)) {
-          setIsOpen(false);
-        }
-      };
-      document.addEventListener("mousedown", handleOutsideClick);
-      return () => {
-        document.removeEventListener("mousedown", handleOutsideClick);
-      };
-    }, []);
-
-    useEffect(() => {
-      const handleScroll = () => {
-        setIsScrolled(window.scrollY > 50);
-      };
-
-      window.addEventListener("scroll", handleScroll);
-      return () => window.removeEventListener("scroll", handleScroll);
-    }, []);
-
-    return (
-      <div className="relative" ref={menuRef}>
-        <div onClick={() => setIsOpen(!isOpen)}>{trigger}</div>
-        {isOpen && (
-          <div className="absolute right-0 mt-2 w-56 bg-white rounded-md shadow-lg z-10">
-            {menu(() => setIsOpen(false))}
-          </div>
-        )}
-      </div>
-    );
-  };
+    window.addEventListener("scroll", handleScroll);
+    return () => window.removeEventListener("scroll", handleScroll);
+  }, []);
 
   return (
     <nav
       className={`fixed top-0 left-0 w-full p-4 flex justify-between items-center z-50 transition-all duration-300 ${
-        isScrolled ? "backdrop-blur-xl bg-white/30" : "bg-teal-600"
+        isScrolled && !open ? "backdrop-blur-xl bg-white/30" : "bg-teal-600"
       }`}
     >
+      {/* Logo */}
       <Link
         to="/"
         onClick={() => window.scrollTo({ top: 0, behavior: "smooth" })}
         className={`text-3xl font-bold font-poppins transition-colors duration-300 ${
-          isScrolled ? "text-black hover:text-gray-400" : "text-white"
+          isScrolled && !open ? "text-black hover:text-gray-400" : "text-white"
         }`}
       >
         JobFusion
       </Link>
 
+      {/* Mobile Menu Toggle Button */}
       <div
         className={`md:hidden text-2xl cursor-pointer transition-colors duration-300 ${
-          isScrolled ? "text-black hover:text-gray-400" : "text-white"
+          isScrolled && !open ? "text-black hover:text-gray-400" : "text-white"
         }`}
         onClick={() => setOpen(!open)}
       >
         {open ? <AiOutlineClose /> : <AiOutlineMenu />}
       </div>
-      {open && (
-        <div className="fixed inset-0 bg-black/30 backdrop-blur-lg md:hidden z-40"></div>
-      )}
 
-      <ul
-        className={`absolute md:static left-0 w-full md:w-auto flex flex-col md:flex-row items-center justify-center md:justify-end space-y-4 md:space-y-0 md:space-x-6 py-6 md:py-0 transition-all duration-300 ease-in-out bg-teal-600 md:bg-transparent text-white ${
-          open ? "top-16 z-50" : "-top-96"
-        }`}
-      >
+      {/* Navigation Links for Desktop */}
+      <ul className="hidden md:flex items-center space-x-6">
         {routes.map((route) => (
-          <li key={route.id} className="px-1 rounded-lg text-center">
+          <li key={route.id}>
             <NavLink
               to={route.path}
               className={({ isActive }) =>
                 `text-lg font-medium transition-colors duration-300 ${
                   isActive
                     ? isScrolled
-                      ? "text-black text-xl"
-                      : "text-white text-xl"
+                      ? "text-black"
+                      : "text-white"
                     : isScrolled
                     ? "text-gray-400 hover:text-black"
                     : "text-gray-300 hover:text-white"
                 }`
               }
-              onClick={handleRouteClick}
             >
               {route.name}
             </NavLink>
           </li>
         ))}
 
-        <button
-          className={`transition-colors duration-300 ${
-            isScrolled ? "text-black" : "text-white"
-          }`}
-          onClick={() => setOpen(false)}
-        >
-          <ThemeToggle />
-        </button>
-
+        {/* Theme Toggle */}
         <li>
-          {user ? (
-            <CustomDropdown
-              trigger={
-                <div
-                  className={`flex items-center space-x-2 cursor-pointer transition-colors duration-300 ${
-                    isScrolled ? "text-black hover:text-gray-400" : "text-white"
-                  }`}
-                >
-                  <img
-                    className="w-12 h-12 rounded-full object-cover"
-                    src={
-                      imgError || !user?.photoURL
-                        ? `https://ui-avatars.com/api/?name=${
-                            user?.displayName || "User"
-                          }&background=random`
-                        : user?.photoURL
-                    }
-                    alt={user?.displayName || "User"}
-                    onError={() => setImgError(true)}
-                  />
-                </div>
+          <button
+            className={`transition-colors duration-300 ${
+              isScrolled ? "text-black" : "text-white"
+            }`}
+          >
+            <ThemeToggle />
+          </button>
+        </li>
+
+        {/* Profile Menu Button */}
+        <li>
+          <div
+            className={`flex items-center space-x-2 cursor-pointer transition-colors duration-300 ${
+              isScrolled ? "text-black hover:text-gray-400" : "text-white"
+            }`}
+            onClick={() => setOpen(!open)}
+          >
+            <img
+              className="w-12 h-12 rounded-full object-cover"
+              src={
+                imgError || !user?.photoURL
+                  ? `https://ui-avatars.com/api/?name=${
+                      user?.displayName || "User"
+                    }&background=random`
+                  : user?.photoURL
               }
-              menu={(closeDropdown) => (
-                <div className="py-2 px-2">
-                  <h1 className="text-left px-4 py-2 text-sm text-teal-600 hover:bg-gray-100">
-                    {user?.displayName}
-                  </h1>
-                  <Link to="/userProfile" onClick={() => setOpen(!open)}>
-                    <button className="block w-full text-left px-4 py-2 text-sm text-teal-600 hover:bg-gray-100">
-                      My Profile
-                    </button>
-                  </Link>
-                  <button
-                    onClick={() => {
-                      handleSignOut();
-                      closeDropdown();
-                      setOpen(false)
-                    }}
-                    className="block w-full text-left px-4 py-2 text-sm text-teal-600 hover:bg-gray-100"
-                  >
-                    Sign Out
-                  </button>
-                </div>
-              )}
+              alt={user?.displayName || "User"}
+              onError={() => setImgError(true)}
             />
+          </div>
+        </li>
+      </ul>
+
+      {/* Sidebar for Mobile */}
+      <div
+        className={`fixed top-0 right-0 h-full w-64 dark:bg-black bg-white z-50 transform transition-transform duration-300 ${
+          open ? "translate-x-0" : "translate-x-full"
+        }`}
+      >
+        <div className="p-4">
+          {/* Close Button */}
+          <div className="flex justify-between items-center mb-4">
+            <span className="text-2xl font-bold text-black dark:text-white">Profile</span>
+            <button onClick={() => setOpen(false)}>
+              <AiOutlineClose className="text-2xl text-black dark:text-white" />
+            </button>
+          </div>
+
+          {/* User Profile Section */}
+          {user ? (
+            <div className="space-y-4">
+              <div className="flex items-center space-x-2">
+                <img
+                  className="lg:w-20 lg:h-20 w-12 h-12 rounded-full object-cover"
+                  src={
+                    imgError || !user?.photoURL
+                      ? `https://ui-avatars.com/api/?name=${
+                          user?.displayName || "User"
+                        }&background=random`
+                      : user?.photoURL
+                  }
+                  alt={user?.displayName || "User"}
+                  onError={() => setImgError(true)}
+                />
+                <span className="text-lg font-medium text-black dark:text-white">
+                  {user?.displayName}
+                </span>
+              </div>
+              <div className="my-6">
+                <ThemeToggle />
+              </div>
+
+              <Link
+                to="/userProfile"
+                onClick={() => setOpen(false)}
+                className="items-center flex gap-2 text-lg font-medium text-black dark:text-white hover:text-gray-500"
+              >
+                <CgProfile className="text-2xl" />
+                My Profile
+              </Link>
+            </div>
           ) : (
             <Link
               to="/login"
-              className={`text-lg transition-colors duration-300 ${
-                isScrolled
-                  ? "text-black hover:text-gray-400"
-                  : "text-gray-300 hover:text-white"
-              }`}
+              onClick={() => setOpen(false)}
+              className="block text-lg font-medium text-black dark:text-white hover:text-gray-200"
             >
               Login
             </Link>
           )}
-        </li>
-      </ul>
+
+          {/* Navigation Links for Mobile */}
+          <ul className="mt-3">
+            {routes.map((route) => (
+              <li key={route.id} className="mb-4">
+                <NavLink
+                  to={route.path}
+                  onClick={handleRouteClick}
+                  className={({ isActive }) =>
+                    `flex items-center gap-2 text-lg font-medium transition-colors duration-300 ${
+                      isActive ? "text-teal-600 dark:text-teal-400" : "text-black dark:text-white"
+                    }`
+                  }
+                >
+                  {route.icon} {/* Render the icon here */}
+                  {route.name}
+                </NavLink>
+              </li>
+            ))}
+          </ul>
+          {/* Theme Toggle for Mobile */}
+
+          <button
+            onClick={() => {
+              handleSignOut();
+              setOpen(false);
+            }}
+            className="w-full text-left items-center flex gap-2 text-lg font-medium text-black dark:text-white hover:text-gray-200"
+          >
+            <PiSignOutBold className="text-2xl" />
+            Sign Out
+          </button>
+        </div>
+      </div>
+
+      {/* Overlay for Sidebar */}
+      {open && (
+        <div
+          className="fixed inset-0 bg-black/30 backdrop-blur-lg z-40"
+          onClick={() => setOpen(false)}
+        ></div>
+      )}
     </nav>
   );
 };
