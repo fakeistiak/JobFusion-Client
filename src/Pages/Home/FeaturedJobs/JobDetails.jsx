@@ -92,7 +92,6 @@ const JobDetails = () => {
                 {job.experiences}
               </p>
             </div>
-
             <div>
               <h3 className="text-xl font-semibold mb-3 text-white dark:text-white">
                 Contact Information

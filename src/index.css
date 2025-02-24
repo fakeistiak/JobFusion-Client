@@ -15,3 +15,15 @@
 .dark body {
   @apply bg-gray-900 text-white;
 }
+
+
+@keyframes gradientShift {
+  0% { background-position: 0% 50%; }
+  50% { background-position: 100% 50%; }
+  100% { background-position: 0% 50%; }
+}
+
+.animate-gradient {
+  background-size: 200% 200%;
+  animation: gradientShift 3s infinite alternate ease-in-out;
+}

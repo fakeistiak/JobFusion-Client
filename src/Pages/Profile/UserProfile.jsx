@@ -38,7 +38,6 @@ const UserProfile = () => {
         const updatedProfile = Object.fromEntries(formData.entries());
         updatedProfile.email = user.email;
 
-
         fetch("http://localhost:5000/users", {
             method: "PUT",
             headers: { "Content-Type": "application/json" },
@@ -58,84 +57,96 @@ const UserProfile = () => {
     };
 
     return (
-        <div className="lg:py-16 py-8 my-8">
-            <div className="w-full max-w-6xl px-6 sm:px-8 lg:px-12 mx-auto border p-6 rounded-lg shadow-md">
-                <h2 className="text-3xl font-bold text-center pb-3 text-teal-600 dark:text-teal-400">
-                    {user?.displayName || "User"} Profile
-                </h2>
-                {loading ? (
-                   <div className="flex items-center justify-center h-screen">
-                   <FadeLoader color="#4A90E2" size={60} />
-                 </div>
-                ) : (
-                    <>
-                        <div className="mb-4 flex justify-center">
-                            <img
-                                className="lg:w-60 lg:h-60 md:h-48 md:w-48 h-40 w-40 rounded-xl border-2 border-gray-300 object-cover"
-                                src={
-                                    imgError || !user?.photoURL
-                                        ? `https://ui-avatars.com/api/?name=${
-                                              user?.displayName || "User"
-                                          }&background=random`
-                                        : user?.photoURL
-                                }
-                                alt={user?.displayName || "User"}
-                                onError={() => setImgError(true)}
-                            />
+        <div className="min-h-screen bg-gray-100 dark:bg-gray-900 py-12 px-6">
+            <div className="max-w-4xl mx-auto bg-white dark:bg-gray-800 rounded-lg shadow-xl overflow-hidden">
+                <div className="relative bg-teal-600 dark:bg-teal-700 h-32">
+                    <div className="absolute -bottom-16 left-6">
+                        <img
+                            className="w-32 h-32 rounded-full border-4 border-white dark:border-gray-800 object-cover"
+                            src={
+                                imgError || !user?.photoURL
+                                    ? `https://ui-avatars.com/api/?name=${
+                                          user?.displayName || "User"
+                                      }&background=random`
+                                    : user?.photoURL
+                            }
+                            alt={user?.displayName || "User"}
+                            onError={() => setImgError(true)}
+                        />
+                    </div>
+                </div>
+                <div className="px-6 pt-20 pb-6">
+                    <h2 className="text-3xl font-bold text-gray-800 dark:text-white">
+                        {user?.displayName || "User"} Profile
+                    </h2>
+                    {loading ? (
+                        <div className="flex items-center justify-center h-64">
+                            <FadeLoader color="#4A90E2" size={60} />
                         </div>
-                        <div className="mb-4 text-center flex justify-end">
-                            {profile && (
-                                <button
-                                    onClick={() => setIsEditing(!isEditing)}
-                                    className={`p-2 rounded lg:text-lg flex gap-2 items-center 
-                                ${isEditing ? "bg-red-600" : "bg-teal-600"} text-white`}
-                                >
-                                    {isEditing ? "Cancel" : "Edit"}{" "}
-                                    {isEditing ? <FaTimes className="text-2xl" /> : <FaEdit />}
-                                </button>
-                            )}
-                        </div>
-                        <form onSubmit={handleSubmit} className="space-y-4">
-                            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                                {["name", "number", "portfolio", "resume", "github", "education", "linkedIn"].map(
-                                    (field) => (
-                                        <div key={field} className="space-y-2">
-                                            <label className="block font-medium">
-                                                {field.charAt(0).toUpperCase() + field.slice(1)}
-                                            </label>
-                                            <input
-                                                name={field}
-                                                type="text"
-                                                defaultValue={profile[field] || ""}
-                                                disabled={!isEditing}
-                                                className="w-full p-2 border rounded"
-                                            />
-                                        </div>
-                                    )
+                    ) : (
+                        <>
+                            <div className="flex justify-end mb-6">
+                                {profile && (
+                                    <button
+                                        onClick={() => setIsEditing(!isEditing)}
+                                        className={`p-2 rounded-lg flex gap-2 items-center transition-colors duration-200 ${
+                                            isEditing
+                                                ? "bg-red-600 hover:bg-red-700"
+                                                : "bg-teal-600 hover:bg-teal-700"
+                                        } text-white`}
+                                    >
+                                        {isEditing ? "Cancel" : "Edit"}{" "}
+                                        {isEditing ? <FaTimes className="text-xl" /> : <FaEdit className="text-xl" />}
+                                    </button>
                                 )}
-
-                                <div className="space-y-2">
-                                    <label className="block font-medium">Email</label>
-                                    <input
-                                        name="email"
-                                        type="email"
-                                        defaultValue={user.email}
-                                        readOnly
-                                        className="w-full p-2 border rounded bg-gray-100 cursor-not-allowed"
-                                    />
-                                </div>
                             </div>
+                            <form onSubmit={handleSubmit} className="space-y-6">
+                                <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                                    {["name", "number", "portfolio", "resume", "github", "education", "linkedIn"].map(
+                                        (field) => (
+                                            <div key={field} className="space-y-2">
+                                                <label className="block text-sm font-medium text-gray-700 dark:text-gray-300">
+                                                    {field.charAt(0).toUpperCase() + field.slice(1)}
+                                                </label>
+                                                <input
+                                                    name={field}
+                                                    type="text"
+                                                    defaultValue={profile[field] || ""}
+                                                    disabled={!isEditing}
+                                                    className="w-full p-3 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:ring-2 focus:ring-teal-500 focus:border-teal-500 transition-colors duration-200"
+                                                />
+                                            </div>
+                                        )
+                                    )}
 
-                            {isEditing && (
-                                <button type="submit" className="w-full p-3 bg-teal-600 text-white rounded">
-                                    Save Changes
-                                </button>
-                            )}
-                        </form>
-                    </>
-                )}
-                <ToastContainer />
+                                    <div className="space-y-2">
+                                        <label className="block text-sm font-medium text-gray-700 dark:text-gray-300">
+                                            Email
+                                        </label>
+                                        <input
+                                            name="email"
+                                            type="email"
+                                            defaultValue={user.email}
+                                            readOnly
+                                            className="w-full p-3 border border-gray-300 dark:border-gray-600 rounded-lg bg-gray-100 dark:bg-gray-600 text-gray-900 dark:text-white cursor-not-allowed"
+                                        />
+                                    </div>
+                                </div>
+
+                                {isEditing && (
+                                    <button
+                                        type="submit"
+                                        className="w-full p-3 bg-teal-600 hover:bg-teal-700 text-white rounded-lg transition-colors duration-200"
+                                    >
+                                        Save Changes
+                                    </button>
+                                )}
+                            </form>
+                        </>
+                    )}
+                </div>
             </div>
+            <ToastContainer />
         </div>
     );
 };
