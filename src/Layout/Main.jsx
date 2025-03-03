@@ -1,15 +1,18 @@
-import { Outlet } from "react-router-dom";
+import { Outlet, useLocation } from "react-router-dom";
 import NavBar from "../Pages/Shared/NavBar/NavBar";
 import Footer from "../Pages/Shared/Footer/Footer";
 
 const Main = () => {
+  const location = useLocation();
+  const hideNavFooter = location.pathname === "/login" || location.pathname === "/register";
+
   return (
     <div>
-      <NavBar />
-      <div className="mt-12">
-        <Outlet/>
+      {!hideNavFooter && <NavBar />}
+      <div className={hideNavFooter ? "mt-0" : "mt-12"}>
+        <Outlet />
       </div>
-      <Footer />
+      {!hideNavFooter && <Footer />}
     </div>
   );
 };

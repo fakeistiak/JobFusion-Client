@@ -155,15 +155,18 @@ const NavBar = () => {
       </ul>
 
       {/* Sidebar for Mobile */}
+      
       <div
         className={`fixed top-0 right-0 h-full w-64 dark:bg-black bg-white z-50 transform transition-transform duration-300 ${
-          open ? "translate-x-0" : "translate-x-full"
+          open ? "translate-x-0 px-4 pt-8" : "translate-x-full"
         }`}
       >
         <div className="p-4">
           {/* Close Button */}
           <div className="flex justify-between items-center mb-4">
-            <span className="text-2xl font-bold text-black dark:text-white">Profile</span>
+            <span className="text-2xl font-bold text-black dark:text-white">
+              Profile
+            </span>
             <button onClick={() => setOpen(false)}>
               <AiOutlineClose className="text-2xl text-black dark:text-white" />
             </button>
@@ -203,14 +206,13 @@ const NavBar = () => {
               </Link>
             </div>
           ) : (
-            <Link
-              to="/login"
-              onClick={() => setOpen(false)}
-              className="block text-lg font-medium text-black dark:text-white hover:text-gray-200"
+            <h1
+              className="block text-md font-medium text-black dark:text-white "
             >
-              Login
-            </Link>
-          )}
+              Login to see your Profile Info
+            </h1>
+          )
+          }
 
           {/* Navigation Links for Mobile */}
           <ul className="mt-3">
@@ -221,11 +223,13 @@ const NavBar = () => {
                   onClick={handleRouteClick}
                   className={({ isActive }) =>
                     `flex items-center gap-2 text-lg font-medium transition-colors duration-300 ${
-                      isActive ? "text-teal-600 dark:text-teal-400" : "text-black dark:text-white"
+                      isActive
+                        ? "text-teal-600 dark:text-teal-400 "
+                        : "text-black dark:text-white hover:text-gray-600"
                     }`
                   }
                 >
-                  {route.icon} {/* Render the icon here */}
+                  {route.icon}
                   {route.name}
                 </NavLink>
               </li>
@@ -233,16 +237,27 @@ const NavBar = () => {
           </ul>
           {/* Theme Toggle for Mobile */}
 
-          <button
-            onClick={() => {
-              handleSignOut();
-              setOpen(false);
-            }}
-            className="w-full text-left items-center flex gap-2 text-lg font-medium text-black dark:text-white hover:text-gray-200"
-          >
-            <PiSignOutBold className="text-2xl" />
-            Sign Out
-          </button>
+          {user ? (
+            <button
+              onClick={() => {
+                handleSignOut();
+                setOpen(false);
+              }}
+              className="w-full text-left flex items-center gap-2 text-lg font-medium text-black dark:text-white hover:text-gray-500"
+            >
+              <PiSignOutBold className="text-2xl" />
+              Sign Out
+            </button>
+          ) : (
+            <Link
+              to="/login"
+              onClick={() => setOpen(false)}
+              className="w-full text-left flex items-center gap-2 text-lg font-medium text-black dark:text-white hover:text-gray-500"
+            >
+              <CgProfile className="text-2xl" />
+              Login
+            </Link>
+          )}
         </div>
       </div>
 

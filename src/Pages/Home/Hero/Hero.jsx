@@ -18,10 +18,12 @@ const Hero = () => {
       <div className="mx-auto max-w-7xl px-6 py-24 sm:px-8 sm:py-32 lg:px-12">
         <div className="grid grid-cols-1 md:grid-cols-2 gap-8 items-center">
           <div className="space-y-8 text-center md:text-left">
-
             <h1 className="max-w-4xl text-4xl font-bold tracking-tight sm:text-6xl md:text-7xl font-poppins bg-gradient-to-r from-gray-800 via-gray-500 to-gray-300 dark:from-white dark:via-gray-500 dark:to-white/60 bg-clip-text text-transparent animate-gradient">
               Welcome to Our
-              <span className="text-teal-600 dark:text-teal-400"> Amazing Platform</span>
+              <span className="text-teal-600 dark:text-teal-400">
+                {" "}
+                Amazing Platform
+              </span>
             </h1>
 
             <p className="max-w-2xl text-lg text-gray-600 dark:text-gray-300">
@@ -42,7 +44,7 @@ const Hero = () => {
               </Button>
             </div>
           </div>
-          
+
           <div className="flex justify-center md:justify-end">
             <Lottie options={defaultOptions} height={400} width={400} />
           </div>
