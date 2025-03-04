@@ -2,6 +2,7 @@ import { Button } from "@/components/ui/button";
 import Lottie from "react-lottie";
 import { Link } from "react-router-dom";
 import bannerAnimation from "../../../assets/animations/bannerAnimation.json";
+import { motion } from "motion/react"
 
 const defaultOptions = {
   loop: true,
@@ -44,10 +45,9 @@ const Hero = () => {
               </Button>
             </div>
           </div>
-
-          <div className="flex justify-center md:justify-end">
+          <motion.div animate={{y:[-50,50,-50]}} transition={{duration:7,repeat:Infinity}} className="flex justify-center md:justify-end">
             <Lottie options={defaultOptions} height={400} width={400} />
-          </div>
+          </motion.div>
         </div>
       </div>
     </section>

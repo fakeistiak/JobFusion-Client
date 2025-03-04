@@ -12,6 +12,7 @@ import AddJob from "@/Pages/AddJob/AddJob";
 import AllJobs from "./AllJobs/AllJobs";
 import Profile from "@/Pages/Profile/Profile";
 import UserProfile from "@/Pages/Profile/UserProfile";
+import JobApply from "@/Pages/JobApply/JobApply";
 
 
 const router = createBrowserRouter([
@@ -71,6 +72,10 @@ const router = createBrowserRouter([
         path:"/userProfile",
         element:<PrivateRoute><UserProfile/></PrivateRoute>,
         loader:()=>fetch("http://localhost:5000/users")
+      },
+      {
+        path:"/jobApply/:id",
+        element:<PrivateRoute><JobApply/></PrivateRoute>
       }
     ],
   },

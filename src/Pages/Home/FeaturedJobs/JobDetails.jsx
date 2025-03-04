@@ -1,5 +1,5 @@
 import { ToastContainer, toast } from "react-toastify";
-import { useLoaderData } from "react-router-dom";
+import { Link, useLoaderData } from "react-router-dom";
 import {
   MapPin,
   Briefcase,
@@ -12,7 +12,7 @@ import {
 import { Button } from "@/components/ui/button";
 
 const JobDetails = () => {
-  const job = useLoaderData();
+  const {_id,logo,company_name,remote_or_onsite,job_type,job_title,location,salary,job_description,job_responsibility,educational_requirements,experiences,contact_information} = useLoaderData();
   const handleApplyJob = () => {
     toast.success("Applied Successfully");
   };
@@ -25,31 +25,31 @@ const JobDetails = () => {
             <div className="bg-white text-black dark:bg-gray-700 dark:text-white p-4 rounded-lg">
               <div className="flex items-center justify-between mb-6">
                 <img
-                  src={job.logo}
-                  alt={`${job.company_name} logo`}
+                  src={logo}
+                  alt={`${company_name} logo`}
                   className="w-24 h-24 object-contain"
                 />
                 <div className="text-right">
                   <span className="inline-block border-2 border-blue-800 bg-blue-100 text-blue-800 dark:border-blue-400 dark:bg-blue-900 dark:text-blue-300 text-sm font-semibold mr-2 px-2.5 py-0.5 rounded">
-                    {job.remote_or_onsite}
+                    {remote_or_onsite}
                   </span>
                   <span className="inline-block border-2 border-green-800 bg-green-100 text-green-800 dark:border-green-400 dark:bg-green-900 dark:text-green-300 text-sm font-semibold px-2.5 py-0.5 rounded">
-                    {job.job_type}
+                    {job_type}
                   </span>
                 </div>
               </div>
-              <h1 className="text-3xl font-bold mb-2">{job.job_title}</h1>
-              <h2 className="text-xl mb-6">{job.company_name}</h2>
+              <h1 className="text-3xl font-bold mb-2">{job_title}</h1>
+              <h2 className="text-xl mb-6">{company_name}</h2>
             </div>
 
             <div className="grid grid-cols-2 gap-4 mb-8 pt-4">
               <div className="flex items-center text-white dark:text-white">
                 <MapPin className="w-5 h-5 mr-2" />
-                <span>Location: {job.location}</span>
+                <span>Location: {location}</span>
               </div>
               <div className="flex items-center text-white dark:text-white">
                 <DollarSign className="w-5 h-5 mr-2" />
-                <span>Salary: {job.salary}</span>
+                <span>Salary: {salary}</span>
               </div>
             </div>
 
@@ -59,7 +59,7 @@ const JobDetails = () => {
                 Job Description
               </h3>
               <p className="text-white dark:text-gray-300 leading-relaxed">
-                {job.job_description}
+                {job_description}
               </p>
             </div>
 
@@ -69,7 +69,7 @@ const JobDetails = () => {
                 Job Responsibility
               </h3>
               <p className="text-white dark:text-gray-300 leading-relaxed">
-                {job.job_responsibility}
+                {job_responsibility}
               </p>
             </div>
 
@@ -79,7 +79,7 @@ const JobDetails = () => {
                 Educational Requirements
               </h3>
               <p className="text-white dark:text-gray-300 leading-relaxed">
-                {job.educational_requirements}
+                {educational_requirements}
               </p>
             </div>
 
@@ -89,7 +89,7 @@ const JobDetails = () => {
                 Experiences
               </h3>
               <p className="text-white dark:text-gray-300 leading-relaxed">
-                {job.experiences}
+                {experiences}
               </p>
             </div>
             <div>
@@ -99,16 +99,18 @@ const JobDetails = () => {
               <div className="p-4 rounded-lg">
                 <p className="flex items-center text-white dark:text-gray-300 mb-2">
                   <Phone className="w-5 h-5 mr-2" />
-                  {job.contact_information?.phone || "N/A"}
+                  {contact_information?.phone || "N/A"}
                 </p>
                 <p className="flex items-center text-white dark:text-gray-300 mb-2">
                   <Mail className="w-5 h-5 mr-2" />
-                  {job.contact_information?.email || "N/A"}
+                  {contact_information?.email || "N/A"}
                 </p>
-                <div className="pt-6 flex justify-center">
+                <div className="pt-6 flex w-full justify-center">
+                  <Link to={`/jobApply/${_id}`}>
                   <Button onClick={handleApplyJob} variant="custom2">
                     Apply Now
                   </Button>
+                  </Link>
                 </div>
               </div>
             </div>

@@ -8,7 +8,7 @@ const AllJobs = () => {
   return (
     <div className="lg:py-12 py-8 max-w-7xl mx-auto px-6 sm:px-8 lg:px-12">
       <h1 className="lg:text-5xl text-4xl font-bold font-poppins text-center py-8 text-teal-600 dark:text-teal-400">
-        Our all Available jobs
+        Lets Apply To your dream job
       </h1>
       <div className="flex w-full max-w-lg justify-center mx-auto items-center space-x-2 pb-12">
         <Input type="email" placeholder="Enter job title..." />
