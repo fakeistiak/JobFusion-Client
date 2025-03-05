@@ -29,7 +29,7 @@ const router = createBrowserRouter([
         element: <Statistics />,
       },
       {
-        path: "/applied",
+        path: "/appliedJobs",
         element: (
           <PrivateRoute>
             <AppliedJobs />

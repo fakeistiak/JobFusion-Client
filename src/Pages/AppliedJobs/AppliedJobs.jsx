@@ -1,80 +1,117 @@
-import {
-  Table,
-  TableBody,
-  TableCaption,
-  TableCell,
-  TableFooter,
-  TableHead,
-  TableHeader,
-  TableRow,
-} from "@/components/ui/table";
-
-const invoices = [
-  {
-    invoice: "INV001",
-    paymentStatus: "Paid",
-    totalAmount: "$250.00",
-    paymentMethod: "Credit Card",
-  },
-  {
-    invoice: "INV002",
-    paymentStatus: "Pending",
-    totalAmount: "$150.00",
-    paymentMethod: "PayPal",
-  },
-  {
-    invoice: "INV002",
-    paymentStatus: "Pending",
-    totalAmount: "$150.00",
-    paymentMethod: "PayPal",
-  },
-  {
-    invoice: "INV002",
-    paymentStatus: "Pending",
-    totalAmount: "$150.00",
-    paymentMethod: "PayPal",
-  },
-  {
-    invoice: "INV002",
-    paymentStatus: "Pending",
-    totalAmount: "$150.00",
-    paymentMethod: "PayPal",
-  },
-];
+import { useContext, useEffect, useState } from "react";
+import { AuthContext } from "@/Provider/AuthProvider";
+import { FaTrash, FaEdit } from "react-icons/fa"; // Importing icons from react-icons
 
 const AppliedJobs = () => {
+  const { user } = useContext(AuthContext);
+  const [jobs, setJobs] = useState([]);
+
+  useEffect(() => {
+    fetch(`http://localhost:5000/jobApplication?email=${user.email}`)
+      .then((res) => res.json())
+      .then((data) => {
+        setJobs(data);
+      });
+  }, [user.email]);
+
   return (
     <div className="max-w-7xl mx-auto lg:py-20 py-8 px-6">
-      <Table>
-        <TableCaption>A list of your recent invoices.</TableCaption>
-        <TableHeader className="text-xl bg-gray-200 font-poppins">
-          <TableRow>
-            <TableHead className="w-[100px]">Invoice</TableHead>
-            <TableHead>Status</TableHead>
-            <TableHead>Method</TableHead>
-            <TableHead className="text-right">Amount</TableHead>
-          </TableRow>
-        </TableHeader>
-        <TableBody className="bg-gray-900 text-white">
-          {invoices.map((invoice) => (
-            <TableRow key={invoice.invoice}>
-              <TableCell className="font-medium">{invoice.invoice}</TableCell>
-              <TableCell>{invoice.paymentStatus}</TableCell>
-              <TableCell>{invoice.paymentMethod}</TableCell>
-              <TableCell className="text-right">
-                {invoice.totalAmount}
-              </TableCell>
-            </TableRow>
-          ))}
-        </TableBody>
-        <TableFooter>
-          <TableRow>
-            <TableCell colSpan={3}>Total</TableCell>
-            <TableCell className="text-right">$2,500.00</TableCell>
-          </TableRow>
-        </TableFooter>
-      </Table>
+      <section className="container px-4 mx-auto">
+        <div className="flex items-center gap-x-3">
+          <h2 className="text-3xl font-medium text-teal-500 dark:text-teal-400">
+            Applied Jobs
+          </h2>
+        </div>
+
+        <div className="flex flex-col mt-6">
+          <div className="-mx-4 -my-2 overflow-x-auto sm:-mx-6 lg:-mx-8">
+            <div className="inline-block min-w-full py-2 align-middle md:px-6 lg:px-8">
+              <div className="overflow-hidden border border-gray-200 dark:border-gray-700 md:rounded-lg">
+                <table className="min-w-full divide-y divide-gray-200 dark:divide-gray-700">
+                  <thead className="bg-gray-50 dark:bg-gray-800">
+                    <tr>
+                      <th
+                        scope="col"
+                        className="py-3.5 px-4 text-lg font-semibold text-left rtl:text-right text-black dark:text-gray-400"
+                      >
+                        Company Logo
+                      </th>
+                      <th
+                        scope="col"
+                        className="py-3.5 px-4 text-lg font-semibold text-left rtl:text-right text-black dark:text-gray-400"
+                      >
+                        Job Title
+                      </th>
+                      <th
+                        scope="col"
+                        className="px-12 py-3.5 text-lg font-semibold text-left rtl:text-right text-black dark:text-gray-400"
+                      >
+                        Salary
+                      </th>
+                      <th
+                        scope="col"
+                        className="px-4 py-3.5 text-lg font-semibold text-left rtl:text-right text-black dark:text-gray-400"
+                      >
+                        Job Type
+                      </th>
+                      <th
+                        scope="col"
+                        className="px-4 py-3.5 text-lg font-semibold text-left rtl:text-right text-black dark:text-gray-400"
+                      >
+                        Remote or Onsite
+                      </th>
+                      <th
+                        scope="col"
+                        className="px-4 py-3.5 text-lg font-semibold text-left rtl:text-right text-black dark:text-gray-400"
+                      >
+                        Location
+                      </th>
+                    </tr>
+                  </thead>
+                  <tbody className="bg-white divide-y divide-gray-200 dark:divide-gray-700 dark:bg-gray-900">
+                    {jobs.map((job) => (
+                      <tr key={job._id}>
+                        <td className="px-4 py-4 text-sm font-medium text-gray-700 whitespace-nowrap">
+                          <img src={job.logo} className="w-12 h-12 rounded-full" />
+                        </td>
+                        <td className="px-4 py-4 text-sm font-medium text-gray-700 whitespace-nowrap">
+                          <div>
+                            <h2 className="font-medium text-gray-800 dark:text-white">
+                              {job.job_title}
+                            </h2>
+                            <p className="text-sm font-normal text-gray-600 dark:text-gray-400">
+                              {job.company_name}
+                            </p>
+                          </div>
+                        </td>
+                        <td className="px-12 py-4 text-sm font-medium text-gray-700 whitespace-nowrap">
+                          <div className="inline-flex items-center px-3 py-1 rounded-full gap-x-2 bg-emerald-100/60 dark:bg-gray-800">
+                            <span className="h-1.5 w-1.5 rounded-full bg-emerald-500"></span>
+                            <h2 className="text-sm font-normal text-emerald-500">
+                              {job.salary}
+                            </h2>
+                          </div>
+                        </td>
+                        <td className="px-4 py-4 text-sm text-gray-500 dark:text-gray-300 whitespace-nowrap">
+                          {job.job_type}
+                        </td>
+                        <td className="px-4 py-4 text-sm text-gray-500 dark:text-gray-300 whitespace-nowrap">
+                          {job.remote_or_onsite}
+                        </td>
+                        <td className="px-4 py-4 text-sm text-gray-500 dark:text-gray-300 whitespace-nowrap">
+                          {job.location}
+                        </td>
+                      </tr>
+                    ))}
+                  </tbody>
+                </table>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
     </div>
   );
 };
+
 export default AppliedJobs;

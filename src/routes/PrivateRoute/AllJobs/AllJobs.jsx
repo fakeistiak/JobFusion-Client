@@ -14,7 +14,7 @@ const AllJobs = () => {
         <Input type="email" placeholder="Enter job title..." />
         <Button type="submit">Search</Button>
       </div>
-      <div className="grid lg:grid-cols-3 md:grid-cols-2 sm:grid-cols-1 gap-8 max-w-7xl mx-auto">
+      <div className="grid lg:grid-cols-3 md:grid-cols-2 sm:grid-cols-1 gap-8 max-w-7xl px-6 mx-auto">
         {job.map((job) => (
           <Job key={job._id} job={job} />
         ))}

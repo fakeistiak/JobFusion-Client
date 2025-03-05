@@ -36,23 +36,26 @@ const Login = () => {
 
     setErrorMessage("");
     signInUser(email, password)
-      .then((result) => {
-        setUser(result.user);
+    .then((result) => {
+      setUser(result.user);
+      toast.success("Login successful!", { position: "top-right" });
+  
+      setTimeout(() => {
         navigate(location?.state || "/");
-        setTimeout(() => {
-          toast.success("Login successful!", { position: "top-right" });
-        }, 800);
-        e.target.reset();
-      })
-      .catch((error) => {
-        setErrorMessage(error.message);
-        toast.error("Wrong username or password check again " , {
-          position: "top-right",
-        });
+      }, 600); 
+  
+      e.target.reset();
+    })
+    .catch((error) => {
+      setErrorMessage(error.message);
+      toast.error("Wrong username or password check again", {
+        position: "top-right",
       });
+    });
+  
   };
 
-  //Login with Google
+
   const handleGoogleSignin = async () => {
     try {
       const result = await signInWithPopup(auth, googleProvider);
@@ -75,16 +78,17 @@ const Login = () => {
         });
       }
   
-      navigate(location?.state || "/");
+      toast.success("Login successful!", { position: "top-right" });
   
       setTimeout(() => {
-        toast.success("Login successful!", { position: "top-right" });
-      }, 800);
+        navigate(location?.state || "/");
+      }, 600);
     } catch (error) {
       console.error("Google sign-in error", error.message);
       toast.error("Google sign-in failed!", { position: "top-right" });
     }
   };
+  
   
   
 

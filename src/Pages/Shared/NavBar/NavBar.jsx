@@ -36,7 +36,7 @@ const NavBar = () => {
       ? [
           {
             id: 3,
-            path: "/applied",
+            path: "/appliedJobs",
             name: "Applied Jobs",
             icon: <AiOutlineFileText className="text-2xl" />,
           },
@@ -80,7 +80,7 @@ const NavBar = () => {
         to="/"
         onClick={() => window.scrollTo({ top: 0, behavior: "smooth" })}
         className={`text-3xl font-bold font-poppins transition-colors duration-300 ${
-          isScrolled && !open ? "text-black hover:text-gray-400" : "text-white"
+          isScrolled && !open ? "text-teal-500 dark:text-teal-400 hover:text-gray-400" : "text-white"
         }`}
       >
         JobFusion
@@ -101,15 +101,16 @@ const NavBar = () => {
         {routes.map((route) => (
           <li key={route.id}>
             <NavLink
+            onClick={() => window.scrollTo({ top: 0, behavior: "smooth" })}
               to={route.path}
               className={({ isActive }) =>
                 `text-lg font-medium transition-colors duration-300 ${
                   isActive
                     ? isScrolled
-                      ? "text-black"
+                      ? "text-teal-600 font-bold text-xl dark:text-teal-400"
                       : "text-white"
                     : isScrolled
-                    ? "text-gray-400 hover:text-black"
+                    ? "text-gray-600 hover:text-gray-900 dark:text-gray-200"
                     : "text-gray-300 hover:text-white"
                 }`
               }
@@ -220,7 +221,11 @@ const NavBar = () => {
               <li key={route.id} className="mb-4">
                 <NavLink
                   to={route.path}
-                  onClick={handleRouteClick}
+                  onClick={() => {
+                    handleRouteClick();
+                    window.scrollTo({ top: 0, behavior: "smooth" });
+                  }}
+                  
                   className={({ isActive }) =>
                     `flex items-center gap-2 text-lg font-medium transition-colors duration-300 ${
                       isActive
