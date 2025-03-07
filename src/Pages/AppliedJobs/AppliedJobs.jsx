@@ -1,6 +1,5 @@
 import { useContext, useEffect, useState } from "react";
 import { AuthContext } from "@/Provider/AuthProvider";
-import { FaTrash, FaEdit } from "react-icons/fa"; // Importing icons from react-icons
 
 const AppliedJobs = () => {
   const { user } = useContext(AuthContext);

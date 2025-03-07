@@ -17,7 +17,7 @@ import { useLocation, useNavigate } from "react-router-dom";
 import { toast, ToastContainer } from "react-toastify";
 
 const Login = () => {
-  const [user, setUser] = useState(null);
+  const [users, setUser] = useState(null);
   const [showPassword, setShowPassword] = useState(false);
   const [errorMessage, setErrorMessage] = useState("");
   const auth = getAuth(app);
@@ -28,32 +28,38 @@ const Login = () => {
   const navigate = useNavigate();
   const location = useLocation();
 
-  //Login With Email Password
+
   const handleLogin = (e) => {
     e.preventDefault();
     const email = e.target.email.value;
     const password = e.target.password.value;
-
+  
     setErrorMessage("");
     signInUser(email, password)
-    .then((result) => {
-      setUser(result.user);
-      toast.success("Login successful!", { position: "top-right" });
+      .then((result) => {
+        const loggedInUser = result.user;
+        setUser(loggedInUser);
   
-      setTimeout(() => {
         navigate(location?.state || "/");
-      }, 600); 
   
-      e.target.reset();
-    })
-    .catch((error) => {
-      setErrorMessage(error.message);
-      toast.error("Wrong username or password check again", {
-        position: "top-right",
+        setTimeout(() => {
+          toast.success(`Welcome back ${loggedInUser.displayName || loggedInUser.email}! Login successful!`, {
+            position: "top-right",
+            autoClose:2100
+          });
+        }, 400);
+  
+        e.target.reset();
+      })
+      .catch((error) => {
+        setErrorMessage(error.message);
+        toast.error("Wrong username or password check again", {
+          position: "top-right",
+        });
       });
-    });
-  
   };
+  
+
 
 
   const handleGoogleSignin = async () => {
@@ -78,16 +84,21 @@ const Login = () => {
         });
       }
   
-      toast.success("Login successful!", { position: "top-right" });
+      navigate(location?.state || "/");
   
       setTimeout(() => {
-        navigate(location?.state || "/");
-      }, 600);
+        toast.success(`Welcome back ${loggedInUser.displayName || loggedInUser.email}! Login successful!`, {
+          position: "top-right",
+          autoClose:2100
+        });
+      }, 400);
+  
     } catch (error) {
       console.error("Google sign-in error", error.message);
       toast.error("Google sign-in failed!", { position: "top-right" });
     }
   };
+  
   
   
   
