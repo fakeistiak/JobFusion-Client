@@ -1,5 +1,7 @@
 import { useContext, useEffect, useState } from "react";
 import { AuthContext } from "@/Provider/AuthProvider";
+import { RxCross2 } from "react-icons/rx";
+import { CiEdit } from "react-icons/ci";
 
 const AppliedJobs = () => {
   const { user } = useContext(AuthContext);
@@ -21,7 +23,6 @@ const AppliedJobs = () => {
             Applied Jobs
           </h2>
         </div>
-
         <div className="flex flex-col mt-6">
           <div className="-mx-4 -my-2 overflow-x-auto sm:-mx-6 lg:-mx-8">
             <div className="inline-block min-w-full py-2 align-middle md:px-6 lg:px-8">
@@ -69,9 +70,12 @@ const AppliedJobs = () => {
                   </thead>
                   <tbody className="bg-white divide-y divide-gray-200 dark:divide-gray-700 dark:bg-gray-900">
                     {jobs.map((job) => (
-                      <tr key={job._id}>
+                      <tr key={job._id} className="bg-gray-100">
                         <td className="px-4 py-4 text-sm font-medium text-gray-700 whitespace-nowrap">
-                          <img src={job.logo} className="w-12 h-12 rounded-full" />
+                          <img
+                            src={job.logo}
+                            className="w-12 h-12 rounded-full"
+                          />
                         </td>
                         <td className="px-4 py-4 text-sm font-medium text-gray-700 whitespace-nowrap">
                           <div>
@@ -99,6 +103,22 @@ const AppliedJobs = () => {
                         </td>
                         <td className="px-4 py-4 text-sm text-gray-500 dark:text-gray-300 whitespace-nowrap">
                           {job.location}
+                        </td>
+                        <td>
+                          <button
+                            title="Update The Apply"
+                            className="px-4 py-4"
+                          >
+                            <CiEdit className="text-3xl font-extrabold text-teal-500" />
+                          </button>
+                        </td>
+                        <td>
+                          <button
+                            title="Cancel The Apply"
+                            className="px-4 py-4"
+                          >
+                            <RxCross2 className="text-3xl font-extrabold text-red-600" />
+                          </button>
                         </td>
                       </tr>
                     ))}
