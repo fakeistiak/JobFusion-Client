@@ -59,7 +59,7 @@ const UserProfile = () => {
 
   return (
     <div className="min-h-screen bg-gray-100 dark:bg-gray-900 py-12 px-6">
-      <div className="max-w-4xl mx-auto bg-white dark:bg-gray-800 rounded-lg shadow-xl overflow-hidden">
+      <div className="max-w-6xl mx-auto bg-white dark:bg-gray-800 rounded-lg shadow-xl overflow-hidden">
         <div className="relative bg-teal-600 dark:bg-teal-700 h-32">
           <div className="absolute -bottom-16 left-6">
             <img

@@ -14,41 +14,50 @@ import { Link, NavLink } from "react-router-dom";
 import ThemeToggle from "@/components/ThemeToggle";
 
 const NavBar = () => {
-  const [open, setOpen] = useState(false); // Controls sidebar visibility
+  const [open, setOpen] = useState(false);
   const { user, SignOutUser } = useContext(AuthContext);
   const [imgError, setImgError] = useState(false);
   const [isScrolled, setIsScrolled] = useState(false);
+  const [isAdmin, setIsAdmin] = useState(false); //
+
+  useEffect(() => {
+    const role = localStorage.getItem("role"); 
+    setIsAdmin(role === "admin");
+  }, [user?.email]);
+
+  console.log(isAdmin)
 
   const routes = [
-    {
-      id: 1,
-      path: "/",
-      name: "Home",
-      icon: <AiOutlineHome className="text-2xl" />,
-    },
-    {
-      id: 2,
-      path: "/statistics",
-      name: "Statistics",
-      icon: <AiOutlineBarChart className="text-2xl" />,
-    },
-    ...(user
-      ? [
-          {
-            id: 3,
-            path: "/appliedJobs",
-            name: "Applied Jobs",
-            icon: <AiOutlineFileText className="text-2xl" />,
-          },
-          {
-            id: 4,
-            path: "/addjob",
-            name: "Add Job",
-            icon: <AiOutlinePlus className="text-2xl" />,
-          },
-        ]
-      : []),
-  ];
+  {
+    path: "/",
+    name: "Home",
+    icon: <AiOutlineHome className="text-2xl" />,
+  },
+  {
+    path: "/allJobs",
+    name: "Available Jobs",
+    icon: <AiOutlineBarChart className="text-2xl" />,
+  },
+  ...(user
+    ? [
+        {
+          path: "/appliedJobs",
+          name: "Applied Jobs",
+          icon: <AiOutlineFileText className="text-2xl" />,
+        },
+        ...(isAdmin
+          ? [
+              {
+                path: "/addjob",
+                name: "Add Job",
+                icon: <AiOutlinePlus className="text-2xl" />,
+              },
+            ]
+          : []),
+      ]
+    : []),
+].map((route, index) => ({ ...route, id: index + 1 }));
+
 
   const handleSignOut = () => {
     SignOutUser()
@@ -57,14 +66,13 @@ const NavBar = () => {
   };
 
   const handleRouteClick = () => {
-    setOpen(false); // Close sidebar when a route is clicked
+    setOpen(false);
   };
 
   useEffect(() => {
     const handleScroll = () => {
       setIsScrolled(window.scrollY > 50);
     };
-
     window.addEventListener("scroll", handleScroll);
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
@@ -75,7 +83,6 @@ const NavBar = () => {
         isScrolled && !open ? "backdrop-blur-xl bg-white/30" : "bg-teal-600"
       }`}
     >
-      {/* Logo */}
       <Link
         to="/"
         onClick={() => window.scrollTo({ top: 0, behavior: "smooth" })}
@@ -86,7 +93,6 @@ const NavBar = () => {
         JobFusion
       </Link>
 
-      {/* Mobile Menu Toggle Button */}
       <div
         className={`md:hidden text-2xl cursor-pointer transition-colors duration-300 ${
           isScrolled && !open ? "text-black hover:text-gray-400" : "text-white"
@@ -96,12 +102,11 @@ const NavBar = () => {
         {open ? <AiOutlineClose /> : <AiOutlineMenu />}
       </div>
 
-      {/* Navigation Links for Desktop */}
       <ul className="hidden md:flex items-center space-x-6">
         {routes.map((route) => (
           <li key={route.id}>
             <NavLink
-            onClick={() => window.scrollTo({ top: 0, behavior: "smooth" })}
+              onClick={() => window.scrollTo({ top: 0, behavior: "smooth" })}
               to={route.path}
               className={({ isActive }) =>
                 `text-lg font-medium transition-colors duration-300 ${
@@ -120,7 +125,6 @@ const NavBar = () => {
           </li>
         ))}
 
-        {/* Theme Toggle */}
         <li>
           <button
             className={`transition-colors duration-300 ${
@@ -131,7 +135,6 @@ const NavBar = () => {
           </button>
         </li>
 
-        {/* Profile Menu Button */}
         <li>
           <div
             className={`flex items-center space-x-2 cursor-pointer transition-colors duration-300 ${
@@ -143,9 +146,7 @@ const NavBar = () => {
               className="w-12 h-12 rounded-full object-cover"
               src={
                 imgError || !user?.photoURL
-                  ? `https://ui-avatars.com/api/?name=${
-                      user?.displayName || "User"
-                    }&background=random`
+                  ? `https://ui-avatars.com/api/?name=${user?.displayName || "User"}&background=random`
                   : user?.photoURL
               }
               alt={user?.displayName || "User"}
@@ -155,25 +156,19 @@ const NavBar = () => {
         </li>
       </ul>
 
-      {/* Sidebar for Mobile */}
-      
       <div
         className={`fixed top-0 right-0 h-full w-64 dark:bg-black bg-white z-50 transform transition-transform duration-300 ${
           open ? "translate-x-0 px-4 pt-8" : "translate-x-full"
         }`}
       >
         <div className="p-4">
-          {/* Close Button */}
           <div className="flex justify-between items-center mb-4">
-            <span className="text-2xl font-bold text-black dark:text-white">
-              Profile
-            </span>
+            <span className="text-2xl font-bold text-black dark:text-white">Profile</span>
             <button onClick={() => setOpen(false)}>
               <AiOutlineClose className="text-2xl text-black dark:text-white" />
             </button>
           </div>
 
-          {/* User Profile Section */}
           {user ? (
             <div className="space-y-4">
               <div className="flex items-center space-x-2">
@@ -181,9 +176,7 @@ const NavBar = () => {
                   className="lg:w-20 lg:h-20 w-12 h-12 rounded-full object-cover"
                   src={
                     imgError || !user?.photoURL
-                      ? `https://ui-avatars.com/api/?name=${
-                          user?.displayName || "User"
-                        }&background=random`
+                      ? `https://ui-avatars.com/api/?name=${user?.displayName || "User"}&background=random`
                       : user?.photoURL
                   }
                   alt={user?.displayName || "User"}
@@ -207,15 +200,11 @@ const NavBar = () => {
               </Link>
             </div>
           ) : (
-            <h1
-              className="block text-md font-medium text-black dark:text-white "
-            >
+            <h1 className="block text-md font-medium text-black dark:text-white">
               Login to see your Profile Info
             </h1>
-          )
-          }
+          )}
 
-          {/* Navigation Links for Mobile */}
           <ul className="mt-3">
             {routes.map((route) => (
               <li key={route.id} className="mb-4">
@@ -225,7 +214,6 @@ const NavBar = () => {
                     handleRouteClick();
                     window.scrollTo({ top: 0, behavior: "smooth" });
                   }}
-                  
                   className={({ isActive }) =>
                     `flex items-center gap-2 text-lg font-medium transition-colors duration-300 ${
                       isActive
@@ -240,7 +228,6 @@ const NavBar = () => {
               </li>
             ))}
           </ul>
-          {/* Theme Toggle for Mobile */}
 
           {user ? (
             <button
@@ -266,7 +253,6 @@ const NavBar = () => {
         </div>
       </div>
 
-      {/* Overlay for Sidebar */}
       {open && (
         <div
           className="fixed inset-0 bg-black/30 backdrop-blur-lg z-40"

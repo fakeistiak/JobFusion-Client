@@ -17,7 +17,7 @@ import { useLocation, useNavigate } from "react-router-dom";
 import { toast, ToastContainer } from "react-toastify";
 
 const Login = () => {
-  const [users, setUser] = useState(null);
+  const [user, setUser] = useState(null);
   const [showPassword, setShowPassword] = useState(false);
   const [errorMessage, setErrorMessage] = useState("");
   const auth = getAuth(app);
@@ -28,49 +28,52 @@ const Login = () => {
   const navigate = useNavigate();
   const location = useLocation();
 
-
   const handleLogin = (e) => {
     e.preventDefault();
     const email = e.target.email.value;
     const password = e.target.password.value;
-  
+
     setErrorMessage("");
     signInUser(email, password)
-      .then((result) => {
+      .then(async (result) => {
         const loggedInUser = result.user;
         setUser(loggedInUser);
+
   
+        const res = await fetch(`http://localhost:5000/users?email=${loggedInUser.email}`);
+        const userData = await res.json();
+
+        localStorage.setItem("role", userData?.role || "user");
+        localStorage.setItem("email", loggedInUser.email);
+
         navigate(location?.state || "/");
-  
+
         setTimeout(() => {
-          toast.success(`Welcome back ${loggedInUser.displayName || loggedInUser.email}! Login successful!`, {
-            position: "top-right",
-            autoClose:2100
-          });
+          toast.success(
+            `Welcome back ${loggedInUser.displayName || loggedInUser.email}! Login successful!`,
+            { position: "top-right", autoClose: 2100 }
+          );
         }, 400);
-  
+
         e.target.reset();
       })
       .catch((error) => {
         setErrorMessage(error.message);
-        toast.error("Wrong username or password check again", {
+        toast.error("Wrong username or password, please check again", {
           position: "top-right",
         });
       });
   };
-  
-
-
 
   const handleGoogleSignin = async () => {
     try {
       const result = await signInWithPopup(auth, googleProvider);
       const loggedInUser = result.user;
       setUser(loggedInUser);
-  
+
       const res = await fetch(`http://localhost:5000/users?email=${loggedInUser.email}`);
       const data = await res.json();
-  
+
       if (!data || Object.keys(data).length === 0) {
         await fetch("http://localhost:5000/users", {
           method: "POST",
@@ -83,36 +86,41 @@ const Login = () => {
           }),
         });
       }
-  
+
+   
+      const roleRes = await fetch(`http://localhost:5000/users?email=${loggedInUser.email}`);
+      const userData = await roleRes.json();
+
+      localStorage.setItem("role", userData?.role || "user");
+      localStorage.setItem("email", loggedInUser.email);
+
       navigate(location?.state || "/");
-  
+
       setTimeout(() => {
-        toast.success(`Welcome back ${loggedInUser.displayName || loggedInUser.email}! Login successful!`, {
-          position: "top-right",
-          autoClose:2100
-        });
+        toast.success(
+          `Welcome back ${loggedInUser.displayName || loggedInUser.email}! Login successful!`,
+          { position: "top-right", autoClose: 2100 }
+        );
       }, 400);
-  
     } catch (error) {
       console.error("Google sign-in error", error.message);
       toast.error("Google sign-in failed!", { position: "top-right" });
     }
   };
-  
-  
-  
-  
 
-  //Login with Github
   const handleGithubSignin = () => {
     signInWithPopup(auth, githubProvider)
       .then((result) => {
         const loggedUser = result.user;
         setUser(loggedUser);
-        navigate(location?.state ? location.state : "/");
+        localStorage.setItem("email", loggedUser.email);
+        localStorage.setItem("role", "user");
+
+        navigate(location?.state || "/");
       })
       .catch((error) => {
         setErrorMessage(error.message);
+        toast.error("GitHub sign-in failed!", { position: "top-right" });
       });
   };
 
@@ -143,9 +151,7 @@ const Login = () => {
           <h2 className="lg:text-4xl md:text-4xl text-3xl font-bold text-center mb-6 text-teal-600 dark:text-white">
             Login Now
           </h2>
-          {errorMessage && (
-            <p className="text-red-600 text-center mb-4">{errorMessage}</p>
-          )}
+          {errorMessage && <p className="text-red-600 text-center mb-4">{errorMessage}</p>}
           <form onSubmit={handleLogin}>
             <div className="space-y-4">
               <div className="flex justify-center items-center gap-2">

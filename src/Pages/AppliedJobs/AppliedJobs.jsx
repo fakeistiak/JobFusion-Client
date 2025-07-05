@@ -16,12 +16,11 @@ const AppliedJobs = () => {
         setJobs(data);
         setLoading(false);
       })
-      .catch(() => setLoading(false)); // Handle errors gracefully
+      .catch(() => setLoading(false)); 
   }, [user.email]);
 
   return (
     <div className="max-w-7xl mx-auto lg:py-20 py-8 px-6">
-      {/* Loader */}
       {loading ? (
         <div className="flex items-center justify-center h-screen">
           <FadeLoader color="#4A90E2" size={60} />
@@ -62,7 +61,7 @@ const AppliedJobs = () => {
                     </thead>
                     <tbody className="bg-white divide-y divide-gray-200 dark:divide-gray-700 dark:bg-gray-900">
                       {jobs.map((job) => (
-                        <tr key={job._id} className="bg-gray-100">
+                        <tr key={job._id} className="bg-gray-100 dark:bg-gray-900">
                           <td className="px-4 py-4">
                             <img src={job.logo} className="w-12 h-12 rounded-full" />
                           </td>
