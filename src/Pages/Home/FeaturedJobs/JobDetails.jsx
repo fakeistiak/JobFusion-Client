@@ -1,3 +1,5 @@
+import { useContext, useEffect, useState } from "react";
+import { AuthContext } from "@/Provider/AuthProvider";
 import { ToastContainer, toast } from "react-toastify";
 import { Link, useLoaderData } from "react-router-dom";
 import {
@@ -12,7 +14,40 @@ import {
 import { Button } from "@/components/ui/button";
 
 const JobDetails = () => {
-  const {_id,logo,company_name,remote_or_onsite,job_type,job_title,location,salary,job_description,job_responsibility,educational_requirements,experiences,contact_information} = useLoaderData();
+  const {
+    _id,
+    logo,
+    company_name,
+    remote_or_onsite,
+    job_type,
+    job_title,
+    location,
+    salary,
+    job_description,
+    job_responsibility,
+    educational_requirements,
+    experiences,
+    contact_information,
+  } = useLoaderData();
+
+  const { user } = useContext(AuthContext);
+  const [alreadyApplied, setAlreadyApplied] = useState(false);
+
+  useEffect(() => {
+    if (!user) return;
+
+    fetch(`http://localhost:5000/jobApplication?email=${user.email}`)
+      .then((res) => res.json())
+      .then((data) => {
+        // Adjust "job_id" to your actual applied job field if needed
+        const isApplied = data.some((job) => job.job_id === _id);
+        setAlreadyApplied(isApplied);
+      })
+      .catch(() => {
+        setAlreadyApplied(false);
+      });
+  }, [user, _id]);
+
   const handleApplyJob = () => {
     toast.success("Applied Successfully");
   };
@@ -92,6 +127,7 @@ const JobDetails = () => {
                 {experiences}
               </p>
             </div>
+
             <div>
               <h3 className="text-xl font-semibold mb-3 text-white dark:text-white">
                 Contact Information
@@ -106,11 +142,17 @@ const JobDetails = () => {
                   {contact_information?.email || "N/A"}
                 </p>
                 <div className="pt-6 flex w-full justify-center">
-                  <Link to={`/jobApply/${_id}`}>
-                  <Button onClick={handleApplyJob} variant="custom2">
-                    Apply Now
-                  </Button>
-                  </Link>
+                  {alreadyApplied ? (
+                    <Button disabled variant="custom2">
+                      Already Applied
+                    </Button>
+                  ) : (
+                    <Link to={`/jobApply/${_id}`}>
+                      <Button onClick={handleApplyJob} variant="custom2">
+                        Apply Now
+                      </Button>
+                    </Link>
+                  )}
                 </div>
               </div>
             </div>

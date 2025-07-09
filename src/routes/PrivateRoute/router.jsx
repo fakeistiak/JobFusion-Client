@@ -13,7 +13,8 @@ import AllJobs from "./AllJobs/AllJobs";
 import Profile from "@/Pages/Profile/Profile";
 import UserProfile from "@/Pages/Profile/UserProfile";
 import JobApply from "@/Pages/JobApply/JobApply";
-
+import AdminDashboard from "@/Pages/AdminDashboard/AdminDashboard";
+import AdminRoute from "./PrivateRoute";
 
 const router = createBrowserRouter([
   {
@@ -43,8 +44,13 @@ const router = createBrowserRouter([
       },
       {
         path: "/job/:id",
-        element: <PrivateRoute><JobDetails /></PrivateRoute>,
-        loader: ({params}) => fetch(`http://localhost:5000/jobs/${params.id}`),
+        element: (
+          <PrivateRoute>
+            <JobDetails />
+          </PrivateRoute>
+        ),
+        loader: ({ params }) =>
+          fetch(`http://localhost:5000/jobs/${params.id}`),
       },
       {
         path: "/login",
@@ -55,28 +61,52 @@ const router = createBrowserRouter([
         element: <Register />,
       },
       {
-        path:"/addjob",
-        element:<AddJob/>
+        path: "/addjob",
+        element: <AddJob />,
       },
       {
-        path:"/alljobs",
-        element:<PrivateRoute><AllJobs/></PrivateRoute>,
+        path: "/alljobs",
+        element: (
+          <PrivateRoute>
+            <AllJobs />
+          </PrivateRoute>
+        ),
         loader: () => fetch("http://localhost:5000/jobs"),
       },
       {
-        path:"/profile",
-        element:<PrivateRoute><Profile/></PrivateRoute>,
-        loader:()=>fetch("http://localhost:5000/users")
+        path: "/profile",
+        element: (
+          <PrivateRoute>
+            <Profile />
+          </PrivateRoute>
+        ),
+        loader: () => fetch("http://localhost:5000/users"),
       },
       {
-        path:"/userProfile",
-        element:<PrivateRoute><UserProfile/></PrivateRoute>,
-        loader:()=>fetch("http://localhost:5000/users")
+        path: "/userProfile",
+        element: (
+          <PrivateRoute>
+            <UserProfile />
+          </PrivateRoute>
+        ),
+        loader: () => fetch("http://localhost:5000/users"),
       },
       {
-        path:"/jobApply/:id",
-        element:<PrivateRoute><JobApply/></PrivateRoute>
-      }
+        path: "/jobApply/:id",
+        element: (
+          <PrivateRoute>
+            <JobApply />
+          </PrivateRoute>
+        ),
+      },
+      {
+        path: "/adminDashboard",
+        element: (
+          <AdminRoute>
+            <AdminDashboard />
+          </AdminRoute>
+        ),
+      },
     ],
   },
 ]);

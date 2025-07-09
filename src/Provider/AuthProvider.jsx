@@ -1,5 +1,12 @@
 import { auth } from "@/firebase/firebase.init";
-import { createUserWithEmailAndPassword, GoogleAuthProvider, onAuthStateChanged, signInWithEmailAndPassword, signInWithPopup, signOut } from "firebase/auth";
+import {
+  createUserWithEmailAndPassword,
+  GoogleAuthProvider,
+  onAuthStateChanged,
+  signInWithEmailAndPassword,
+  signInWithPopup,
+  signOut,
+} from "firebase/auth";
 import { createContext, useEffect, useState } from "react";
 
 export const AuthContext = createContext(null);
@@ -7,6 +14,7 @@ export const AuthContext = createContext(null);
 const AuthProvider = ({ children }) => {
   const [user, setUser] = useState(null);
   const [loading, setLoading] = useState(true);
+  const [isAdmin, setIsAdmin] = useState(false);
   const googleProvider = new GoogleAuthProvider();
 
   const createUser = (email, password) => {
@@ -33,7 +41,9 @@ const AuthProvider = ({ children }) => {
       if (currentUser) {
         try {
           // Fetch backend profile by email
-          const res = await fetch(`http://localhost:5000/users?email=${currentUser.email}`);
+          const res = await fetch(
+            `http://localhost:5000/users?email=${currentUser.email}`
+          );
           const backendUser = await res.json();
 
           // Merge Firebase and backend info
@@ -49,12 +59,15 @@ const AuthProvider = ({ children }) => {
           };
 
           setUser(mergedUser);
+          setIsAdmin(backendUser?.role === "admin"); // Set admin status here
         } catch (error) {
           console.error("Failed to fetch backend user profile:", error);
           setUser(currentUser); // fallback to firebase user only
+          setIsAdmin(false);
         }
       } else {
         setUser(null);
+        setIsAdmin(false);
       }
       setLoading(false);
     });
@@ -67,6 +80,7 @@ const AuthProvider = ({ children }) => {
   const authInfo = {
     user,
     setUser,
+    isAdmin,
     loading,
     createUser,
     signInUser,

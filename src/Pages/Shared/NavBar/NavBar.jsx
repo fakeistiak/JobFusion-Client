@@ -12,6 +12,7 @@ import { CgProfile } from "react-icons/cg";
 import { PiSignOutBold } from "react-icons/pi";
 import { Link, NavLink } from "react-router-dom";
 import ThemeToggle from "@/components/ThemeToggle";
+import avatar from "../../../assets/images/avatar.png"
 
 const NavBar = () => {
   const [open, setOpen] = useState(false);
@@ -38,22 +39,27 @@ const NavBar = () => {
     name: "Available Jobs",
     icon: <AiOutlineBarChart className="text-2xl" />,
   },
-  ...(user
+  ...(user && !isAdmin
     ? [
         {
           path: "/appliedJobs",
           name: "Applied Jobs",
           icon: <AiOutlineFileText className="text-2xl" />,
         },
-        ...(isAdmin
-          ? [
-              {
-                path: "/addjob",
-                name: "Add Job",
-                icon: <AiOutlinePlus className="text-2xl" />,
-              },
-            ]
-          : []),
+      ]
+    : []),
+  ...(user && isAdmin
+    ? [
+        {
+          path: "/addjob",
+          name: "Add Job",
+          icon: <AiOutlinePlus className="text-2xl" />,
+        },
+        {
+          path: "/adminDashboard",
+          name: "Admin Dashboard",
+          icon: <AiOutlinePlus className="text-2xl" />,
+        },
       ]
     : []),
 ].map((route, index) => ({ ...route, id: index + 1 }));
@@ -146,7 +152,7 @@ const NavBar = () => {
               className="w-12 h-12 rounded-full object-cover"
               src={
                 imgError || !user?.photoURL
-                  ? `https://ui-avatars.com/api/?name=${user?.displayName || "User"}&background=random`
+                  ? avatar
                   : user?.photoURL
               }
               alt={user?.displayName || "User"}
@@ -176,7 +182,7 @@ const NavBar = () => {
                   className="lg:w-20 lg:h-20 w-12 h-12 rounded-full object-cover"
                   src={
                     imgError || !user?.photoURL
-                      ? `https://ui-avatars.com/api/?name=${user?.displayName || "User"}&background=random`
+                      ? avatar
                       : user?.photoURL
                   }
                   alt={user?.displayName || "User"}
