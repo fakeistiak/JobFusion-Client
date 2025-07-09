@@ -4,57 +4,74 @@ import { toast, ToastContainer } from "react-toastify";
 import { FaEdit, FaTimes } from "react-icons/fa";
 import { FadeLoader } from "react-spinners";
 import ProfileSetting from "./ProfileSetting";
+import { updateProfile } from "firebase/auth";
+import { auth } from "@/firebase/firebase.init";
 
 const UserProfile = () => {
-  const { user } = useContext(AuthContext);
+  const { user, setUser } = useContext(AuthContext);
   const [profile, setProfile] = useState(null);
   const [isEditing, setIsEditing] = useState(false);
   const [loading, setLoading] = useState(true);
   const [imgError, setImgError] = useState(false);
 
-  useEffect(() => {
-    if (!user) return;
+  const fetchProfile = () => {
+    if (!user?.email) return;
 
+    setLoading(true);
     fetch(`http://localhost:5000/users?email=${user.email}`)
       .then((res) => res.json())
       .then((data) => {
-        if (data) {
-          setProfile(data);
-        } else {
-          toast.warn("Profile not found");
-          setProfile({});
-        }
+        if (data) setProfile(data);
+        else setProfile({});
         setLoading(false);
       })
       .catch((err) => {
-        console.error("Error fetching user profile:", err);
+        console.error("Error fetching profile:", err);
         toast.error("Failed to load profile");
         setLoading(false);
       });
+  };
+
+  useEffect(() => {
+    fetchProfile();
   }, [user]);
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
     const formData = new FormData(e.target);
     const updatedProfile = Object.fromEntries(formData.entries());
     updatedProfile.email = user.email;
 
-    fetch("http://localhost:5000/users", {
-      method: "PUT",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify(updatedProfile),
-    })
-      .then((res) => res.json())
-      .then((data) => {
-        if (data.modifiedCount > 0 || data.upsertedId) {
-          toast.success("Profile updated successfully");
-          setProfile(updatedProfile);
-          setIsEditing(false);
-        } else {
-          toast.warn("No changes detected");
-        }
-      })
-      .catch(() => toast.error("Update failed"));
+    try {
+      const res = await fetch("http://localhost:5000/users", {
+        method: "PUT",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(updatedProfile),
+      });
+      const data = await res.json();
+
+      if (data.modifiedCount > 0 || data.upsertedId) {
+        toast.success("Profile updated");
+
+        // 🔄 Update Firebase display name and photo
+        await updateProfile(auth.currentUser, {
+          displayName: updatedProfile.name,
+          photoURL: updatedProfile.photoURL,
+        });
+
+        // 🟢 Update user context
+        setUser({ ...auth.currentUser });
+
+        // 🔁 Refetch updated profile from backend
+        fetchProfile();
+
+        setIsEditing(false);
+      } else {
+        toast.warn("No changes detected");
+      }
+    } catch {
+      toast.error("Update failed");
+    }
   };
 
   return (
@@ -65,20 +82,20 @@ const UserProfile = () => {
             <img
               className="w-32 h-32 rounded-full border-4 border-white dark:border-gray-800 object-cover"
               src={
-                imgError || !user?.photoURL
+                imgError || !(user?.photoURL || profile?.photoURL)
                   ? `https://ui-avatars.com/api/?name=${
-                      user?.displayName || "User"
+                      profile?.name || user?.displayName || "User"
                     }&background=random`
-                  : user?.photoURL
+                  : user?.photoURL || profile?.photoURL
               }
-              alt={user?.displayName || "User"}
+              alt={profile?.name || user?.displayName || "User"}
               onError={() => setImgError(true)}
             />
           </div>
         </div>
         <div className="px-6 pt-20 pb-6">
           <h2 className="text-3xl font-bold text-gray-800 dark:text-white">
-            {user?.displayName || "User"} Profile
+            {profile?.name || user?.displayName || "User"} Profile
           </h2>
 
           {loading ? (
@@ -88,23 +105,21 @@ const UserProfile = () => {
           ) : (
             <>
               <div className="flex justify-end mb-6">
-                {profile && (
-                  <button
-                    onClick={() => setIsEditing(!isEditing)}
-                    className={`p-2 rounded-lg flex gap-2 items-center transition-colors duration-200 ${
-                      isEditing
-                        ? "bg-red-600 hover:bg-red-700"
-                        : "bg-teal-600 hover:bg-teal-700"
-                    } text-white`}
-                  >
-                    {isEditing ? "Cancel" : "Edit"}{" "}
-                    {isEditing ? (
-                      <FaTimes className="text-xl" />
-                    ) : (
-                      <FaEdit className="text-xl" />
-                    )}
-                  </button>
-                )}
+                <button
+                  onClick={() => setIsEditing(!isEditing)}
+                  className={`p-2 rounded-lg flex gap-2 items-center transition-colors duration-200 ${
+                    isEditing
+                      ? "bg-red-600 hover:bg-red-700"
+                      : "bg-teal-600 hover:bg-teal-700"
+                  } text-white`}
+                >
+                  {isEditing ? "Cancel" : "Edit"}{" "}
+                  {isEditing ? (
+                    <FaTimes className="text-xl" />
+                  ) : (
+                    <FaEdit className="text-xl" />
+                  )}
+                </button>
               </div>
               <form onSubmit={handleSubmit} className="space-y-6">
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
@@ -124,7 +139,7 @@ const UserProfile = () => {
                       <input
                         name={field}
                         type="text"
-                        defaultValue={profile[field] || ""}
+                        defaultValue={profile?.[field] || ""}
                         disabled={!isEditing}
                         className="w-full p-3 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:ring-2 focus:ring-teal-500 focus:border-teal-500 transition-colors duration-200"
                       />
@@ -154,7 +169,7 @@ const UserProfile = () => {
                   </button>
                 )}
               </form>
-              <ProfileSetting/>
+              <ProfileSetting />
             </>
           )}
         </div>
