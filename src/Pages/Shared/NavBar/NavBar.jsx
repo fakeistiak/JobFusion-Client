@@ -26,7 +26,7 @@ const NavBar = () => {
     setIsAdmin(role === "admin");
   }, [user?.email]);
 
-  console.log(isAdmin)
+  // console.log(isAdmin)
 
   const routes = [
   {

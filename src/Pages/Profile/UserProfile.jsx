@@ -53,16 +53,13 @@ const UserProfile = () => {
       if (data.modifiedCount > 0 || data.upsertedId) {
         toast.success("Profile updated");
 
-        // 🔄 Update Firebase display name and photo
         await updateProfile(auth.currentUser, {
           displayName: updatedProfile.name,
           photoURL: updatedProfile.photoURL,
         });
 
-        // 🟢 Update user context
         setUser({ ...auth.currentUser });
 
-        // 🔁 Refetch updated profile from backend
         fetchProfile();
 
         setIsEditing(false);
