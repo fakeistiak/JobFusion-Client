@@ -14,7 +14,8 @@ import Profile from "@/Pages/Profile/Profile";
 import UserProfile from "@/Pages/Profile/UserProfile";
 import JobApply from "@/Pages/JobApply/JobApply";
 import AdminDashboard from "@/Pages/AdminDashboard/AdminDashboard";
-import AdminRoute from "./PrivateRoute";
+import JobApplications from "@/Pages/AdminDashboard/JobApplications";
+import AllUsers from "@/Pages/AdminDashboard/AllUsers";
 
 const router = createBrowserRouter([
   {
@@ -102,9 +103,31 @@ const router = createBrowserRouter([
       {
         path: "/adminDashboard",
         element: (
-          <AdminRoute>
             <AdminDashboard />
-          </AdminRoute>
+        ),
+      },
+      {
+        path: "/addjob",
+        element: (
+          <PrivateRoute>
+            <AddJob />
+          </PrivateRoute>
+        ),
+      },
+      {
+        path: "/users",
+        element: (
+          <PrivateRoute>
+            <AllUsers />
+          </PrivateRoute>
+        ),
+      },
+      {
+        path: "/allApplications",
+        element: (
+          <PrivateRoute>
+            <JobApplications />
+          </PrivateRoute>
         ),
       },
     ],

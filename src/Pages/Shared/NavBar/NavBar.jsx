@@ -7,6 +7,10 @@ import {
   AiOutlineBarChart,
   AiOutlineFileText,
   AiOutlinePlus,
+  AiFillHome,
+  AiFillDashboard,
+  AiOutlineUser,
+  AiOutlineFileSearch,
 } from "react-icons/ai";
 import { CgProfile } from "react-icons/cg";
 import { PiSignOutBold } from "react-icons/pi";
@@ -56,9 +60,19 @@ const NavBar = () => {
           icon: <AiOutlinePlus className="text-2xl" />,
         },
         {
+          path: "/users",
+          name: "Users",
+          icon: <AiOutlineUser className="text-2xl" />,
+        },
+        {
+          path: "/allApplications",
+          name: "Job Applications",
+          icon: <AiOutlineFileSearch  className="text-2xl" />,
+        },
+        {
           path: "/adminDashboard",
           name: "Admin Dashboard",
-          icon: <AiOutlinePlus className="text-2xl" />,
+          icon: <AiFillDashboard className="text-2xl" />,
         },
       ]
     : []),

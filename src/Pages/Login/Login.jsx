@@ -210,7 +210,7 @@ const Login = () => {
                   </span>
                 </div>
               </div>
-              <div className="flex justify-center items-center gap-4">
+              {/* <div className="flex justify-center items-center gap-4">
                 <button
                   type="button"
                   onClick={handleGoogleSignin}
@@ -225,7 +225,7 @@ const Login = () => {
                 >
                   <FaGithub className="lg:text-2xl text-xl" />
                 </button>
-              </div>
+              </div> */}
             </div>
             <p className="py-4 text-lg text-center">
               New to JobFusion?{" "}

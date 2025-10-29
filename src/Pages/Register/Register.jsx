@@ -233,7 +233,7 @@ const Register = () => {
                 </span>
               </div>
             </div>
-            <button
+            {/* <button
               type="button"
               onClick={handleGoogleSignin}
               className="w-full gap-2 flex items-center justify-center bg-white text-black dark:bg-gray-700 dark:text-white hover:bg-gray-200 dark:hover:bg-gray-600 font-bold py-2 px-4 rounded border border-gray-300 dark:border-gray-500 focus:outline-none focus:shadow-outline transition duration-150 ease-in-out"
@@ -248,7 +248,7 @@ const Register = () => {
             >
               <FaGithub className="lg:text-2xl text-xl" />
               Sign up with Github
-            </button>
+            </button> */}
           </div>
           <p className="py-4 text-lg text-center">
             Already Have an account?{" "}

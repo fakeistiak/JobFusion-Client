@@ -76,20 +76,13 @@ const AdminDashboard = () => {
 
   return (
     <div className="min-h-screen bg-gray-50 dark:bg-gray-900 pt-12">
-      {/* Mobile sidebar overlay */}
       {sidebarOpen && (
         <div className="fixed inset-0 z-40 lg:hidden" onClick={() => setSidebarOpen(false)}>
           <div className="fixed inset-0 bg-gray-600 bg-opacity-75 dark:bg-gray-900 dark:bg-opacity-75"></div>
         </div>
       )}
-
-      
-      
-
-      {/* Main Content */}
       <main className="lg:pl-64">
         <div className="p-4 sm:p-6 lg:p-8">
-          {/* Stats Cards */}
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-6 mb-6 sm:mb-8">
             <div className="bg-white dark:bg-gray-800 rounded-lg shadow p-4 sm:p-6">
               <div className="flex items-center">
@@ -176,7 +169,6 @@ const AdminDashboard = () => {
             </div>
           </div>
 
-          {/* Applications Table */}
           <div className="bg-white dark:bg-gray-800 shadow rounded-lg overflow-hidden">
             <div className="px-4 sm:px-6 py-4 border-b border-gray-200 dark:border-gray-700">
               <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between space-y-3 sm:space-y-0">
@@ -214,7 +206,6 @@ const AdminDashboard = () => {
               </div>
             </div>
 
-            {/* Mobile Cards View */}
             <div className="block sm:hidden">
               {applications.map((application) => (
                 <div key={application.id} className="border-b border-gray-200 dark:border-gray-700 p-4">
@@ -270,7 +261,6 @@ const AdminDashboard = () => {
               ))}
             </div>
 
-            {/* Desktop Table View */}
             <div className="hidden sm:block overflow-x-auto">
               <table className="min-w-full divide-y divide-gray-200 dark:divide-gray-700">
                 <thead className="bg-gray-50 dark:bg-gray-700">
