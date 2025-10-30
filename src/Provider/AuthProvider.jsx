@@ -42,7 +42,7 @@ const AuthProvider = ({ children }) => {
         try {
           // Fetch backend profile by email
           const res = await fetch(
-            `http://localhost:5000/users?email=${currentUser.email}`
+            `https://job-fusion-server-9yho.vercel.app//users?email=${currentUser.email}`
           );
           const backendUser = await res.json();
 
@@ -52,7 +52,7 @@ const AuthProvider = ({ children }) => {
             email: currentUser.email,
             displayName: backendUser.name || currentUser.displayName,
             photoURL: backendUser.photoURL
-              ? `http://localhost:5000${backendUser.photoURL}`
+              ? `https://job-fusion-server-9yho.vercel.app/${backendUser.photoURL}`
               : currentUser.photoURL,
             number: backendUser.number || "",
             // add more backend fields if needed here
@@ -88,7 +88,9 @@ const AuthProvider = ({ children }) => {
     signInWithGoogle,
   };
 
-  return <AuthContext.Provider value={authInfo}>{children}</AuthContext.Provider>;
+  return (
+    <AuthContext.Provider value={authInfo}>{children}</AuthContext.Provider>
+  );
 };
 
 export default AuthProvider;

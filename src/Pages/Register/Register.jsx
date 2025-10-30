@@ -53,16 +53,19 @@ const Register = () => {
       formData.append("email", email);
       if (photo) formData.append("photo", photo);
 
-      const response = await fetch("http://localhost:5000/users", {
-        method: "POST",
-        body: formData,
-      });
+      const response = await fetch(
+        "https://job-fusion-server-9yho.vercel.app//users",
+        {
+          method: "POST",
+          body: formData,
+        }
+      );
 
       const data = await response.json();
 
       // Determine photoURL from backend upload if exists
       const photoURL = data.photoURL
-        ? `http://localhost:5000${data.photoURL}`
+        ? `https://job-fusion-server-9yho.vercel.app/${data.photoURL}`
         : "";
 
       // Update Firebase user profile
@@ -72,7 +75,9 @@ const Register = () => {
       });
 
       // Re-fetch backend user profile to ensure sync
-      const updatedRes = await fetch(`http://localhost:5000/users?email=${email}`);
+      const updatedRes = await fetch(
+        `https://job-fusion-server-9yho.vercel.app//users?email=${email}`
+      );
       const updatedUser = await updatedRes.json();
 
       // Update context user with merged data
@@ -80,7 +85,9 @@ const Register = () => {
         uid: result.user.uid,
         email,
         displayName: updatedUser.name,
-        photoURL: updatedUser.photoURL ? `http://localhost:5000${updatedUser.photoURL}` : null,
+        photoURL: updatedUser.photoURL
+          ? `https://job-fusion-server-9yho.vercel.app/${updatedUser.photoURL}`
+          : null,
         number: updatedUser.number || "",
       });
 
@@ -100,25 +107,30 @@ const Register = () => {
       const loggedInUser = result.user;
 
       // Fetch backend user or create if missing
-      const res = await fetch(`http://localhost:5000/users?email=${loggedInUser.email}`);
+      const res = await fetch(
+        `https://job-fusion-server-9yho.vercel.app//users?email=${loggedInUser.email}`
+      );
       let data = await res.json();
 
       if (!data || Object.keys(data).length === 0) {
-        const createRes = await fetch("http://localhost:5000/users", {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({
-            name: loggedInUser.displayName,
-            email: loggedInUser.email,
-            photoURL: loggedInUser.photoURL,
-            number: "",
-          }),
-        });
+        const createRes = await fetch(
+          "https://job-fusion-server-9yho.vercel.app//users",
+          {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({
+              name: loggedInUser.displayName,
+              email: loggedInUser.email,
+              photoURL: loggedInUser.photoURL,
+              number: "",
+            }),
+          }
+        );
         data = await createRes.json();
       }
 
       const photoURL = data.photoURL
-        ? `http://localhost:5000${data.photoURL}`
+        ? `https://job-fusion-server-9yho.vercel.app/${data.photoURL}`
         : loggedInUser.photoURL;
 
       setAuthContextUser({

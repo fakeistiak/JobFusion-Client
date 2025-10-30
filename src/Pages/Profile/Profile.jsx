@@ -13,7 +13,9 @@ const Profile = () => {
   useEffect(() => {
     if (!user) return;
 
-    fetch(`http://localhost:5000/profileInfo?userId=${user.uid}`)
+    fetch(
+      `https://job-fusion-server-9yho.vercel.app//profileInfo?userId=${user.uid}`
+    )
       .then((res) => res.json())
       .then((data) => {
         setProfile(data || {});
@@ -32,7 +34,7 @@ const Profile = () => {
     const updatedProfile = Object.fromEntries(formData.entries());
     updatedProfile.userId = user.uid;
 
-    fetch("http://localhost:5000/profileInfo", {
+    fetch("https://job-fusion-server-9yho.vercel.app//profileInfo", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify(updatedProfile),

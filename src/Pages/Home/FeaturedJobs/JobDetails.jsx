@@ -36,7 +36,9 @@ const JobDetails = () => {
   useEffect(() => {
     if (!user) return;
 
-    fetch(`http://localhost:5000/jobApplication?email=${user.email}`)
+    fetch(
+      `https://job-fusion-server-9yho.vercel.app//jobApplication?email=${user.email}`
+    )
       .then((res) => res.json())
       .then((data) => {
         // Adjust "job_id" to your actual applied job field if needed

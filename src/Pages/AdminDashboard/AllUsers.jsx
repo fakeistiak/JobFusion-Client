@@ -8,7 +8,9 @@ const AllUsers = () => {
 
   const fetchUsers = async () => {
     try {
-      const res = await fetch("http://localhost:5000/users");
+      const res = await fetch(
+        "https://job-fusion-server-9yho.vercel.app//users"
+      );
       const data = await res.json();
       setUsers(data);
     } catch (error) {
@@ -57,9 +59,12 @@ const AllUsers = () => {
 
   const handleDelete = async (id) => {
     try {
-      const res = await fetch(`http://localhost:5000/users/${id}`, {
-        method: "DELETE",
-      });
+      const res = await fetch(
+        `https://job-fusion-server-9yho.vercel.app//users/${id}`,
+        {
+          method: "DELETE",
+        }
+      );
       const result = await res.json();
 
       if (res.ok) {
@@ -90,10 +95,18 @@ const AllUsers = () => {
         <table className="min-w-full divide-y divide-slate-200">
           <thead className="bg-slate-50">
             <tr>
-              <th className="px-6 py-3 text-left text-sm font-semibold text-slate-700">Name</th>
-              <th className="px-6 py-3 text-left text-sm font-semibold text-slate-700">Email</th>
-              <th className="px-6 py-3 text-left text-sm font-semibold text-slate-700">Role</th>
-              <th className="px-6 py-3 text-left text-sm font-semibold text-slate-700">Actions</th>
+              <th className="px-6 py-3 text-left text-sm font-semibold text-slate-700">
+                Name
+              </th>
+              <th className="px-6 py-3 text-left text-sm font-semibold text-slate-700">
+                Email
+              </th>
+              <th className="px-6 py-3 text-left text-sm font-semibold text-slate-700">
+                Role
+              </th>
+              <th className="px-6 py-3 text-left text-sm font-semibold text-slate-700">
+                Actions
+              </th>
             </tr>
           </thead>
           <tbody className="divide-y divide-slate-200">

@@ -76,7 +76,7 @@ const AddJob = () => {
       userEmail: localStorage.getItem("email"),
     };
 
-    fetch("http://localhost:5000/jobs", {
+    fetch("https://job-fusion-server-9yho.vercel.app//jobs", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify(job),

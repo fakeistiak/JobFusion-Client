@@ -7,7 +7,7 @@ const JobApply = () => {
   const { id } = useParams();
   console.log(id);
   const { user } = useContext(AuthContext);
-  const navigate=useNavigate();
+  const navigate = useNavigate();
 
   const handleJobApply = (e) => {
     e.preventDefault();
@@ -24,7 +24,7 @@ const JobApply = () => {
       github,
       resume,
     };
-    fetch("http://localhost:5000/jobApplication", {
+    fetch("https://job-fusion-server-9yho.vercel.app//jobApplication", {
       method: "POST",
       headers: {
         "content-type": "application/json",
@@ -33,13 +33,13 @@ const JobApply = () => {
     })
       .then((res) => res.json())
       .then((data) => {
-        if(data.insertedId){
+        if (data.insertedId) {
           toast.success("Profile updated successfully");
-          form.reset()
+          form.reset();
           setTimeout(() => {
             navigate(location?.state || "/appliedJobs");
           }, 600);
-        }else {
+        } else {
           toast.warn("No changes detected");
         }
       });

@@ -10,7 +10,7 @@ const AdminRoute = () => {
 
   useEffect(() => {
     if (isAdmin) {
-      fetch("http://localhost:5000/applications")
+      fetch("https://job-fusion-server-9yho.vercel.app//applications")
         .then((res) => res.json())
         .then((data) => {
           setApplications(data);

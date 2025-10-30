@@ -39,8 +39,9 @@ const Login = () => {
         const loggedInUser = result.user;
         setUser(loggedInUser);
 
-  
-        const res = await fetch(`http://localhost:5000/users?email=${loggedInUser.email}`);
+        const res = await fetch(
+          `https://job-fusion-server-9yho.vercel.app//users?email=${loggedInUser.email}`
+        );
         const userData = await res.json();
 
         localStorage.setItem("role", userData?.role || "user");
@@ -50,7 +51,9 @@ const Login = () => {
 
         setTimeout(() => {
           toast.success(
-            `Welcome back ${loggedInUser.displayName || loggedInUser.email}! Login successful!`,
+            `Welcome back ${
+              loggedInUser.displayName || loggedInUser.email
+            }! Login successful!`,
             { position: "top-right", autoClose: 2100 }
           );
         }, 400);
@@ -71,11 +74,13 @@ const Login = () => {
       const loggedInUser = result.user;
       setUser(loggedInUser);
 
-      const res = await fetch(`http://localhost:5000/users?email=${loggedInUser.email}`);
+      const res = await fetch(
+        `https://job-fusion-server-9yho.vercel.app//users?email=${loggedInUser.email}`
+      );
       const data = await res.json();
 
       if (!data || Object.keys(data).length === 0) {
-        await fetch("http://localhost:5000/users", {
+        await fetch("https://job-fusion-server-9yho.vercel.app//users", {
           method: "POST",
           headers: { "Content-Type": "application/json" },
           body: JSON.stringify({
@@ -87,8 +92,9 @@ const Login = () => {
         });
       }
 
-   
-      const roleRes = await fetch(`http://localhost:5000/users?email=${loggedInUser.email}`);
+      const roleRes = await fetch(
+        `https://job-fusion-server-9yho.vercel.app//users?email=${loggedInUser.email}`
+      );
       const userData = await roleRes.json();
 
       localStorage.setItem("role", userData?.role || "user");
@@ -98,7 +104,9 @@ const Login = () => {
 
       setTimeout(() => {
         toast.success(
-          `Welcome back ${loggedInUser.displayName || loggedInUser.email}! Login successful!`,
+          `Welcome back ${
+            loggedInUser.displayName || loggedInUser.email
+          }! Login successful!`,
           { position: "top-right", autoClose: 2100 }
         );
       }, 400);
@@ -151,7 +159,9 @@ const Login = () => {
           <h2 className="lg:text-4xl md:text-4xl text-3xl font-bold text-center mb-6 text-teal-600 dark:text-white">
             Login Now
           </h2>
-          {errorMessage && <p className="text-red-600 text-center mb-4">{errorMessage}</p>}
+          {errorMessage && (
+            <p className="text-red-600 text-center mb-4">{errorMessage}</p>
+          )}
           <form onSubmit={handleLogin}>
             <div className="space-y-4">
               <div className="flex justify-center items-center gap-2">

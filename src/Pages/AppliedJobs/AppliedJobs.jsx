@@ -13,7 +13,9 @@ const AppliedJobs = () => {
   useEffect(() => {
     if (!user) return;
     setLoading(true);
-    fetch(`http://localhost:5000/jobApplication?email=${user.email}`)
+    fetch(
+      `https://job-fusion-server-9yho.vercel.app//jobApplication?email=${user.email}`
+    )
       .then((res) => res.json())
       .then((data) => {
         setJobs(data);
@@ -57,9 +59,12 @@ const AppliedJobs = () => {
 
   const handleDelete = async (id) => {
     try {
-      const res = await fetch(`http://localhost:5000/jobApplication/${id}`, {
-        method: "DELETE",
-      });
+      const res = await fetch(
+        `https://job-fusion-server-9yho.vercel.app//jobApplication/${id}`,
+        {
+          method: "DELETE",
+        }
+      );
       const result = await res.json();
 
       if (res.ok) {

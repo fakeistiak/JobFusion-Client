@@ -8,7 +8,9 @@ const JobApplications = () => {
 
   const fetchApplications = async () => {
     try {
-      const res = await fetch("http://localhost:5000/jobApplication");
+      const res = await fetch(
+        "https://job-fusion-server-9yho.vercel.app//jobApplication"
+      );
       const data = await res.json();
       setApplications(data);
     } catch (error) {
@@ -46,15 +48,23 @@ const JobApplications = () => {
           </div>
         </div>
       ),
-      { closeOnClick: false, autoClose: false, closeButton: false, draggable: false }
+      {
+        closeOnClick: false,
+        autoClose: false,
+        closeButton: false,
+        draggable: false,
+      }
     );
   };
 
   const handleDelete = async (id) => {
     try {
-      const res = await fetch(`http://localhost:5000/jobApplication/${id}`, {
-        method: "DELETE",
-      });
+      const res = await fetch(
+        `https://job-fusion-server-9yho.vercel.app//jobApplication/${id}`,
+        {
+          method: "DELETE",
+        }
+      );
       const result = await res.json();
 
       if (res.ok) {
@@ -85,14 +95,30 @@ const JobApplications = () => {
         <table className="min-w-full divide-y divide-slate-200">
           <thead className="bg-slate-50">
             <tr>
-              <th className="px-6 py-3 text-left text-sm font-semibold text-slate-700">Applicant Email</th>
-              <th className="px-6 py-3 text-left text-sm font-semibold text-slate-700">Job Title</th>
-              <th className="px-6 py-3 text-left text-sm font-semibold text-slate-700">Company</th>
-              <th className="px-6 py-3 text-left text-sm font-semibold text-slate-700">Location</th>
-              <th className="px-6 py-3 text-left text-sm font-semibold text-slate-700">Job Type</th>
-              <th className="px-6 py-3 text-left text-sm font-semibold text-slate-700">Remote/Onsite</th>
-              <th className="px-6 py-3 text-left text-sm font-semibold text-slate-700">Salary</th>
-              <th className="px-6 py-3 text-left text-sm font-semibold text-slate-700">Actions</th>
+              <th className="px-6 py-3 text-left text-sm font-semibold text-slate-700">
+                Applicant Email
+              </th>
+              <th className="px-6 py-3 text-left text-sm font-semibold text-slate-700">
+                Job Title
+              </th>
+              <th className="px-6 py-3 text-left text-sm font-semibold text-slate-700">
+                Company
+              </th>
+              <th className="px-6 py-3 text-left text-sm font-semibold text-slate-700">
+                Location
+              </th>
+              <th className="px-6 py-3 text-left text-sm font-semibold text-slate-700">
+                Job Type
+              </th>
+              <th className="px-6 py-3 text-left text-sm font-semibold text-slate-700">
+                Remote/Onsite
+              </th>
+              <th className="px-6 py-3 text-left text-sm font-semibold text-slate-700">
+                Salary
+              </th>
+              <th className="px-6 py-3 text-left text-sm font-semibold text-slate-700">
+                Actions
+              </th>
             </tr>
           </thead>
           <tbody className="divide-y divide-slate-200">
