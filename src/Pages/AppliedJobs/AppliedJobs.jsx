@@ -147,7 +147,7 @@ const AppliedJobs = () => {
                               <div className="inline-flex items-center px-3 py-1 rounded-full gap-x-2 bg-emerald-100/60 dark:bg-gray-800">
                                 <span className="h-1.5 w-1.5 rounded-full bg-emerald-500"></span>
                                 <h2 className="text-sm font-normal text-emerald-500">
-                                  {job.salary}
+                                  {job.salary}k
                                 </h2>
                               </div>
                             </td>
