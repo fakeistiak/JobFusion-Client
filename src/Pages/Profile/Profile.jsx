@@ -14,7 +14,7 @@ const Profile = () => {
     if (!user) return;
 
     fetch(
-      `https://job-fusion-server-9yho.vercel.app//profileInfo?userId=${user.uid}`
+      `https://job-fusion-server-9yho.vercel.app/profileInfo?userId=${user.uid}`
     )
       .then((res) => res.json())
       .then((data) => {
@@ -34,7 +34,7 @@ const Profile = () => {
     const updatedProfile = Object.fromEntries(formData.entries());
     updatedProfile.userId = user.uid;
 
-    fetch("https://job-fusion-server-9yho.vercel.app//profileInfo", {
+    fetch("https://job-fusion-server-9yho.vercel.app/profileInfo", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify(updatedProfile),

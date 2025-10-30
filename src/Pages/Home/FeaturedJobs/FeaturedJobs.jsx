@@ -17,7 +17,7 @@ const FeaturedJobs = () => {
   });
 
   useEffect(() => {
-    fetch("https://job-fusion-server-9yho.vercel.app//jobs")
+    fetch("https://job-fusion-server-9yho.vercel.app/jobs")
       .then((res) => res.json())
       .then((data) => setJobs(data));
   }, []);

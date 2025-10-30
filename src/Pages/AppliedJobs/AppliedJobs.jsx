@@ -14,7 +14,7 @@ const AppliedJobs = () => {
     if (!user) return;
     setLoading(true);
     fetch(
-      `https://job-fusion-server-9yho.vercel.app//jobApplication?email=${user.email}`
+      `https://job-fusion-server-9yho.vercel.app/jobApplication?email=${user.email}`
     )
       .then((res) => res.json())
       .then((data) => {
@@ -60,7 +60,7 @@ const AppliedJobs = () => {
   const handleDelete = async (id) => {
     try {
       const res = await fetch(
-        `https://job-fusion-server-9yho.vercel.app//jobApplication/${id}`,
+        `https://job-fusion-server-9yho.vercel.app/jobApplication/${id}`,
         {
           method: "DELETE",
         }

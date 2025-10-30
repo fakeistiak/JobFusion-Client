@@ -18,9 +18,7 @@ const UserProfile = () => {
     if (!user?.email) return;
 
     setLoading(true);
-    fetch(
-      `https://job-fusion-server-9yho.vercel.app//users?email=${user.email}`
-    )
+    fetch(`https://job-fusion-server-9yho.vercel.app/users?email=${user.email}`)
       .then((res) => res.json())
       .then((data) => {
         if (data) setProfile(data);
@@ -46,7 +44,7 @@ const UserProfile = () => {
 
     try {
       const res = await fetch(
-        "https://job-fusion-server-9yho.vercel.app//users",
+        "https://job-fusion-server-9yho.vercel.app/users",
         {
           method: "PUT",
           headers: { "Content-Type": "application/json" },

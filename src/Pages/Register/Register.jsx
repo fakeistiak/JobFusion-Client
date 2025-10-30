@@ -54,7 +54,7 @@ const Register = () => {
       if (photo) formData.append("photo", photo);
 
       const response = await fetch(
-        "https://job-fusion-server-9yho.vercel.app//users",
+        "https://job-fusion-server-9yho.vercel.app/users",
         {
           method: "POST",
           body: formData,
@@ -76,7 +76,7 @@ const Register = () => {
 
       // Re-fetch backend user profile to ensure sync
       const updatedRes = await fetch(
-        `https://job-fusion-server-9yho.vercel.app//users?email=${email}`
+        `https://job-fusion-server-9yho.vercel.app/users?email=${email}`
       );
       const updatedUser = await updatedRes.json();
 
@@ -108,13 +108,13 @@ const Register = () => {
 
       // Fetch backend user or create if missing
       const res = await fetch(
-        `https://job-fusion-server-9yho.vercel.app//users?email=${loggedInUser.email}`
+        `https://job-fusion-server-9yho.vercel.app/users?email=${loggedInUser.email}`
       );
       let data = await res.json();
 
       if (!data || Object.keys(data).length === 0) {
         const createRes = await fetch(
-          "https://job-fusion-server-9yho.vercel.app//users",
+          "https://job-fusion-server-9yho.vercel.app/users",
           {
             method: "POST",
             headers: { "Content-Type": "application/json" },

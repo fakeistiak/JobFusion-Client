@@ -37,7 +37,7 @@ const JobDetails = () => {
     if (!user) return;
 
     fetch(
-      `https://job-fusion-server-9yho.vercel.app//jobApplication?email=${user.email}`
+      `https://job-fusion-server-9yho.vercel.app/jobApplication?email=${user.email}`
     )
       .then((res) => res.json())
       .then((data) => {

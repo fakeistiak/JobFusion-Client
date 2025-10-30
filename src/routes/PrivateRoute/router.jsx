@@ -37,7 +37,7 @@ const router = createBrowserRouter([
             <AppliedJobs />
           </PrivateRoute>
         ),
-        loader: () => fetch("https://job-fusion-server-9yho.vercel.app//jobs"),
+        loader: () => fetch("https://job-fusion-server-9yho.vercel.app/jobs"),
       },
       {
         path: "/blog",
@@ -51,7 +51,7 @@ const router = createBrowserRouter([
           </PrivateRoute>
         ),
         loader: ({ params }) =>
-          fetch(`https://job-fusion-server-9yho.vercel.app//jobs/${params.id}`),
+          fetch(`https://job-fusion-server-9yho.vercel.app/jobs/${params.id}`),
       },
       {
         path: "/login",
@@ -72,7 +72,7 @@ const router = createBrowserRouter([
             <AllJobs />
           </PrivateRoute>
         ),
-        loader: () => fetch("https://job-fusion-server-9yho.vercel.app//jobs"),
+        loader: () => fetch("https://job-fusion-server-9yho.vercel.app/jobs"),
       },
       {
         path: "/profile",
@@ -81,7 +81,7 @@ const router = createBrowserRouter([
             <Profile />
           </PrivateRoute>
         ),
-        loader: () => fetch("https://job-fusion-server-9yho.vercel.app//users"),
+        loader: () => fetch("https://job-fusion-server-9yho.vercel.app/users"),
       },
       {
         path: "/userProfile",
@@ -90,7 +90,7 @@ const router = createBrowserRouter([
             <UserProfile />
           </PrivateRoute>
         ),
-        loader: () => fetch("https://job-fusion-server-9yho.vercel.app//users"),
+        loader: () => fetch("https://job-fusion-server-9yho.vercel.app/users"),
       },
       {
         path: "/jobApply/:id",

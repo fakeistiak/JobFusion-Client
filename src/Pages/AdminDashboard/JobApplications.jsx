@@ -9,7 +9,7 @@ const JobApplications = () => {
   const fetchApplications = async () => {
     try {
       const res = await fetch(
-        "https://job-fusion-server-9yho.vercel.app//jobApplication"
+        "https://job-fusion-server-9yho.vercel.app/jobApplication"
       );
       const data = await res.json();
       setApplications(data);
@@ -60,7 +60,7 @@ const JobApplications = () => {
   const handleDelete = async (id) => {
     try {
       const res = await fetch(
-        `https://job-fusion-server-9yho.vercel.app//jobApplication/${id}`,
+        `https://job-fusion-server-9yho.vercel.app/jobApplication/${id}`,
         {
           method: "DELETE",
         }

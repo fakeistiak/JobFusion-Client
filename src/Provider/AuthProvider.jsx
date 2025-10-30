@@ -42,7 +42,7 @@ const AuthProvider = ({ children }) => {
         try {
           // Fetch backend profile by email
           const res = await fetch(
-            `https://job-fusion-server-9yho.vercel.app//users?email=${currentUser.email}`
+            `https://job-fusion-server-9yho.vercel.app/users?email=${currentUser.email}`
           );
           const backendUser = await res.json();
 

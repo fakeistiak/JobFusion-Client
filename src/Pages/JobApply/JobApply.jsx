@@ -24,7 +24,7 @@ const JobApply = () => {
       github,
       resume,
     };
-    fetch("https://job-fusion-server-9yho.vercel.app//jobApplication", {
+    fetch("https://job-fusion-server-9yho.vercel.app/jobApplication", {
       method: "POST",
       headers: {
         "content-type": "application/json",

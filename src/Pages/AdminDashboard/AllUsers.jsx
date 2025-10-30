@@ -9,7 +9,7 @@ const AllUsers = () => {
   const fetchUsers = async () => {
     try {
       const res = await fetch(
-        "https://job-fusion-server-9yho.vercel.app//users"
+        "https://job-fusion-server-9yho.vercel.app/users"
       );
       const data = await res.json();
       setUsers(data);
@@ -60,7 +60,7 @@ const AllUsers = () => {
   const handleDelete = async (id) => {
     try {
       const res = await fetch(
-        `https://job-fusion-server-9yho.vercel.app//users/${id}`,
+        `https://job-fusion-server-9yho.vercel.app/users/${id}`,
         {
           method: "DELETE",
         }

@@ -40,7 +40,7 @@ const Login = () => {
         setUser(loggedInUser);
 
         const res = await fetch(
-          `https://job-fusion-server-9yho.vercel.app//users?email=${loggedInUser.email}`
+          `https://job-fusion-server-9yho.vercel.app/users?email=${loggedInUser.email}`
         );
         const userData = await res.json();
 
@@ -75,12 +75,12 @@ const Login = () => {
       setUser(loggedInUser);
 
       const res = await fetch(
-        `https://job-fusion-server-9yho.vercel.app//users?email=${loggedInUser.email}`
+        `https://job-fusion-server-9yho.vercel.app/users?email=${loggedInUser.email}`
       );
       const data = await res.json();
 
       if (!data || Object.keys(data).length === 0) {
-        await fetch("https://job-fusion-server-9yho.vercel.app//users", {
+        await fetch("https://job-fusion-server-9yho.vercel.app/users", {
           method: "POST",
           headers: { "Content-Type": "application/json" },
           body: JSON.stringify({
@@ -93,7 +93,7 @@ const Login = () => {
       }
 
       const roleRes = await fetch(
-        `https://job-fusion-server-9yho.vercel.app//users?email=${loggedInUser.email}`
+        `https://job-fusion-server-9yho.vercel.app/users?email=${loggedInUser.email}`
       );
       const userData = await roleRes.json();
 
