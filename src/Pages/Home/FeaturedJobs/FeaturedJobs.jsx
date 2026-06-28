@@ -17,7 +17,7 @@ const FeaturedJobs = () => {
   });
 
   useEffect(() => {
-    fetch("https://job-fusion-server-9yho.vercel.app/jobs")
+    fetch("/jobs?status=approved")
       .then((res) => res.json())
       .then((data) => setJobs(data));
   }, []);

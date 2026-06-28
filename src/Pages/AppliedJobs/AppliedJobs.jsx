@@ -1,196 +1,262 @@
 import { useContext, useEffect, useState } from "react";
 import { AuthContext } from "@/Provider/AuthProvider";
-import { RxCross2 } from "react-icons/rx";
 import { FadeLoader } from "react-spinners";
 import { toast, ToastContainer } from "react-toastify";
+import { useNavigate } from "react-router-dom";
 import "react-toastify/dist/ReactToastify.css";
+import {
+  Briefcase, MapPin, Clock, CheckCircle, XCircle, Search, Loader2, Trash2, Calendar,
+} from "lucide-react";
+import socket, { connectSocket } from "@/lib/socket";
+
+const statusConfig = {
+  pending: { icon: Clock, bg: "bg-yellow-100 dark:bg-yellow-900/30", text: "text-yellow-700 dark:text-yellow-400", label: "Pending", bar: "bg-yellow-400" },
+  reviewing: { icon: Search, bg: "bg-blue-100 dark:bg-blue-900/30", text: "text-blue-700 dark:text-blue-400", label: "Reviewing", bar: "bg-blue-400" },
+  accepted: { icon: CheckCircle, bg: "bg-green-100 dark:bg-green-900/30", text: "text-green-700 dark:text-green-400", label: "Accepted", bar: "bg-green-400" },
+  rejected: { icon: XCircle, bg: "bg-red-100 dark:bg-red-900/30", text: "text-red-700 dark:text-red-400", label: "Rejected", bar: "bg-red-400" },
+};
+
+const pipelineSteps = [
+  { key: "pending", label: "Submitted" },
+  { key: "reviewing", label: "Under Review" },
+  { key: "accepted", label: "Accepted" },
+];
 
 const AppliedJobs = () => {
   const { user } = useContext(AuthContext);
+  const navigate = useNavigate();
   const [jobs, setJobs] = useState([]);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
+    if (user && user.role && user.role !== "candidate") {
+      toast.info("Only candidates can access applied jobs");
+      navigate("/", { replace: true });
+    }
+  }, [user, navigate]);
+
+  useEffect(() => {
     if (!user) return;
     setLoading(true);
-    fetch(
-      `https://job-fusion-server-9yho.vercel.app/jobApplication?email=${user.email}`
-    )
+    fetch(`/jobApplication?email=${user.email}`)
       .then((res) => res.json())
       .then((data) => {
         setJobs(data);
         setLoading(false);
       })
       .catch(() => setLoading(false));
-  }, [user]);
 
-  const confirmDelete = (id) => {
-    toast(
-      ({ closeToast }) => (
-        <div>
-          <p>Are you sure you want to cancel this application?</p>
-          <div className="mt-2 flex justify-end gap-2">
-            <button
-              className="bg-gray-300 px-3 py-1 rounded"
-              onClick={() => closeToast()}
-            >
-              No
-            </button>
-            <button
-              className="bg-red-600 text-white px-3 py-1 rounded"
-              onClick={() => {
-                handleDelete(id);
-                closeToast();
-              }}
-            >
-              Yes
-            </button>
-          </div>
-        </div>
-      ),
-      {
-        closeOnClick: false,
-        autoClose: false,
-        closeButton: false,
-        draggable: false,
-      }
-    );
-  };
+    connectSocket(user.email);
+
+    const handleStatusUpdate = (data) => {
+      setJobs((prev) =>
+        prev.map((app) =>
+          app._id === data.applicationId
+            ? {
+                ...app,
+                status: data.status,
+                interviewDate: data.interviewDate || app.interviewDate,
+                interviewMessage: data.interviewMessage || app.interviewMessage,
+              }
+            : app
+        )
+      );
+    };
+
+    socket.on("applicationStatusUpdate", handleStatusUpdate);
+    return () => {
+      socket.off("applicationStatusUpdate", handleStatusUpdate);
+    };
+  }, [user]);
 
   const handleDelete = async (id) => {
     try {
-      const res = await fetch(
-        `https://job-fusion-server-9yho.vercel.app/jobApplication/${id}`,
-        {
-          method: "DELETE",
-        }
-      );
+      const res = await fetch(`/jobApplication/${id}`, { method: "DELETE" });
       const result = await res.json();
-
       if (res.ok) {
-        setJobs((prevJobs) => prevJobs.filter((job) => job._id !== id));
-        toast.success(result.message || "Application cancelled successfully");
+        setJobs((prev) => prev.filter((j) => j._id !== id));
+        toast.success("Application removed");
       } else {
-        toast.error(result.message || "Failed to cancel application");
+        toast.error(result.message || "Failed to remove");
       }
-    } catch (error) {
-      toast.error("Error cancelling application");
+    } catch {
+      toast.error("Something went wrong");
     }
   };
 
+  if (loading) {
+    return (
+      <div className="flex items-center justify-center min-h-screen">
+        <FadeLoader color="#4A90E2" size={60} />
+      </div>
+    );
+  }
+
   return (
-    <div className="max-w-7xl mx-auto lg:py-20 py-8 px-6">
-      {loading ? (
-        <div className="flex items-center justify-center h-screen">
-          <FadeLoader color="#4A90E2" size={60} />
+    <div className="min-h-screen bg-gradient-to-br from-slate-50 to-slate-100 dark:from-slate-900 dark:to-slate-800 py-20 px-4">
+      <div className="max-w-5xl mx-auto">
+        <div className="flex items-center gap-3 mb-8">
+          <Briefcase className="w-8 h-8 text-teal-600" />
+          <h1 className="text-3xl font-bold text-gray-900 dark:text-white">My Applications</h1>
         </div>
-      ) : (
-        <>
-          <section className="container px-4 mx-auto">
-            <div className="flex items-center gap-x-3">
-              <h2 className="text-3xl font-medium text-teal-500 dark:text-teal-400">
-                Applied Jobs
-              </h2>
-            </div>
-            <div className="flex flex-col mt-6">
-              <div className="-mx-4 -my-2 overflow-x-auto sm:-mx-6 lg:-mx-8">
-                <div className="inline-block min-w-full py-2 align-middle md:px-6 lg:px-8">
-                  <div className="overflow-hidden border border-gray-200 dark:border-gray-700 md:rounded-lg">
-                    <table className="min-w-full divide-y divide-gray-200 dark:divide-gray-700">
-                      <thead className="bg-gray-50 dark:bg-gray-800">
-                        <tr>
-                          <th className="py-3.5 px-4 text-lg font-semibold text-left text-black dark:text-gray-400">
-                            Company Logo
-                          </th>
-                          <th className="py-3.5 px-4 text-lg font-semibold text-left text-black dark:text-gray-400">
-                            Job Title
-                          </th>
-                          <th className="px-12 py-3.5 text-lg font-semibold text-left text-black dark:text-gray-400">
-                            Salary
-                          </th>
-                          <th className="px-4 py-3.5 text-lg font-semibold text-left text-black dark:text-gray-400">
-                            Job Type
-                          </th>
-                          <th className="px-4 py-3.5 text-lg font-semibold text-left text-black dark:text-gray-400">
-                            Remote or Onsite
-                          </th>
-                          <th className="px-4 py-3.5 text-lg font-semibold text-left text-black dark:text-gray-400">
-                            Location
-                          </th>
-                          <th className="px-4 py-3.5 text-lg font-semibold text-left text-black dark:text-gray-400">
-                            Actions
-                          </th>
-                        </tr>
-                      </thead>
-                      <tbody className="bg-white divide-y divide-gray-200 dark:divide-gray-700 dark:bg-gray-900">
-                        {jobs.map((job) => (
-                          <tr
-                            key={job._id}
-                            className="bg-gray-100 dark:bg-gray-900"
-                          >
-                            <td className="px-4 py-4">
-                              <img
-                                src={job.logo}
-                                alt="Company Logo"
-                                className="w-12 h-12 rounded-full"
-                              />
-                            </td>
-                            <td className="px-4 py-4">
-                              <h2 className="font-medium text-gray-800 dark:text-white">
-                                {job.job_title}
-                              </h2>
-                              <p className="text-sm text-gray-600 dark:text-gray-400">
-                                {job.company_name}
-                              </p>
-                            </td>
-                            <td className="px-12 py-4">
-                              <div className="inline-flex items-center px-3 py-1 rounded-full gap-x-2 bg-emerald-100/60 dark:bg-gray-800">
-                                <span className="h-1.5 w-1.5 rounded-full bg-emerald-500"></span>
-                                <h2 className="text-sm font-normal text-emerald-500">
-                                  {job.salary}k
-                                </h2>
-                              </div>
-                            </td>
-                            <td className="px-4 py-4 text-sm text-gray-500 dark:text-gray-300">
-                              {job.job_type}
-                            </td>
-                            <td className="px-4 py-4 text-sm text-gray-500 dark:text-gray-300">
-                              {job.remote_or_onsite}
-                            </td>
-                            <td className="px-4 py-4 text-sm text-gray-500 dark:text-gray-300">
-                              {job.location}
-                            </td>
-                            <td className="px-4 py-4">
-                              <button
-                                title="Cancel The Apply"
-                                className="px-4 py-2 text-red-600 hover:text-red-800"
-                                onClick={() => confirmDelete(job._id)}
-                              >
-                                <RxCross2 className="text-2xl font-extrabold" />
-                              </button>
-                            </td>
-                          </tr>
-                        ))}
-                        {jobs.length === 0 && (
-                          <tr>
-                            <td
-                              colSpan="7"
-                              className="text-center py-4 text-gray-500 dark:text-gray-400"
-                            >
-                              No applied jobs found.
-                            </td>
-                          </tr>
+
+        {jobs.length === 0 ? (
+          <div className="bg-white dark:bg-slate-800 rounded-2xl shadow-xl p-16 text-center">
+            <Briefcase className="w-20 h-20 text-gray-300 dark:text-gray-600 mx-auto mb-6" />
+            <h2 className="text-2xl font-semibold text-gray-700 dark:text-gray-300 mb-2">No Applications Yet</h2>
+            <p className="text-gray-500 dark:text-gray-400 mb-6">Start applying to jobs that match your skills</p>
+            <button
+              onClick={() => navigate("/allJobs")}
+              className="px-6 py-3 bg-teal-600 text-white rounded-xl hover:bg-teal-700 transition font-semibold"
+            >
+              Browse Jobs
+            </button>
+          </div>
+        ) : (
+          <div className="space-y-6">
+            {jobs.map((app) => {
+              const stepIndex = pipelineSteps.findIndex((s) => s.key === (app.status || "pending"));
+              const isRejected = app.status === "rejected";
+              return (
+                <div
+                  key={app._id}
+                  className="bg-white dark:bg-slate-800 rounded-2xl shadow-xl border border-slate-200 dark:border-slate-700 overflow-hidden"
+                >
+                  <div className="p-6">
+                    <div className="flex items-start justify-between">
+                      <div className="flex items-start gap-4">
+                        {app.logo ? (
+                          <img src={app.logo} alt={app.company_name} className="w-14 h-14 rounded-xl object-contain" />
+                        ) : (
+                          <div className="w-14 h-14 rounded-xl bg-teal-100 dark:bg-teal-900/30 flex items-center justify-center">
+                            <Briefcase className="w-6 h-6 text-teal-600" />
+                          </div>
                         )}
-                      </tbody>
-                    </table>
+                        <div>
+                          <h3 className="text-xl font-bold text-gray-900 dark:text-white">{app.job_title}</h3>
+                          <p className="text-gray-600 dark:text-gray-400">{app.company_name}</p>
+                          <div className="flex flex-wrap gap-3 mt-2 text-sm text-gray-500 dark:text-gray-400">
+                            {app.location && (
+                              <span className="flex items-center gap-1">
+                                <MapPin className="w-3.5 h-3.5" />
+                                {app.location}
+                              </span>
+                            )}
+                            {app.salary && (
+                              <span className="flex items-center gap-1">
+                                <span className="font-medium text-teal-600">{app.salary}</span>
+                              </span>
+                            )}
+                            <span className="flex items-center gap-1">
+                              <Clock className="w-3.5 h-3.5" />
+                              {new Date(app.appliedAt).toLocaleDateString("en-US", {
+                                month: "short", day: "numeric", year: "numeric",
+                              })}
+                            </span>
+                          </div>
+                        </div>
+                      </div>
+
+                      <span className={`inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full text-sm font-semibold shrink-0 ${
+                        statusConfig[app.status]?.bg || statusConfig.pending.bg
+                      } ${
+                        statusConfig[app.status]?.text || statusConfig.pending.text
+                      }`}>
+                        {(() => {
+                          const Icon = statusConfig[app.status]?.icon || statusConfig.pending.icon;
+                          return <Icon className="w-4 h-4" />;
+                        })()}
+                        {statusConfig[app.status]?.label || "Pending"}
+                      </span>
+                    </div>
+                  </div>
+
+                  {/* Pipeline Progress Bar */}
+                  <div className="px-6 pb-6">
+                    {isRejected ? (
+                      <div className="flex items-center justify-between gap-3 p-3 bg-red-50 dark:bg-red-900/10 rounded-xl">
+                        <div className="flex items-center gap-3">
+                          <XCircle className="w-5 h-5 text-red-500 shrink-0" />
+                          <p className="text-sm text-red-600 dark:text-red-400 font-medium">
+                            Your application was not selected for this position.
+                          </p>
+                        </div>
+                        <button
+                          onClick={() => handleDelete(app._id)}
+                          className="p-2 text-red-500 hover:text-red-700 hover:bg-red-100 dark:hover:bg-red-900/30 rounded-lg transition"
+                          title="Remove application"
+                        >
+                          <Trash2 className="w-4 h-4" />
+                        </button>
+                      </div>
+                    ) : (
+                      <div className="relative">
+                        <div className="flex items-center justify-between mb-2">
+                          {pipelineSteps.map((step, i) => {
+                            const StepIcon = step.key === "pending" ? Clock : step.key === "reviewing" ? Search : CheckCircle;
+                            const isActive = i <= stepIndex;
+                            const isCurrent = i === stepIndex;
+                            return (
+                              <div key={step.key} className="flex flex-col items-center relative z-10">
+                                <div className={`w-8 h-8 rounded-full flex items-center justify-center transition-all ${
+                                  isActive
+                                    ? isCurrent
+                                      ? "bg-teal-600 text-white shadow-lg shadow-teal-200 dark:shadow-teal-900/30 scale-110"
+                                      : "bg-teal-600 text-white"
+                                    : "bg-gray-200 dark:bg-slate-600 text-gray-400 dark:text-gray-500"
+                                }`}>
+                                  <StepIcon className="w-4 h-4" />
+                                </div>
+                                <span className={`text-xs mt-1.5 font-medium ${
+                                  isActive ? "text-teal-600 dark:text-teal-400" : "text-gray-400 dark:text-gray-500"
+                                }`}>
+                                  {step.label}
+                                </span>
+                              </div>
+                            );
+                          })}
+                        </div>
+                        <div className="absolute top-4 left-0 right-0 h-0.5 bg-gray-200 dark:bg-slate-600 -translate-y-1/2">
+                          <div
+                            className="h-full bg-teal-500 transition-all duration-500"
+                            style={{
+                              width: `${stepIndex >= 0 ? (stepIndex / (pipelineSteps.length - 1)) * 100 : 0}%`,
+                            }}
+                          />
+                        </div>
+                      </div>
+                    )}
+
+                    {/* Interview Details */}
+                    {app.status === "accepted" && app.interviewDate && (
+                      <div className="mt-4 p-4 bg-green-50 dark:bg-green-900/10 border border-green-200 dark:border-green-800 rounded-xl">
+                        <div className="flex items-start gap-3">
+                          <Calendar className="w-5 h-5 text-green-600 shrink-0 mt-0.5" />
+                          <div>
+                            <p className="font-semibold text-green-800 dark:text-green-300">Interview Scheduled</p>
+                            <p className="text-sm text-green-700 dark:text-green-400 mt-1">
+                              {new Date(app.interviewDate).toLocaleString("en-US", {
+                                dateStyle: "full",
+                                timeStyle: "short",
+                              })}
+                            </p>
+                            {app.interviewMessage && (
+                              <p className="text-sm text-green-600 dark:text-green-500 mt-2 italic">
+                                "{app.interviewMessage}"
+                              </p>
+                            )}
+                          </div>
+                        </div>
+                      </div>
+                    )}
                   </div>
                 </div>
-              </div>
-            </div>
-          </section>
-          <ToastContainer />
-        </>
-      )}
+              );
+            })}
+          </div>
+        )}
+      </div>
+      <ToastContainer />
     </div>
   );
 };

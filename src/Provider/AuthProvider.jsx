@@ -42,7 +42,7 @@ const AuthProvider = ({ children }) => {
         try {
           // Fetch backend profile by email
           const res = await fetch(
-            `https://job-fusion-server-9yho.vercel.app/users?email=${currentUser.email}`
+            `/users?email=${currentUser.email}`,
           );
           const backendUser = await res.json();
 
@@ -52,14 +52,27 @@ const AuthProvider = ({ children }) => {
             email: currentUser.email,
             displayName: backendUser.name || currentUser.displayName,
             photoURL: backendUser.photoURL
-              ? `https://job-fusion-server-9yho.vercel.app/${backendUser.photoURL}`
+              ? backendUser.photoURL.startsWith("http")
+                ? backendUser.photoURL
+                : `${backendUser.photoURL}`
               : currentUser.photoURL,
             number: backendUser.number || "",
-            // add more backend fields if needed here
+            role: backendUser.role || "candidate",
+            portfolio: backendUser.portfolio || "",
+            resume: backendUser.resume || "",
+            github: backendUser.github || "",
+            education: backendUser.education || "",
+            linkedIn: backendUser.linkedIn || "",
+            company_name: backendUser.company_name || "",
+            company_website: backendUser.company_website || "",
+            industry: backendUser.industry || "",
+            company_size: backendUser.company_size || "",
           };
 
           setUser(mergedUser);
-          setIsAdmin(backendUser?.role === "admin"); // Set admin status here
+          setIsAdmin(backendUser?.role === "admin");
+          localStorage.setItem("role", mergedUser.role);
+          localStorage.setItem("email", mergedUser.email);
         } catch (error) {
           console.error("Failed to fetch backend user profile:", error);
           setUser(currentUser); // fallback to firebase user only
@@ -77,6 +90,66 @@ const AuthProvider = ({ children }) => {
     };
   }, []);
 
+  const [showProfileModal, setShowProfileModal] = useState(false);
+
+  const isProfileComplete = (u) => {
+    if (!u) return true;
+    if (u.role === "admin") return true;
+    if (u.role === "candidate") return !!(u.displayName && u.number && u.portfolio && u.github && u.linkedIn && u.resume && u.education);
+    if (u.role === "recruiter") return !!(u.displayName && u.number && u.company_name && u.company_website && u.industry && u.company_size && u.linkedIn);
+    return true;
+  };
+
+  useEffect(() => {
+    if (!user) return;
+    if (isProfileComplete(user)) return;
+
+    const shouldRemind = sessionStorage.getItem("profileReminder");
+    if (shouldRemind !== "true") return;
+    sessionStorage.removeItem("profileReminder");
+
+    const timer = setTimeout(() => {
+      setShowProfileModal(true);
+    }, 3000);
+
+    return () => clearTimeout(timer);
+  }, [user]);
+
+  const closeProfileModal = () => setShowProfileModal(false);
+
+  const refreshUser = async () => {
+    const email = localStorage.getItem("email");
+    if (!email) return;
+    try {
+      const res = await fetch(`/users?email=${email}`);
+      const backendUser = await res.json();
+      if (backendUser && backendUser.email) {
+        setUser((prev) => ({
+          ...prev,
+          displayName: backendUser.name || prev?.displayName || "",
+          photoURL: backendUser.photoURL
+            ? backendUser.photoURL.startsWith("http")
+              ? backendUser.photoURL
+              : `${backendUser.photoURL}`
+            : prev?.photoURL || "",
+          number: backendUser.number || "",
+          role: backendUser.role || "candidate",
+          portfolio: backendUser.portfolio || "",
+          resume: backendUser.resume || "",
+          github: backendUser.github || "",
+          education: backendUser.education || "",
+          linkedIn: backendUser.linkedIn || "",
+          company_name: backendUser.company_name || "",
+          company_website: backendUser.company_website || "",
+          industry: backendUser.industry || "",
+          company_size: backendUser.company_size || "",
+        }));
+      }
+    } catch {
+      // silent
+    }
+  };
+
   const authInfo = {
     user,
     setUser,
@@ -86,6 +159,10 @@ const AuthProvider = ({ children }) => {
     signInUser,
     SignOutUser,
     signInWithGoogle,
+    refreshUser,
+    showProfileModal,
+    closeProfileModal,
+    isProfileComplete,
   };
 
   return (

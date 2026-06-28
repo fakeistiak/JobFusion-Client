@@ -3,8 +3,8 @@ import { useContext } from "react";
 import { AuthContext } from "../Provider/AuthProvider";
 import { FadeLoader } from "react-spinners";
 
-const AdminRoute = ({ children }) => {
-  const { isAdmin, loading } = useContext(AuthContext);
+const RecruiterOrAdminRoute = ({ children }) => {
+  const { user, loading } = useContext(AuthContext);
 
   if (loading) {
     return (
@@ -14,9 +14,12 @@ const AdminRoute = ({ children }) => {
     );
   }
 
-  if (!isAdmin) return <Navigate to="/" replace />;
+  const role = user?.role;
+  if (!user || (role !== "recruiter" && role !== "admin")) {
+    return <Navigate to="/" replace />;
+  }
 
   return children;
 };
 
-export default AdminRoute;
+export default RecruiterOrAdminRoute;

@@ -10,7 +10,7 @@ const Job = ({ job }) => {
       to={`/job/${_id}`}
       className="block group transform transition-all duration-500 hover:scale-[1.03] hover:-translate-y-2"
     >
-      <div className="relative w-full max-w-sm bg-white dark:bg-black rounded-3xl shadow-xl overflow-hidden border-0 hover:shadow-2xl transition-all duration-500 group-hover:shadow-blue-500/10">
+      <div className="relative w-full bg-white dark:bg-black rounded-3xl shadow-xl overflow-hidden border-0 hover:shadow-2xl transition-all duration-500 group-hover:shadow-blue-500/10">
         <div className="absolute inset-0 rounded-3xl opacity-0 group-hover:opacity-100 transition-opacity duration-500 p-[2px]">
           <div className="w-full h-full bg-white dark:bg-gray-900 rounded-3xl"></div>
         </div>

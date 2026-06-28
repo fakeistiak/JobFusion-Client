@@ -34,7 +34,7 @@ const Hero = () => {
 
             <div className="flex gap-4 sm:gap-6 justify-center md:justify-start">
               <Button className="rounded-full bg-teal-600 px-6 py-3 text-base font-semibold text-white hover:bg-teal-700 dark:bg-teal-500 dark:hover:bg-teal-600">
-                <Link to="/alljobs">Explore jobs</Link>
+                <Link to="/allJobs">Explore jobs</Link>
               </Button>
               <Button
                 variant="outline"

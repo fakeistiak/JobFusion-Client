@@ -8,6 +8,7 @@ import {
   FaTwitter,
 } from "react-icons/fa";
 import { Link } from "react-router-dom";
+import logo from "../../../assets/images/logo.png"
 
 const Footer=()=> {
   return (
@@ -15,7 +16,9 @@ const Footer=()=> {
       <div className="max-w-7xl px-6 sm:px-8 lg:px-12 mx-auto pt-8 pb-6">
         <div className="grid grid-cols-1 md:grid-cols-4 gap-8">
           <div>
-            <Link to="/" onClick={() => window.scrollTo({ top: 0, behavior: "smooth" })} className="text-white text-lg font-semibold mb-4">JobFusion</Link>
+            <Link to="/" onClick={() => window.scrollTo({ top: 0, behavior: "smooth" })} className="inline-block mb-4">
+              <img src={logo} alt="JobFusion" className="h-10 w-auto" />
+            </Link>
             <p className="mb-4">
               We are dedicated to providing the best service to our customers.
             </p>
@@ -36,10 +39,10 @@ const Footer=()=> {
                 <Link to="/">Home</Link>
               </li>
               <li>
-                <Link to="/statistics">Statistics Us</Link>
+                <Link to="/statistics">Statistics</Link>
               </li>
               <li>
-                <Link to="/applied">Applied Jobs</Link>
+                <Link to="/appliedJobs">Applied Jobs</Link>
               </li>
               <li>
                 <Link to="/blog">Blog</Link>
@@ -79,13 +82,13 @@ const Footer=()=> {
             &copy; {new Date().getFullYear()} JobFusion. All rights reserved.
           </p>
           <div className="mt-4 md:mt-0">
-            <Link href="#" className=" mr-4">
+            <a href="#" className=" mr-4">
               Privacy Policy
-            </Link>
-            <Link href="#" className=" mr-4">
+            </a>
+            <a href="#" className=" mr-4">
               Terms of Service
-            </Link>
-            <Link href="#">Cookie Policy</Link>
+            </a>
+            <a href="#">Cookie Policy</a>
           </div>
         </div>
       </div>

@@ -1,4 +1,7 @@
 import { toast, ToastContainer } from "react-toastify";
+import { useContext, useEffect } from "react";
+import { AuthContext } from "@/Provider/AuthProvider";
+import { useNavigate } from "react-router-dom";
 
 const InputField = ({ label, name, type = "text", placeholder }) => (
   <div className="space-y-2">
@@ -38,8 +41,15 @@ const TextAreaField = ({ label, name, placeholder }) => (
   </div>
 );
 
+const borderColors = {
+  teal: "border-teal-500",
+  blue: "border-blue-500",
+  purple: "border-purple-500",
+  green: "border-green-500",
+};
+
 const SectionTitle = ({ title, description, color }) => (
-  <div className={`border-l-4 border-${color}-500 pl-4`}>
+  <div className={`border-l-4 ${borderColors[color] || borderColors.teal} pl-4`}>
     <h3 className="text-xl font-semibold text-gray-900 dark:text-white mb-1">
       {title}
     </h3>
@@ -48,12 +58,22 @@ const SectionTitle = ({ title, description, color }) => (
 );
 
 const AddJob = () => {
+  const { user, isProfileComplete } = useContext(AuthContext);
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    if (user && user.role === "recruiter" && !isProfileComplete(user)) {
+      toast.error("Please complete your profile before posting jobs");
+      navigate("/userProfile", { replace: true });
+    }
+  }, [user]);
+
   const handleSubmit = (e) => {
     e.preventDefault();
 
     const role = localStorage.getItem("role");
-    if (role !== "admin") {
-      toast.error("Only admins can post jobs!");
+    if (role !== "admin" && role !== "recruiter") {
+      toast.error("Only admins and recruiters can post jobs!");
       return;
     }
 
@@ -76,7 +96,7 @@ const AddJob = () => {
       userEmail: localStorage.getItem("email"),
     };
 
-    fetch("https://job-fusion-server-9yho.vercel.app/jobs", {
+    fetch("/jobs", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify(job),
@@ -100,7 +120,7 @@ const AddJob = () => {
           <div className="bg-white dark:bg-slate-800 shadow-2xl rounded-2xl overflow-hidden">
             <div className="bg-gradient-to-r from-teal-600 to-teal-700 px-8 py-10 text-center">
               <h2 className="text-4xl font-bold text-white mb-3">
-                Hey Admin, Let's Post a New Job
+                Post a New Job Opportunity
               </h2>
               <p className="text-teal-100 text-lg font-medium">
                 Create your job listing and find the perfect candidate

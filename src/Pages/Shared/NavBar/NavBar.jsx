@@ -7,15 +7,17 @@ import {
   AiOutlineBarChart,
   AiOutlineFileText,
   AiOutlinePlus,
-  AiFillHome,
   AiFillDashboard,
   AiOutlineUser,
   AiOutlineFileSearch,
+  AiOutlineCheckCircle,
 } from "react-icons/ai";
 import { CgProfile } from "react-icons/cg";
 import { PiSignOutBold } from "react-icons/pi";
 import { Link, NavLink } from "react-router-dom";
 import ThemeToggle from "@/components/ThemeToggle";
+import NotificationsDropdown from "@/components/NotificationsDropdown";
+import { toast } from "react-toastify";
 import avatar from "../../../assets/images/avatar.png"
 
 const NavBar = () => {
@@ -23,66 +25,105 @@ const NavBar = () => {
   const { user, SignOutUser } = useContext(AuthContext);
   const [imgError, setImgError] = useState(false);
   const [isScrolled, setIsScrolled] = useState(false);
-  const [isAdmin, setIsAdmin] = useState(false); //
 
-  useEffect(() => {
-    const role = localStorage.getItem("role"); 
-    setIsAdmin(role === "admin");
-  }, [user?.email]);
+  const role = user?.role || "candidate";
 
-  // console.log(isAdmin)
+  const commonRoutes = [
+    {
+      path: "/",
+      name: "Home",
+      icon: <AiOutlineHome className="text-2xl" />,
+    },
+  ];
 
-  const routes = [
-  {
-    path: "/",
-    name: "Home",
-    icon: <AiOutlineHome className="text-2xl" />,
-  },
-  {
-    path: "/allJobs",
-    name: "Available Jobs",
-    icon: <AiOutlineBarChart className="text-2xl" />,
-  },
-  ...(user && !isAdmin
+  const candidateRoutes = user && role === "candidate"
     ? [
+        {
+          path: "/allJobs",
+          name: "Available Jobs",
+          icon: <AiOutlineBarChart className="text-2xl" />,
+        },
         {
           path: "/appliedJobs",
           name: "Applied Jobs",
           icon: <AiOutlineFileText className="text-2xl" />,
         },
       ]
-    : []),
-  ...(user && isAdmin
-    ? [
-        {
-          path: "/addjob",
-          name: "Add Job",
-          icon: <AiOutlinePlus className="text-2xl" />,
-        },
-        {
-          path: "/users",
-          name: "Users",
-          icon: <AiOutlineUser className="text-2xl" />,
-        },
-        {
-          path: "/allApplications",
-          name: "Job Applications",
-          icon: <AiOutlineFileSearch  className="text-2xl" />,
-        },
-        {
-          path: "/adminDashboard",
-          name: "Admin Dashboard",
-          icon: <AiFillDashboard className="text-2xl" />,
-        },
-      ]
-    : []),
-].map((route, index) => ({ ...route, id: index + 1 }));
+    : [];
+
+  const recruiterRoutes =
+    user && role === "recruiter"
+      ? [
+          {
+            path: "/recruiterDashboard",
+            name: "My Posted Jobs",
+            icon: <AiFillDashboard className="text-2xl" />,
+          },
+          {
+            path: "/addjob",
+            name: "Post New Job",
+            icon: <AiOutlinePlus className="text-2xl" />,
+          },
+        ]
+      : [];
+
+  const adminRoutes =
+    user && role === "admin"
+      ? [
+          {
+            path: "/allJobs",
+            name: "All Jobs",
+            icon: <AiOutlineBarChart className="text-2xl" />,
+          },
+          {
+            path: "/addjob",
+            name: "Add Job",
+            icon: <AiOutlinePlus className="text-2xl" />,
+          },
+          {
+            path: "/job-approvals",
+            name: "Job Approvals",
+            icon: <AiOutlineCheckCircle className="text-2xl" />,
+          },
+          {
+            path: "/users",
+            name: "Users",
+            icon: <AiOutlineUser className="text-2xl" />,
+          },
+          {
+            path: "/allApplications",
+            name: "Applications",
+            icon: <AiOutlineFileSearch className="text-2xl" />,
+          },
+          {
+            path: "/adminDashboard",
+            name: "Dashboard",
+            icon: <AiFillDashboard className="text-2xl" />,
+          },
+        ]
+      : [];
+
+  const routes = [
+    ...commonRoutes,
+    ...candidateRoutes,
+    ...recruiterRoutes,
+    ...adminRoutes,
+  ].map((route, index) => ({ ...route, id: index + 1 }));
 
 
   const handleSignOut = () => {
     SignOutUser()
-      .then(() => console.log("Successfully signed out"))
-      .catch((error) => console.log(error.message));
+      .then(() => {
+        localStorage.removeItem("role");
+        localStorage.removeItem("email");
+        toast.success("Signed out successfully", {
+          position: "top-center",
+          autoClose: 3000,
+        });
+      })
+      .catch(() =>
+        toast.error("Failed to sign out", { position: "top-center" }),
+      );
   };
 
   const handleRouteClick = () => {
@@ -106,11 +147,13 @@ const NavBar = () => {
       <Link
         to="/"
         onClick={() => window.scrollTo({ top: 0, behavior: "smooth" })}
-        className={`text-3xl font-bold font-poppins transition-colors duration-300 ${
-          isScrolled && !open ? "text-teal-500 dark:text-teal-400 hover:text-gray-400" : "text-white"
-        }`}
+        className="flex items-center gap-2"
       >
-        JobFusion
+        <span className={`text-3xl font-bold font-poppins transition-colors duration-300 ${
+          isScrolled && !open ? "text-teal-500 dark:text-teal-400" : "text-white"
+        }`}>
+          JobFusion
+        </span>
       </Link>
 
       <div
@@ -155,6 +198,12 @@ const NavBar = () => {
           </button>
         </li>
 
+        {user && (
+          <li>
+            <NotificationsDropdown />
+          </li>
+        )}
+
         <li>
           <div
             className={`flex items-center space-x-2 cursor-pointer transition-colors duration-300 ${
@@ -177,7 +226,7 @@ const NavBar = () => {
       </ul>
 
       <div
-        className={`fixed top-0 right-0 h-full w-64 dark:bg-black bg-white z-50 transform transition-transform duration-300 ${
+        className={`fixed top-0 right-0 h-full w-72 dark:bg-black bg-white z-50 transform transition-transform duration-300 overflow-y-auto ${
           open ? "translate-x-0 px-4 pt-8" : "translate-x-full"
         }`}
       >

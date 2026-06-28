@@ -16,6 +16,10 @@ import JobApply from "@/Pages/JobApply/JobApply";
 import AdminDashboard from "@/Pages/AdminDashboard/AdminDashboard";
 import JobApplications from "@/Pages/AdminDashboard/JobApplications";
 import AllUsers from "@/Pages/AdminDashboard/AllUsers";
+import AdminRoute from "@/Layout/AdminRoute";
+import RecruiterOrAdminRoute from "@/Layout/RecruiterOrAdminRoute";
+import RecruiterDashboard from "@/Pages/Recruiter/RecruiterDashboard";
+import AdminJobApproval from "@/Pages/AdminDashboard/AdminJobApproval";
 
 const router = createBrowserRouter([
   {
@@ -37,7 +41,7 @@ const router = createBrowserRouter([
             <AppliedJobs />
           </PrivateRoute>
         ),
-        loader: () => fetch("https://job-fusion-server-9yho.vercel.app/jobs"),
+        loader: () => fetch("/jobs?status=approved"),
       },
       {
         path: "/blog",
@@ -51,7 +55,7 @@ const router = createBrowserRouter([
           </PrivateRoute>
         ),
         loader: ({ params }) =>
-          fetch(`https://job-fusion-server-9yho.vercel.app/jobs/${params.id}`),
+          fetch(`/jobs/${params.id}`),
       },
       {
         path: "/login",
@@ -63,16 +67,20 @@ const router = createBrowserRouter([
       },
       {
         path: "/addjob",
-        element: <AddJob />,
+        element: (
+          <RecruiterOrAdminRoute>
+            <AddJob />
+          </RecruiterOrAdminRoute>
+        ),
       },
       {
-        path: "/alljobs",
+        path: "/allJobs",
         element: (
           <PrivateRoute>
             <AllJobs />
           </PrivateRoute>
         ),
-        loader: () => fetch("https://job-fusion-server-9yho.vercel.app/jobs"),
+        loader: () => fetch("/jobs?status=approved"),
       },
       {
         path: "/profile",
@@ -81,7 +89,7 @@ const router = createBrowserRouter([
             <Profile />
           </PrivateRoute>
         ),
-        loader: () => fetch("https://job-fusion-server-9yho.vercel.app/users"),
+        loader: () => fetch("/users"),
       },
       {
         path: "/userProfile",
@@ -90,7 +98,7 @@ const router = createBrowserRouter([
             <UserProfile />
           </PrivateRoute>
         ),
-        loader: () => fetch("https://job-fusion-server-9yho.vercel.app/users"),
+        loader: () => fetch("/users"),
       },
       {
         path: "/jobApply/:id",
@@ -101,31 +109,43 @@ const router = createBrowserRouter([
         ),
       },
       {
-        path: "/adminDashboard",
-        element: <AdminDashboard />,
-      },
-      {
-        path: "/addjob",
+        path: "/recruiterDashboard",
         element: (
           <PrivateRoute>
-            <AddJob />
+            <RecruiterDashboard />
           </PrivateRoute>
+        ),
+      },
+      {
+        path: "/job-approvals",
+        element: (
+          <AdminRoute>
+            <AdminJobApproval />
+          </AdminRoute>
+        ),
+      },
+      {
+        path: "/adminDashboard",
+        element: (
+          <AdminRoute>
+            <AdminDashboard />
+          </AdminRoute>
         ),
       },
       {
         path: "/users",
         element: (
-          <PrivateRoute>
+          <AdminRoute>
             <AllUsers />
-          </PrivateRoute>
+          </AdminRoute>
         ),
       },
       {
         path: "/allApplications",
         element: (
-          <PrivateRoute>
+          <AdminRoute>
             <JobApplications />
-          </PrivateRoute>
+          </AdminRoute>
         ),
       },
     ],

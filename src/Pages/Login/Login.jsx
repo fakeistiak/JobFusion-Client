@@ -40,14 +40,15 @@ const Login = () => {
         setUser(loggedInUser);
 
         const res = await fetch(
-          `https://job-fusion-server-9yho.vercel.app/users?email=${loggedInUser.email}`
+          `/users?email=${loggedInUser.email}`
         );
         const userData = await res.json();
 
-        localStorage.setItem("role", userData?.role || "user");
-        localStorage.setItem("email", loggedInUser.email);
+localStorage.setItem("role", userData?.role || "candidate");
+localStorage.setItem("email", loggedInUser.email);
 
-        navigate(location?.state || "/");
+sessionStorage.setItem("profileReminder", "true");
+navigate(location?.state || "/");
 
         setTimeout(() => {
           toast.success(
@@ -75,12 +76,12 @@ const Login = () => {
       setUser(loggedInUser);
 
       const res = await fetch(
-        `https://job-fusion-server-9yho.vercel.app/users?email=${loggedInUser.email}`
+        `/users?email=${loggedInUser.email}`
       );
       const data = await res.json();
 
       if (!data || Object.keys(data).length === 0) {
-        await fetch("https://job-fusion-server-9yho.vercel.app/users", {
+        await fetch("/users", {
           method: "POST",
           headers: { "Content-Type": "application/json" },
           body: JSON.stringify({
@@ -93,13 +94,14 @@ const Login = () => {
       }
 
       const roleRes = await fetch(
-        `https://job-fusion-server-9yho.vercel.app/users?email=${loggedInUser.email}`
+        `/users?email=${loggedInUser.email}`
       );
       const userData = await roleRes.json();
 
-      localStorage.setItem("role", userData?.role || "user");
+      localStorage.setItem("role", userData?.role || "candidate");
       localStorage.setItem("email", loggedInUser.email);
 
+      sessionStorage.setItem("profileReminder", "true");
       navigate(location?.state || "/");
 
       setTimeout(() => {
@@ -122,9 +124,13 @@ const Login = () => {
         const loggedUser = result.user;
         setUser(loggedUser);
         localStorage.setItem("email", loggedUser.email);
-        localStorage.setItem("role", "user");
+        localStorage.setItem("role", "candidate");
 
+        sessionStorage.setItem("profileReminder", "true");
         navigate(location?.state || "/");
+        setTimeout(() => {
+          toast.success(`Welcome ${loggedUser.displayName || "back"}! Login successful!`, { position: "top-right" });
+        }, 400);
       })
       .catch((error) => {
         setErrorMessage(error.message);
@@ -145,10 +151,12 @@ const Login = () => {
 
     sendPasswordResetEmail(auth, email)
       .then(() => {
-        setErrorMessage("Password reset email sent! Please check your inbox.");
+        setErrorMessage("");
+        toast.success("Password reset email sent! Check your inbox.");
       })
       .catch((error) => {
         setErrorMessage(error.message);
+        toast.error(error.message);
       });
   };
 

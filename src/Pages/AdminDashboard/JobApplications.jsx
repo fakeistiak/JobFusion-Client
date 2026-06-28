@@ -8,9 +8,7 @@ const JobApplications = () => {
 
   const fetchApplications = async () => {
     try {
-      const res = await fetch(
-        "https://job-fusion-server-9yho.vercel.app/jobApplication"
-      );
+      const res = await fetch("/jobApplication");
       const data = await res.json();
       setApplications(data);
     } catch (error) {
@@ -53,18 +51,15 @@ const JobApplications = () => {
         autoClose: false,
         closeButton: false,
         draggable: false,
-      }
+      },
     );
   };
 
   const handleDelete = async (id) => {
     try {
-      const res = await fetch(
-        `https://job-fusion-server-9yho.vercel.app/jobApplication/${id}`,
-        {
-          method: "DELETE",
-        }
-      );
+      const res = await fetch(`/jobApplication/${id}`, {
+        method: "DELETE",
+      });
       const result = await res.json();
 
       if (res.ok) {
@@ -88,9 +83,9 @@ const JobApplications = () => {
   }
 
   return (
-    <div className="min-h-screen p-8 bg-slate-50">
+    <div className="min-h-screen p-4 sm:p-8 bg-slate-50">
       <ToastContainer />
-      <h1 className="text-3xl font-bold mb-6">All Job Applications</h1>
+      <h1 className="text-2xl sm:text-3xl font-bold mb-6">All Job Applications</h1>
       <div className="overflow-x-auto bg-white rounded-lg shadow border border-slate-200">
         <table className="min-w-full divide-y divide-slate-200">
           <thead className="bg-slate-50">
