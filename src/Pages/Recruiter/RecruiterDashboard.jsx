@@ -5,9 +5,8 @@ import "react-toastify/dist/ReactToastify.css";
 import {
   X, ExternalLink, Calendar, Mail, Phone, BookOpen,
   Linkedin, Github, Globe, FileText, User, ChevronLeft, Eye,
-  CheckCircle, XCircle, Clock, Loader2, Search,
+  CheckCircle, XCircle, Clock, Loader2, Search, CalendarClock, Trash2,
 } from "lucide-react";
-import socket, { connectSocket } from "@/lib/socket";
 
 const statusConfig = {
   pending: { bg: "bg-yellow-100 dark:bg-yellow-900/30", text: "text-yellow-700 dark:text-yellow-400", label: "Pending" },
@@ -29,6 +28,8 @@ const RecruiterDashboard = () => {
   const [interviewDate, setInterviewDate] = useState("");
   const [interviewMessage, setInterviewMessage] = useState("");
   const [interviewAppId, setInterviewAppId] = useState(null);
+  const [applicantTab, setApplicantTab] = useState("active");
+  const [deleteConfirm, setDeleteConfirm] = useState(null);
 
   const photoSrc = (url, name) => {
     if (imgErrors[url] || !url) {
@@ -56,22 +57,8 @@ const RecruiterDashboard = () => {
 
   useEffect(() => {
     fetchData();
-  }, [email]);
-
-  useEffect(() => {
-    if (!email) return;
-    connectSocket(email);
-
-    const handleNewApplicant = (data) => {
-      setApplications((prev) => [data, ...prev]);
-      toast.info(`New applicant: ${data.name || "Someone"} applied for "${data.job_title}"`);
-    };
-
-    socket.on("newApplicant", handleNewApplicant);
-
-    return () => {
-      socket.off("newApplicant", handleNewApplicant);
-    };
+    const interval = setInterval(fetchData, 15000);
+    return () => clearInterval(interval);
   }, [email]);
 
   const handleStatusUpdate = async (appId, newStatus, date, msg) => {
@@ -119,7 +106,30 @@ const RecruiterDashboard = () => {
     applications.filter((app) => app.job_id === jobId);
 
   const getActiveApplicantsForJob = (jobId) =>
-    applications.filter((app) => app.job_id === jobId && app.status !== "rejected");
+    applications.filter((app) => app.job_id === jobId && app.status !== "rejected" && app.status !== "accepted");
+
+  const handleDeleteJob = async () => {
+    if (!deleteConfirm) return;
+    try {
+      const res = await fetch(`/jobs/${deleteConfirm}`, {
+        method: "DELETE",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ email }),
+      });
+      const data = await res.json();
+      if (res.ok) {
+        toast.success(data.message);
+        setMyJobs((prev) => prev.filter((j) => j._id !== deleteConfirm));
+        setApplications((prev) => prev.filter((a) => a.job_id !== deleteConfirm));
+      } else {
+        toast.error(data.message || "Failed to delete job");
+      }
+    } catch {
+      toast.error("Something went wrong");
+    } finally {
+      setDeleteConfirm(null);
+    }
+  };
 
   const closeModal = () => {
     setSelectedJob(null);
@@ -189,9 +199,10 @@ const RecruiterDashboard = () => {
               <th className="px-6 py-3 text-left text-sm font-semibold text-slate-700 dark:text-slate-200">Job Title</th>
               <th className="px-6 py-3 text-left text-sm font-semibold text-slate-700 dark:text-slate-200">Status</th>
               <th className="px-6 py-3 text-left text-sm font-semibold text-slate-700 dark:text-slate-200">Applicants</th>
-              <th className="px-6 py-3 text-left text-sm font-semibold text-slate-700 dark:text-slate-200">Hired</th>
+              <th className="px-6 py-3 text-left text-sm font-semibold text-slate-700 dark:text-slate-200">Interviews</th>
               <th className="px-6 py-3 text-left text-sm font-semibold text-slate-700 dark:text-slate-200">Location</th>
               <th className="px-6 py-3 text-left text-sm font-semibold text-slate-700 dark:text-slate-200">Salary</th>
+              <th className="px-6 py-3 text-right text-sm font-semibold text-slate-700 dark:text-slate-200">Actions</th>
             </tr>
           </thead>
           <tbody className="divide-y divide-slate-200 dark:divide-slate-700">
@@ -203,6 +214,7 @@ const RecruiterDashboard = () => {
                   onClick={() => {
                     setSelectedJob(job);
                     setSelectedApplicant(null);
+                    setApplicantTab("active");
                   }}
                   className="hover:bg-slate-50 dark:hover:bg-slate-700 cursor-pointer transition"
                 >
@@ -231,14 +243,29 @@ const RecruiterDashboard = () => {
                       {counts.accepted}
                     </span>
                   </td>
+                  <td className="px-6 py-4">
+                    <span className="inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full text-xs font-semibold bg-purple-100 dark:bg-purple-900/30 text-purple-700 dark:text-purple-400">
+                      <CalendarClock className="w-3 h-3" />
+                      {getApplicantsForJob(job._id).filter((a) => a.status === "accepted" && a.interviewDate).length}
+                    </span>
+                  </td>
                   <td className="px-6 py-4 text-gray-700 dark:text-gray-300">{job.location}</td>
                   <td className="px-6 py-4 text-gray-700 dark:text-gray-300">{job.salary}</td>
+                  <td className="px-6 py-4 text-right">
+                    <button
+                      onClick={(e) => { e.stopPropagation(); setDeleteConfirm(job._id); }}
+                      className="p-2 text-red-500 hover:text-red-700 hover:bg-red-50 dark:hover:bg-red-900/20 rounded-lg transition"
+                      title="Delete job"
+                    >
+                      <Trash2 className="w-4 h-4" />
+                    </button>
+                  </td>
                 </tr>
               );
             })}
             {myJobs.length === 0 && (
               <tr>
-                <td colSpan="6" className="text-center py-8 text-gray-500 dark:text-gray-400">
+                <td colSpan="7" className="text-center py-8 text-gray-500 dark:text-gray-400">
                   You haven't posted any jobs yet
                 </td>
               </tr>
@@ -280,7 +307,11 @@ const RecruiterDashboard = () => {
                     <>
                       <h2 className="text-xl font-bold text-gray-900 dark:text-white">{selectedJob.job_title}</h2>
                       <p className="text-sm text-gray-500 dark:text-gray-400 mt-1">
-                        {selectedJob.company_name} &middot; {getActiveApplicantsForJob(selectedJob._id).length} applicant{getActiveApplicantsForJob(selectedJob._id).length !== 1 ? "s" : ""}
+                        {selectedJob.company_name} &middot;{" "}
+                        {applicantTab === "active"
+                          ? `${getActiveApplicantsForJob(selectedJob._id).length} active applicant${getActiveApplicantsForJob(selectedJob._id).length !== 1 ? "s" : ""}`
+                          : `${getApplicantsForJob(selectedJob._id).filter((a) => a.status === "accepted" && a.interviewDate).length} interview${getApplicantsForJob(selectedJob._id).filter((a) => a.status === "accepted" && a.interviewDate).length !== 1 ? "s" : ""} scheduled`
+                        }
                       </p>
                     </>
                   )}
@@ -473,84 +504,206 @@ const RecruiterDashboard = () => {
                   )}
                 </div>
               ) : (
-                (() => {
-                  const applicants = getActiveApplicantsForJob(selectedJob._id);
-                  if (applicants.length === 0) {
-                    return (
-                      <div className="text-center py-16">
-                        <User className="w-16 h-16 text-gray-300 dark:text-gray-600 mx-auto mb-4" />
-                        <p className="text-gray-500 dark:text-gray-400 text-lg">No active applicants for this job</p>
-                      </div>
-                    );
-                  }
-                  return (
-                    <div className="overflow-x-auto">
-                      <table className="min-w-full divide-y divide-slate-200 dark:divide-slate-700">
-                        <thead className="bg-slate-50 dark:bg-slate-700">
-                          <tr>
-                            <th className="px-4 py-3 text-left text-xs font-semibold text-slate-600 dark:text-slate-300 uppercase tracking-wider">Applicant</th>
-                            <th className="px-4 py-3 text-left text-xs font-semibold text-slate-600 dark:text-slate-300 uppercase tracking-wider">Email</th>
-                            <th className="px-4 py-3 text-left text-xs font-semibold text-slate-600 dark:text-slate-300 uppercase tracking-wider">Phone</th>
-                            <th className="px-4 py-3 text-left text-xs font-semibold text-slate-600 dark:text-slate-300 uppercase tracking-wider">Salary Exp.</th>
-                            <th className="px-4 py-3 text-left text-xs font-semibold text-slate-600 dark:text-slate-300 uppercase tracking-wider">Status</th>
-                            <th className="px-4 py-3 text-left text-xs font-semibold text-slate-600 dark:text-slate-300 uppercase tracking-wider">Applied</th>
-                            <th className="px-4 py-3 text-right text-xs font-semibold text-slate-600 dark:text-slate-300 uppercase tracking-wider">Action</th>
-                          </tr>
-                        </thead>
-                        <tbody className="divide-y divide-slate-200 dark:divide-slate-700">
-                          {applicants.map((app) => (
-                            <tr
+                <>
+                  {/* Tabs */}
+                  <div className="flex gap-1 mb-6 bg-slate-100 dark:bg-slate-700 rounded-xl p-1 w-fit">
+                    <button
+                      onClick={() => { setApplicantTab("active"); setSelectedApplicant(null); }}
+                      className={`px-4 py-2 text-sm font-medium rounded-lg transition ${
+                        applicantTab === "active"
+                          ? "bg-white dark:bg-slate-600 text-teal-600 dark:text-teal-400 shadow-sm"
+                          : "text-slate-600 dark:text-slate-300 hover:text-slate-800 dark:hover:text-white"
+                      }`}
+                    >
+                      <Clock className="w-4 h-4 inline mr-1.5" />
+                      Active ({getActiveApplicantsForJob(selectedJob._id).length})
+                    </button>
+                    <button
+                      onClick={() => { setApplicantTab("scheduled"); setSelectedApplicant(null); }}
+                      className={`px-4 py-2 text-sm font-medium rounded-lg transition ${
+                        applicantTab === "scheduled"
+                          ? "bg-white dark:bg-slate-600 text-teal-600 dark:text-teal-400 shadow-sm"
+                          : "text-slate-600 dark:text-slate-300 hover:text-slate-800 dark:hover:text-white"
+                      }`}
+                    >
+                      <CalendarClock className="w-4 h-4 inline mr-1.5" />
+                      Interviews ({getApplicantsForJob(selectedJob._id).filter((a) => a.status === "accepted" && a.interviewDate).length})
+                    </button>
+                  </div>
+
+                  {applicantTab === "active" ? (
+                    (() => {
+                      const applicants = getActiveApplicantsForJob(selectedJob._id);
+                      if (applicants.length === 0) {
+                        return (
+                          <div className="text-center py-16">
+                            <User className="w-16 h-16 text-gray-300 dark:text-gray-600 mx-auto mb-4" />
+                            <p className="text-gray-500 dark:text-gray-400 text-lg">No active applicants for this job</p>
+                          </div>
+                        );
+                      }
+                      return (
+                        <div className="overflow-x-auto">
+                          <table className="min-w-full divide-y divide-slate-200 dark:divide-slate-700">
+                            <thead className="bg-slate-50 dark:bg-slate-700">
+                              <tr>
+                                <th className="px-4 py-3 text-left text-xs font-semibold text-slate-600 dark:text-slate-300 uppercase tracking-wider">Applicant</th>
+                                <th className="px-4 py-3 text-left text-xs font-semibold text-slate-600 dark:text-slate-300 uppercase tracking-wider">Email</th>
+                                <th className="px-4 py-3 text-left text-xs font-semibold text-slate-600 dark:text-slate-300 uppercase tracking-wider">Phone</th>
+                                <th className="px-4 py-3 text-left text-xs font-semibold text-slate-600 dark:text-slate-300 uppercase tracking-wider">Salary Exp.</th>
+                                <th className="px-4 py-3 text-left text-xs font-semibold text-slate-600 dark:text-slate-300 uppercase tracking-wider">Status</th>
+                                <th className="px-4 py-3 text-left text-xs font-semibold text-slate-600 dark:text-slate-300 uppercase tracking-wider">Applied</th>
+                                <th className="px-4 py-3 text-right text-xs font-semibold text-slate-600 dark:text-slate-300 uppercase tracking-wider">Action</th>
+                              </tr>
+                            </thead>
+                            <tbody className="divide-y divide-slate-200 dark:divide-slate-700">
+                              {applicants.map((app) => (
+                                <tr
+                                  key={app._id}
+                                  onClick={() => setSelectedApplicant(app)}
+                                  className="hover:bg-slate-50 dark:hover:bg-slate-700 cursor-pointer transition"
+                                >
+                                  <td className="px-4 py-4 whitespace-nowrap">
+                                    <div className="flex items-center gap-3">
+                                      <img
+                                        src={photoSrc(app.photoURL, app.name || app.applicant_email)}
+                                        alt={app.name || "Applicant"}
+                                        className="w-9 h-9 rounded-full object-cover shrink-0"
+                                        onError={() => setImgErrors((prev) => ({ ...prev, [app.photoURL]: true }))}
+                                      />
+                                      <span className="font-medium text-gray-900 dark:text-white">
+                                        {app.name || app.applicant_email}
+                                      </span>
+                                    </div>
+                                  </td>
+                                  <td className="px-4 py-4 text-sm text-gray-600 dark:text-gray-400">{app.applicant_email}</td>
+                                  <td className="px-4 py-4 text-sm text-gray-600 dark:text-gray-400">{app.phone || "-"}</td>
+                                  <td className="px-4 py-4 text-sm text-gray-600 dark:text-gray-400">{app.salaryExpectation || "-"}</td>
+                                  <td className="px-4 py-4">
+                                    <span className={`inline-flex items-center gap-1 px-2 py-0.5 rounded-full text-xs font-semibold ${
+                                      statusConfig[app.status]?.bg || statusConfig.pending.bg
+                                    } ${
+                                      statusConfig[app.status]?.text || statusConfig.pending.text
+                                    }`}>
+                                      {app.status === "reviewing" && <Search className="w-3 h-3" />}
+                                      {app.status === "accepted" && <CheckCircle className="w-3 h-3" />}
+                                      {app.status === "rejected" && <XCircle className="w-3 h-3" />}
+                                      {(!app.status || app.status === "pending") && <Clock className="w-3 h-3" />}
+                                      {statusConfig[app.status]?.label || "Pending"}
+                                    </span>
+                                  </td>
+                                  <td className="px-4 py-4 text-sm text-gray-500 dark:text-gray-500 whitespace-nowrap">
+                                    {app.appliedAt
+                                      ? new Date(app.appliedAt).toLocaleDateString()
+                                      : "-"}
+                                  </td>
+                                  <td className="px-4 py-4 text-right">
+                                    <span className="inline-flex items-center gap-1 text-teal-600 dark:text-teal-400 text-sm font-medium">
+                                      <Eye className="w-4 h-4" /> View
+                                    </span>
+                                  </td>
+                                </tr>
+                              ))}
+                            </tbody>
+                          </table>
+                        </div>
+                      );
+                    })()
+                  ) : (
+                    (() => {
+                      const interviews = getApplicantsForJob(selectedJob._id)
+                        .filter((a) => a.status === "accepted" && a.interviewDate)
+                        .sort((a, b) => new Date(a.interviewDate) - new Date(b.interviewDate));
+                      if (interviews.length === 0) {
+                        return (
+                          <div className="text-center py-16">
+                            <CalendarClock className="w-16 h-16 text-gray-300 dark:text-gray-600 mx-auto mb-4" />
+                            <p className="text-gray-500 dark:text-gray-400 text-lg">No interviews scheduled yet</p>
+                            <p className="text-gray-400 dark:text-gray-500 text-sm mt-1">Accept candidates with a date & time to schedule interviews</p>
+                          </div>
+                        );
+                      }
+                      return (
+                        <div className="space-y-4">
+                          {interviews.map((app) => (
+                            <div
                               key={app._id}
                               onClick={() => setSelectedApplicant(app)}
-                              className="hover:bg-slate-50 dark:hover:bg-slate-700 cursor-pointer transition"
+                              className="flex items-center gap-4 p-4 bg-white dark:bg-slate-700/50 border border-slate-200 dark:border-slate-600 rounded-xl hover:shadow-md hover:border-teal-300 dark:hover:border-teal-600 cursor-pointer transition-all"
                             >
-                              <td className="px-4 py-4 whitespace-nowrap">
-                                <div className="flex items-center gap-3">
-                                  <img
-                                    src={photoSrc(app.photoURL, app.name || app.applicant_email)}
-                                    alt={app.name || "Applicant"}
-                                    className="w-9 h-9 rounded-full object-cover shrink-0"
-                                    onError={() => setImgErrors((prev) => ({ ...prev, [app.photoURL]: true }))}
-                                  />
-                                  <span className="font-medium text-gray-900 dark:text-white">
-                                    {app.name || app.applicant_email}
-                                  </span>
-                                </div>
-                              </td>
-                              <td className="px-4 py-4 text-sm text-gray-600 dark:text-gray-400">{app.applicant_email}</td>
-                              <td className="px-4 py-4 text-sm text-gray-600 dark:text-gray-400">{app.phone || "-"}</td>
-                              <td className="px-4 py-4 text-sm text-gray-600 dark:text-gray-400">{app.salaryExpectation || "-"}</td>
-                              <td className="px-4 py-4">
-                                <span className={`inline-flex items-center gap-1 px-2 py-0.5 rounded-full text-xs font-semibold ${
-                                  statusConfig[app.status]?.bg || statusConfig.pending.bg
-                                } ${
-                                  statusConfig[app.status]?.text || statusConfig.pending.text
-                                }`}>
-                                  {app.status === "reviewing" && <Search className="w-3 h-3" />}
-                                  {app.status === "accepted" && <CheckCircle className="w-3 h-3" />}
-                                  {app.status === "rejected" && <XCircle className="w-3 h-3" />}
-                                  {(!app.status || app.status === "pending") && <Clock className="w-3 h-3" />}
-                                  {statusConfig[app.status]?.label || "Pending"}
+                              <div className="flex flex-col items-center min-w-[60px]">
+                                <span className="text-lg font-bold text-teal-600">
+                                  {new Date(app.interviewDate).toLocaleDateString("en-US", { day: "numeric" })}
                                 </span>
-                              </td>
-                              <td className="px-4 py-4 text-sm text-gray-500 dark:text-gray-500 whitespace-nowrap">
-                                {app.appliedAt
-                                  ? new Date(app.appliedAt).toLocaleDateString()
-                                  : "-"}
-                              </td>
-                              <td className="px-4 py-4 text-right">
-                                <span className="inline-flex items-center gap-1 text-teal-600 dark:text-teal-400 text-sm font-medium">
-                                  <Eye className="w-4 h-4" /> View
+                                <span className="text-xs font-medium text-gray-500 dark:text-gray-400 uppercase">
+                                  {new Date(app.interviewDate).toLocaleDateString("en-US", { month: "short" })}
                                 </span>
-                              </td>
-                            </tr>
+                              </div>
+                              <div className="w-px h-12 bg-slate-200 dark:bg-slate-600" />
+                              <img
+                                src={photoSrc(app.photoURL, app.name || app.applicant_email)}
+                                alt={app.name || "Applicant"}
+                                className="w-10 h-10 rounded-full object-cover shrink-0"
+                                onError={() => setImgErrors((prev) => ({ ...prev, [app.photoURL]: true }))}
+                              />
+                              <div className="flex-1 min-w-0">
+                                <p className="font-semibold text-gray-900 dark:text-white truncate">
+                                  {app.name || app.applicant_email}
+                                </p>
+                                <p className="text-sm text-gray-500 dark:text-gray-400 truncate">{app.applicant_email}</p>
+                              </div>
+                              <div className="text-right shrink-0">
+                                <p className="text-sm font-semibold text-gray-900 dark:text-white">
+                                  {new Date(app.interviewDate).toLocaleTimeString("en-US", { hour: "2-digit", minute: "2-digit" })}
+                                </p>
+                                <p className="text-xs text-gray-400">
+                                  {new Date(app.interviewDate).toLocaleDateString("en-US", { weekday: "short" })}
+                                </p>
+                              </div>
+                              <ChevronLeft className="w-4 h-4 text-gray-400 rotate-180 shrink-0" />
+                            </div>
                           ))}
-                        </tbody>
-                      </table>
-                    </div>
-                  );
-                })()
+                        </div>
+                      );
+                    })()
+                  )}
+                </>
               )}
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* Delete Confirmation */}
+      {deleteConfirm && (
+        <div className="fixed inset-0 z-[110] flex items-center justify-center bg-black/50 p-4" onClick={() => setDeleteConfirm(null)}>
+          <div className="bg-white dark:bg-gray-800 rounded-2xl shadow-2xl p-6 sm:p-8 max-w-md w-full" onClick={(e) => e.stopPropagation()}>
+            <div className="flex items-center gap-3 mb-4">
+              <div className="w-10 h-10 rounded-full bg-red-100 dark:bg-red-900/30 flex items-center justify-center shrink-0">
+                <Trash2 className="w-5 h-5 text-red-600" />
+              </div>
+              <div>
+                <h2 className="text-lg font-bold text-gray-900 dark:text-white">Delete Job</h2>
+                <p className="text-sm text-gray-500 dark:text-gray-400">This action cannot be undone</p>
+              </div>
+            </div>
+            <p className="text-gray-600 dark:text-gray-300 text-sm mb-6">
+              Are you sure you want to delete this job? All applications and interview data for this position will also be permanently removed.
+            </p>
+            <div className="flex gap-3 justify-end">
+              <button
+                onClick={() => setDeleteConfirm(null)}
+                className="px-5 py-2.5 text-sm font-semibold text-gray-700 dark:text-gray-300 bg-gray-100 dark:bg-gray-700 rounded-xl hover:bg-gray-200 dark:hover:bg-gray-600 transition"
+              >
+                Cancel
+              </button>
+              <button
+                onClick={handleDeleteJob}
+                className="px-5 py-2.5 text-sm font-semibold text-white bg-red-600 rounded-xl hover:bg-red-700 transition flex items-center gap-2"
+              >
+                <Trash2 className="w-4 h-4" />
+                Delete
+              </button>
             </div>
           </div>
         </div>

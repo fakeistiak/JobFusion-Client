@@ -1,7 +1,6 @@
 import { useEffect, useState, useRef } from "react";
 import { IoNotifications } from "react-icons/io5";
 import { useNavigate } from "react-router-dom";
-import socket, { connectSocket } from "@/lib/socket";
 
 const NotificationsDropdown = () => {
   const [notifications, setNotifications] = useState([]);
@@ -31,21 +30,6 @@ const NotificationsDropdown = () => {
     fetchNotifications();
     const interval = setInterval(fetchNotifications, 30000);
     return () => clearInterval(interval);
-  }, [email]);
-
-  useEffect(() => {
-    if (!email) return;
-    connectSocket(email);
-
-    const handleNewNotification = (data) => {
-      setNotifications((prev) => [data, ...prev]);
-    };
-
-    socket.on("newNotification", handleNewNotification);
-
-    return () => {
-      socket.off("newNotification", handleNewNotification);
-    };
   }, [email]);
 
   useEffect(() => {

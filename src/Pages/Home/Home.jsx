@@ -1,3 +1,4 @@
+import App from "./App/App";
 import CategoryList from "./CategoryList/CategoryList";
 import ContactUs from "./ContactUs/ContactUs";
 import FeaturedJobs from "./FeaturedJobs/FeaturedJobs";
@@ -9,6 +10,7 @@ const Home = () => {
             <Hero/>
             <CategoryList/>
             <FeaturedJobs/>
+            <App/>
             <ContactUs/>
         </div>
     );

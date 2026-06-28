@@ -1,4 +1,4 @@
-import { useContext, useEffect, useState } from "react";
+import { useContext, useEffect, useState, useCallback } from "react";
 import { AuthContext } from "@/Provider/AuthProvider";
 import { FadeLoader } from "react-spinners";
 import { toast, ToastContainer } from "react-toastify";
@@ -7,7 +7,6 @@ import "react-toastify/dist/ReactToastify.css";
 import {
   Briefcase, MapPin, Clock, CheckCircle, XCircle, Search, Loader2, Trash2, Calendar,
 } from "lucide-react";
-import socket, { connectSocket } from "@/lib/socket";
 
 const statusConfig = {
   pending: { icon: Clock, bg: "bg-yellow-100 dark:bg-yellow-900/30", text: "text-yellow-700 dark:text-yellow-400", label: "Pending", bar: "bg-yellow-400" },
@@ -35,9 +34,8 @@ const AppliedJobs = () => {
     }
   }, [user, navigate]);
 
-  useEffect(() => {
+  const fetchApplications = useCallback(() => {
     if (!user) return;
-    setLoading(true);
     fetch(`/jobApplication?email=${user.email}`)
       .then((res) => res.json())
       .then((data) => {
@@ -45,29 +43,14 @@ const AppliedJobs = () => {
         setLoading(false);
       })
       .catch(() => setLoading(false));
-
-    connectSocket(user.email);
-
-    const handleStatusUpdate = (data) => {
-      setJobs((prev) =>
-        prev.map((app) =>
-          app._id === data.applicationId
-            ? {
-                ...app,
-                status: data.status,
-                interviewDate: data.interviewDate || app.interviewDate,
-                interviewMessage: data.interviewMessage || app.interviewMessage,
-              }
-            : app
-        )
-      );
-    };
-
-    socket.on("applicationStatusUpdate", handleStatusUpdate);
-    return () => {
-      socket.off("applicationStatusUpdate", handleStatusUpdate);
-    };
   }, [user]);
+
+  useEffect(() => {
+    setLoading(true);
+    fetchApplications();
+    const interval = setInterval(fetchApplications, 15000);
+    return () => clearInterval(interval);
+  }, [fetchApplications]);
 
   const handleDelete = async (id) => {
     try {
