@@ -98,10 +98,10 @@ const AllJobs = () => {
     <div className="min-h-screen bg-slate-50 dark:bg-slate-900">
       
       {/* Hero Banner Match Image Layout - Re-styled into Teal */}
-      <div className="bg-teal-600 dark:bg-teal-800 rounded-3xl mx-4 sm:mx-6 lg:mx-8 mt-6 px-6 py-12 sm:py-16 text-center shadow-md relative overflow-hidden">
+      <div className="bg-teal-500 dark:bg-teal-800 rounded-md mt-6 px-6 py-12 sm:py-16 text-center shadow-md relative overflow-hidden">
         <div className="relative z-10 max-w-4xl mx-auto">
           <h1 className="text-3xl sm:text-4xl lg:text-5xl font-bold text-white tracking-tight">
-            Over 10,000+ Jobs to apply
+            Over 1,000+ Jobs to apply
           </h1>
           <p className="mt-3 text-sm sm:text-base text-teal-100 max-w-2xl mx-auto opacity-90">
             Find your dream job with ease! Our portal connects professionals with top companies, 
@@ -152,12 +152,12 @@ const AllJobs = () => {
           Trusted By
         </p>
         <div className="flex flex-wrap items-center justify-center gap-x-10 sm:gap-x-14 gap-y-6">
-          <img src={amazonLogo} alt="Amazon" className="h-7 sm:h-9 object-contain" />
-          <img src={googleLogo} alt="Google" className="h-7 sm:h-9 object-contain" />
-          <img src={microsoftLogo} alt="Microsoft" className="h-7 sm:h-9 object-contain" />
-          <img src={netflixLogo} alt="Netflix" className="h-7 sm:h-9 object-contain" />
-          <img src={teslaLogo} alt="Tesla" className="h-7 sm:h-9 object-contain" />
-          <img src={facebookLogo} alt="Facebook" className="h-7 sm:h-9 object-contain" />
+          <img src={amazonLogo} alt="Amazon" className="size-10 sm:size-12 object-contain" />
+          <img src={googleLogo} alt="Google" className="size-10 sm:size-12 object-contain" />
+          <img src={microsoftLogo} alt="Microsoft" className="size-10 sm:size-12 object-contain" />
+          <img src={netflixLogo} alt="Netflix" className="size-10 sm:size-12 object-contain" />
+          <img src={teslaLogo} alt="Tesla" className="size-10 sm:size-12 object-contain" />
+          <img src={facebookLogo} alt="Facebook" className="size-10 sm:size-12 object-contain" />
         </div>
       </div>
 
